@@ -18,13 +18,25 @@
     <![endif]-->
 </head>
 <body>
-<h1>Hello, world!</h1>
-
+    <div id="viz">
+        <div id="controls"></div>
+        <div id="chart"></div>
+    </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/lib/bootstrap.min.js"></script>
 <script src="js/lib/d3.min.js"></script>
-<script src="js/scatter.js"></script>
+<script src="js/ACEScatterView.js"></script>
+<script src="js/AICSChart.js"></script>
+<script src="js/AICSScatter.js"></script>
+
+<script>
+    ACEScatterView({
+        controlsParent: "controls",
+        chartParent: "chart",
+        dataFile: "modeling/smalldat.csv"
+    });
+</script>
 </body>
 </html>
