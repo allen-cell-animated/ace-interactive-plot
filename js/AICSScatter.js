@@ -61,13 +61,23 @@ function AICSScatter(spec, my){
             .attr('width', TIP_WIDTH)
             .attr('height', TIP_HEIGHT);
         tipImage.attr('src', 'modeling/images/' + circleD.im_ids + '.ome.tif_flat.png');
+        tipDiv.append("xhtml:br");
+        tipDiv.append("xhtml:span").style('font-weight', 'bold').text(function (d) {
+            return 'Nuclear volume: ' + circleD.Nuclear_volume;
+        });
+        tipDiv.append("xhtml:br");
+        tipDiv.append("xhtml:span").style('font-weight', 'bold').text(function (d) {
+            return 'Cellular Volume: ' + circleD.Cellular_volume;
+        });
         return {div: tipDiv, image: tipImage};
     }
     var xAxis = d3.axisBottom();
     var yAxis = d3.axisLeft();
 
     my.init = function(data, main){
+        var filterClasses = {}
         data.forEach(function (d) {
+            filterClasses[d.classes] = undefined;
             d.showToolTip = false;
         });
         xScale.domain([d3.min(data, _xScaleAccesor), d3.max(data, _xScaleAccesor)])
