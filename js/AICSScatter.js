@@ -20,69 +20,54 @@ function AICSScatter(spec, my){
     };
 
     function _handleMouseOver(d, i) {
-        d3.select(this).attr({
-            r: 6,
-            opacity: 1.0
-        });
+        // d3.select(this).attr('fill', 'red');
+        d3.select(this).attr('r', '6').attr('opacity', 1.0).attr('fill', 'red');
     };
 
     function _handleMouseOut(d, i) {
-        d3.select(this).attr({
-            r: 3,
-            opacity: .5
-        });
+        d3.select(this).attr('r', '3').attr('opacity', .5).attr('fill', 'blue');
     };
 
     spec.handleClick = spec.handleClick || function (d, i){
+        // d3.select(this).attr('r', '6').attr('fill', 'red').attr('opacity', 1.0).on("mouseover", undefined).on("mouseout", undefined);
         var tip = d3.select('body')
             .append('div')
             .attr('class', 'tip')
-            .style('padding', '5px')
             .style('position', 'absolute')
             .style('display', 'none')
             .on('click', function () {
                 tip.remove();
                 d.tip = false;
+                // d3.select(this).attr('r', '3').attr('fill', 'blue').attr('opacity', .5).on("mouseover", _handleMouseOver).on("mouseout", _handleMouseOut);
             });
 
-        var tipImage = tip.append('img').attr('width', 150).attr('height', 150);
+        var tipWidth = 150;
+        var tipHeight = 150;
+        var tipImage = tip.append('img').attr('width', tipWidth).attr('height', tipHeight);
 
         tip.transition().duration(0);
-        tip.style('top', y(d.nuclear_sphericity) - 20 + 'px');
-        tip.style('left', x(d.nuclear_volume) + 'px');
+        tip.style('left', (spec.margin.left + xScale(d.Cellular_volume) - (tipWidth / 2)) + 'px');
+        tip.style('top', (spec.margin.top + yScale(d.Nuclear_volume) - (tipHeight / 2)) + 'px');
         tip.style('display', 'block');
-
-        tipImage.attr('src', d.url);
+        tipImage.attr('src', "modeling/images/" + d.im_ids + ".ome.tif_flat.png");
         d.tip = true;
     };
 
     my.init = function(data, main){
         _updateScales(data);
-
-        // draw the x axis
         var xAxis = d3.axisBottom()
             .scale(xScale);
-            // .orient('bottom');
-
         main.append('g')
             .attr('transform', 'translate(0,' + my.chartHeight + ')')
             .attr('class', 'main axis date')
             .call(xAxis);
-
-        // draw the y axis
         var yAxis = d3.axisLeft()
             .scale(yScale);
-            // .orient('left');
-
         main.append('g')
             .attr('transform', 'translate(0,0)')
             .attr('class', 'main axis date')
             .call(yAxis);
-
         dotsG = main.append("svg:g");
-
-        // dots = dotsG.selectAll("scatter-dots")
-        //     .data(data)
     };
 
     function _updateScales(data) {
@@ -116,6 +101,7 @@ function AICSScatter(spec, my){
             .attr('width', 20)
             .attr('height', 24)
             .attr('opacity', .5)
+            .attr('fill', 'blue')
             .attr("cx", my.chartWidth/2)
             .attr("cy", my.chartHeight/2)
             .on('click', spec.handleClick)
