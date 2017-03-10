@@ -3,6 +3,9 @@ function AICSScatter(spec, my){
 
     my = my || {};
 
+    var TIP_WIDTH = 150;
+    var TIP_HEIGHT = 150;
+
     var that = AICSChart(spec, my);
 
     var xScale = d3.scaleLinear();
@@ -10,6 +13,8 @@ function AICSScatter(spec, my){
 
     var dotsG = undefined;
     var dots = undefined;
+
+    var mouseOverTooltip = undefined;
 
     function _yScaleAccessor(elem) {
         return Number(elem.Nuclear_volume);
@@ -20,38 +25,49 @@ function AICSScatter(spec, my){
     };
 
     function _handleMouseOver(d, i) {
-        // d3.select(this).attr('fill', 'red');
-        d3.select(this).attr('r', '6').attr('opacity', 1.0).attr('fill', 'red');
+        // d3.select(this).attr('r', '6').attr('opacity', 1.0).attr('fill', 'red');
+        mouseOverTooltip = _createToolTip(d);
+        _setToolTip(mouseOverTooltip, d);
     };
 
     function _handleMouseOut(d, i) {
-        d3.select(this).attr('r', '3').attr('opacity', .5).attr('fill', 'blue');
+        // d3.select(this).attr('r', '3').attr('opacity', .5).attr('fill', 'blue');
+        _removeToolTip(mouseOverTooltip);
     };
 
     spec.handleClick = spec.handleClick || function (d, i){
+        tip = _createToolTip(d);
+        _setToolTip(tip, d);
+        tip.div.on('click', function () {
+            _removeToolTip(tip);
+            d.tip = false;
+        });
+        d.tip = true;
+    };
+
+    function _createToolTip(d) {
         // d3.select(this).attr('r', '6').attr('fill', 'red').attr('opacity', 1.0).on("mouseover", undefined).on("mouseout", undefined);
-        var tip = d3.select('body')
+        var tipDiv = d3.select('body')
             .append('div')
             .attr('class', 'tip')
             .style('position', 'absolute')
-            .style('display', 'none')
-            .on('click', function () {
-                tip.remove();
-                d.tip = false;
-                // d3.select(this).attr('r', '3').attr('fill', 'blue').attr('opacity', .5).on("mouseover", _handleMouseOver).on("mouseout", _handleMouseOut);
-            });
+            .style('display', 'none');
 
-        var tipWidth = 150;
-        var tipHeight = 150;
-        var tipImage = tip.append('img').attr('width', tipWidth).attr('height', tipHeight);
+        var tipImage = tipDiv.append('img').attr('width', TIP_WIDTH).attr('height', TIP_HEIGHT);
+        return {div: tipDiv, image: tipImage};
+    }
 
-        tip.transition().duration(0);
-        tip.style('left', (spec.margin.left + xScale(d.Cellular_volume) - (tipWidth / 2)) + 'px');
-        tip.style('top', (spec.margin.top + yScale(d.Nuclear_volume) - (tipHeight / 2)) + 'px');
-        tip.style('display', 'block');
-        tipImage.attr('src', "modeling/images/" + d.im_ids + ".ome.tif_flat.png");
-        d.tip = true;
-    };
+    function _removeToolTip(tip) {
+        tip.div.remove();
+    }
+
+    function _setToolTip(tip, d){
+        tip.div.transition().duration(0);
+        tip.div.style('left', (spec.margin.left + xScale(d.Cellular_volume) - (TIP_WIDTH / 2)) + 'px');
+        tip.div.style('top', (spec.margin.top + yScale(d.Nuclear_volume) - (TIP_HEIGHT / 2)) + 'px');
+        tip.div.style('display', 'block');
+        tip.image.attr('src', "modeling/images/" + d.im_ids + ".ome.tif_flat.png");
+    }
 
     my.init = function(data, main){
         _updateScales(data);
@@ -97,10 +113,10 @@ function AICSScatter(spec, my){
         dots = dotsG.selectAll("scatter-dots")
             .data(data)
             .enter().append("circle")
-            .attr('r', 3)
+            .attr('r', 7)
             .attr('width', 20)
             .attr('height', 24)
-            .attr('opacity', .5)
+            .attr('opacity', .3)
             .attr('fill', 'blue')
             .attr("cx", my.chartWidth/2)
             .attr("cy", my.chartHeight/2)
