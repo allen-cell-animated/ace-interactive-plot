@@ -14,7 +14,15 @@ function AICSScatter(spec, my){
     var dotsG = undefined;
     var dots = undefined;
 
-    var mouseOverTooltip = undefined;
+    spec.handleClick = spec.handleClick || function (d, tipDiv){
+        d.showToolTip = !d.showToolTip;
+        tipDiv.on('mouseout', d.showToolTip ? undefined : function () {
+            _handleMouseOut(d);
+        });
+        if(!d.showToolTip){
+            d.mouseOverTooltip.div.style('visibility', 'hidden');
+        }
+    };
 
     function _yScaleAccessor(elem) {
         return Number(elem.Nuclear_volume);
@@ -24,52 +32,42 @@ function AICSScatter(spec, my){
         return Number(elem.Cellular_volume);
     };
 
-    function _handleMouseOver(d, i) {
-        // d3.select(this).attr('r', '6').attr('opacity', 1.0).attr('fill', 'red');
-        mouseOverTooltip = _createToolTip(d);
-        _setToolTip(mouseOverTooltip, d);
+    function _handleMouseOver(d) {
+        var that = this;
+        if(!d.mouseOverTooltip){
+            d.mouseOverTooltip = _createToolTip(d, that);
+        }
+        d.mouseOverTooltip.div.style('visibility', 'visible');
     };
 
-    function _handleMouseOut(d, i) {
-        // d3.select(this).attr('r', '3').attr('opacity', .5).attr('fill', 'blue');
-        _removeToolTip(mouseOverTooltip);
+    function _handleMouseOut(d) {
+        d.mouseOverTooltip.div.style('visibility', 'hidden');
     };
 
-    spec.handleClick = spec.handleClick || function (d, i){
-        tip = _createToolTip(d);
-        _setToolTip(tip, d);
-        tip.div.on('click', function () {
-            _removeToolTip(tip);
-            d.tip = false;
-        });
-        d.tip = true;
-    };
-
-    function _createToolTip(d) {
-        // d3.select(this).attr('r', '6').attr('fill', 'red').attr('opacity', 1.0).on("mouseover", undefined).on("mouseout", undefined);
+    function _createToolTip(circleD) {
         var tipDiv = d3.select('body')
             .append('div')
             .attr('class', 'tip')
             .style('position', 'absolute')
-            .style('display', 'none');
-
-        var tipImage = tipDiv.append('img').attr('width', TIP_WIDTH).attr('height', TIP_HEIGHT);
+            .style('left', (spec.margin.left + xScale(circleD.Cellular_volume) - (TIP_WIDTH / 2)) + 'px')
+            .style('top', (spec.margin.top + yScale(circleD.Nuclear_volume) - (TIP_HEIGHT / 2)) + 'px')
+            .on('click', function () {
+                spec.handleClick(circleD, tipDiv);
+            })
+            .on('mouseout', function () {
+                _handleMouseOut(circleD)
+            });
+        var tipImage = tipDiv.append('img')
+            .attr('width', TIP_WIDTH)
+            .attr('height', TIP_HEIGHT);
+        tipImage.attr('src', 'modeling/images/' + circleD.im_ids + '.ome.tif_flat.png');
         return {div: tipDiv, image: tipImage};
     }
 
-    function _removeToolTip(tip) {
-        tip.div.remove();
-    }
-
-    function _setToolTip(tip, d){
-        tip.div.transition().duration(0);
-        tip.div.style('left', (spec.margin.left + xScale(d.Cellular_volume) - (TIP_WIDTH / 2)) + 'px');
-        tip.div.style('top', (spec.margin.top + yScale(d.Nuclear_volume) - (TIP_HEIGHT / 2)) + 'px');
-        tip.div.style('display', 'block');
-        tip.image.attr('src', "modeling/images/" + d.im_ids + ".ome.tif_flat.png");
-    }
-
     my.init = function(data, main){
+        data.forEach(function (d) {
+            d.showToolTip = false;
+        });
         _updateScales(data);
         var xAxis = d3.axisBottom()
             .scale(xScale);
@@ -83,7 +81,7 @@ function AICSScatter(spec, my){
             .attr('transform', 'translate(0,0)')
             .attr('class', 'main axis date')
             .call(yAxis);
-        dotsG = main.append("svg:g");
+        dotsG = main.append('svg:g');
     };
 
     function _updateScales(data) {
@@ -96,10 +94,10 @@ function AICSScatter(spec, my){
     function _updateDots(){
         dots.transition()
             .duration(2500)
-            .attr("cx", function (d){
+            .attr('cx', function (d){
                 return xScale(d.Cellular_volume);
             })
-            .attr("cy", function (d) {
+            .attr('cy', function (d) {
                 return yScale(d.Nuclear_volume);
             });
     }
@@ -110,20 +108,21 @@ function AICSScatter(spec, my){
     };
 
     my.build = function (data) {
-        dots = dotsG.selectAll("scatter-dots")
+        dots = dotsG.selectAll('scatter-dots')
             .data(data)
-            .enter().append("circle")
+            .enter().append('circle')
             .attr('r', 7)
             .attr('width', 20)
             .attr('height', 24)
             .attr('opacity', .3)
             .attr('fill', 'blue')
-            .attr("cx", my.chartWidth/2)
-            .attr("cy", my.chartHeight/2)
-            .on('click', spec.handleClick)
-            .on("mouseover", _handleMouseOver)
-            .on("mouseout", _handleMouseOut);
-
+            .attr('stroke','black')
+            .attr('stroke-width',0)
+            .attr('cx', my.chartWidth/2)
+            .attr('cy', my.chartHeight/2)
+            .on('mouseover',function(d) {
+                _handleMouseOver(d);
+            });
         _updateDots();
     };
 
