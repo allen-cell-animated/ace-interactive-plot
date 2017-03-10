@@ -63,23 +63,28 @@ function AICSScatter(spec, my){
         tipImage.attr('src', 'modeling/images/' + circleD.im_ids + '.ome.tif_flat.png');
         return {div: tipDiv, image: tipImage};
     }
+    var xAxis = d3.axisBottom();
+    var yAxis = d3.axisLeft();
 
     my.init = function(data, main){
         data.forEach(function (d) {
             d.showToolTip = false;
         });
-        _updateScales(data);
-        var xAxis = d3.axisBottom()
-            .scale(xScale);
+        xScale.domain([d3.min(data, _xScaleAccesor), d3.max(data, _xScaleAccesor)])
+            .range([ 0, my.chartWidth ]);
+        yScale.domain([d3.min(data, _yScaleAccessor), d3.max(data, _yScaleAccessor)])
+            .range([ my.chartHeight, 0 ]);
+        xAxis.scale(xScale);
+        yAxis.scale(yScale);
         main.append('g')
+            .attr("id", "xaxis")
             .attr('transform', 'translate(0,' + my.chartHeight + ')')
-            .attr('class', 'main axis date')
+            .attr('class', 'axis')
             .call(xAxis);
-        var yAxis = d3.axisLeft()
-            .scale(yScale);
         main.append('g')
+            .attr('id', 'yaxis')
             .attr('transform', 'translate(0,0)')
-            .attr('class', 'main axis date')
+            .attr('class', 'axis')
             .call(yAxis);
         dotsG = main.append('svg:g');
     };
@@ -89,6 +94,16 @@ function AICSScatter(spec, my){
             .range([ 0, my.chartWidth ]);
         yScale.domain([d3.min(data, _yScaleAccessor), d3.max(data, _yScaleAccessor)])
             .range([ my.chartHeight, 0 ]);
+        d3.select('#xaxis')
+            .transition()
+            .duration(2500)
+            .attr('transform', 'translate(0,' + my.chartHeight + ')')
+            .call(xAxis);
+        d3.select('#yaxis')
+            .transition()
+            .duration(2500)
+            .attr('transform', 'translate(0,0)')
+            .call(yAxis);
     };
 
     function _updateDots(){

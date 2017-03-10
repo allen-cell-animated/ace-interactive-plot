@@ -19,8 +19,10 @@ function AICSChart(spec, my){
         my.build(data);
     };
 
-    function update() {
-        my.update();
+    function update(data) {
+        my.chartWidth = $( window ).width() - spec.margin.left - spec.margin.right;
+        my.chartHeight = $( window ).height() - spec.margin.top - spec.margin.bottom;
+        my.update(data);
     };
 
     function init () {
@@ -29,10 +31,6 @@ function AICSChart(spec, my){
             return;
         }
         d3.csv(spec.dataFile, function(data) {
-            // if(error){
-            //     alert("Error downloading data file: \n" + error);
-            //     return;
-            // }
             var chart = d3.select('#' + spec.parent)
                 .append('svg')
                 .attr('width', my.chartWidth + spec.margin.right + spec.margin.left)
@@ -46,6 +44,9 @@ function AICSChart(spec, my){
             data  = data.slice(0, 1000);
             my.init(data, main);
             build(data);
+            window.addEventListener("resize", function () {
+                update(data);
+            });
         });
     };
 
