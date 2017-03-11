@@ -19,7 +19,12 @@
 </head>
 <body>
     <div id="viz">
-        <div id="controls"></div>
+        <div id="controls">
+            <span>X Axis Domain:</span>
+            <select id="x-axis-options"></select>
+            <span>Y Axis Domain:</span>
+            <select id="y-axis-options"></select>
+        </div>
         <div id="chart"></div>
     </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -33,9 +38,11 @@
 
 <script>
     ACEScatterView({
-        controlsParent: "controls",
-        chartParent: "chart",
-        dataFile: "modeling/smalldat.csv"
+        controlsParent: 'controls',
+        chartParent: 'chart',
+        dataFile: 'modeling/smalldat.csv',
+        xAxisDomain: 'Nuclear_volume',
+        yAxisDomain: 'Cellular_volume'
     });
 </script>
 </body>

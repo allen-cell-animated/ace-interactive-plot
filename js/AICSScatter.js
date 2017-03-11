@@ -3,8 +3,8 @@ function AICSScatter(spec, my){
 
     my = my || {};
 
-    var TIP_WIDTH = 150;
-    var TIP_HEIGHT = 150;
+    var TIP_WIDTH = 50;
+    var TIP_HEIGHT = 50;
 
     var that = AICSChart(spec, my);
 
@@ -25,11 +25,11 @@ function AICSScatter(spec, my){
     };
 
     function _yScaleAccessor(elem) {
-        return Number(elem.Nuclear_volume);
+        return Number(elem[spec.yAxisDomain]);
     };
 
     function _xScaleAccesor(elem) {
-        return Number(elem.Cellular_volume);
+        return Number(elem[spec.xAxisDomain]);
     };
 
     function _handleMouseOver(d) {
@@ -49,8 +49,8 @@ function AICSScatter(spec, my){
             .append('div')
             .attr('class', 'tip')
             .style('position', 'absolute')
-            .style('left', (spec.margin.left + xScale(circleD.Cellular_volume) - (TIP_WIDTH / 2)) + 'px')
-            .style('top', (spec.margin.top + yScale(circleD.Nuclear_volume) - (TIP_HEIGHT / 2)) + 'px')
+            .style('left', (spec.margin.left + xScale(circleD[spec.xAxisDomain]) - (TIP_WIDTH / 2)) + 'px')
+            .style('top', (spec.margin.top + yScale(circleD[spec.yAxisDomain]) - (TIP_HEIGHT / 2)) + 'px')
             .on('click', function () {
                 spec.handleClick(circleD, tipDiv);
             })
@@ -63,19 +63,19 @@ function AICSScatter(spec, my){
         tipImage.attr('src', 'modeling/images/' + circleD.im_ids + '.ome.tif_flat.png');
         tipDiv.append("xhtml:br");
         tipDiv.append("xhtml:span").style('font-weight', 'bold').text(function (d) {
-            return 'Nuclear volume: ' + circleD.Nuclear_volume;
+            return spec.xAxisDomain + ': ' + circleD[spec.xAxisDomain];
         });
         tipDiv.append("xhtml:br");
         tipDiv.append("xhtml:span").style('font-weight', 'bold').text(function (d) {
-            return 'Cellular Volume: ' + circleD.Cellular_volume;
+            return spec.yAxisDomain + ': ' + circleD[spec.yAxisDomain];
         });
         return {div: tipDiv, image: tipImage};
     }
     var xAxis = d3.axisBottom();
     var yAxis = d3.axisLeft();
-
+    var filterClasses = {};
+    var domainOptions = ['Nuclear_volume', 'Cellular_volume', 'Nuclear_surface_area', 'Cellular_surface_area', 'Structure_radial_affinity', 'Structure_z_affinity'];
     my.init = function(data, main){
-        var filterClasses = {}
         data.forEach(function (d) {
             filterClasses[d.classes] = undefined;
             d.showToolTip = false;
@@ -97,6 +97,31 @@ function AICSScatter(spec, my){
             .attr('class', 'axis')
             .call(yAxis);
         dotsG = main.append('svg:g');
+
+        var xAxisSelect = d3.select('#x-axis-options');
+        var options = xAxisSelect
+            .on('change', function (d) {
+                spec.yAxisDomain = xAxisSelect.property('value');
+                my.update(data)
+            })
+            .selectAll('option')
+            .data(domainOptions).enter()
+            .append('option')
+            .text(function (d) { return d; });
+        xAxisSelect.property('value', spec.xAxisDomain);
+
+        var yAxisSelect = d3.select('#y-axis-options');
+        var options = yAxisSelect
+            .on('change', function (d) {
+                spec.xAxisDomain = yAxisSelect.property('value')
+                my.update(data)
+            })
+            .selectAll('option')
+            .data(domainOptions).enter()
+            .append('option')
+            .text(function (d) { return d; });
+        xAxisSelect.property('value', spec.yAxisDomain);
+
     };
 
     function _updateScales(data) {
@@ -120,10 +145,10 @@ function AICSScatter(spec, my){
         dots.transition()
             .duration(2500)
             .attr('cx', function (d){
-                return xScale(d.Cellular_volume);
+                return xScale(d[spec.xAxisDomain]);
             })
             .attr('cy', function (d) {
-                return yScale(d.Nuclear_volume);
+                return yScale(d[spec.yAxisDomain]);
             });
     }
 
