@@ -113,6 +113,12 @@ function AICSScatter(model, my){
     function _updateDots(transitionDuration){
         dots.transition()
             .duration(transitionDuration || 2500)
+            .attr('opacity', function(d){
+                return d.showToolTip ? 1.0 : .3
+            })
+            .attr('fill', function(d){
+                return d.showToolTip ? 'red' : 'blue'
+            })
             .attr('cx', function (d){
                 return xScale(d[model.xAxisDomain]);
             })
