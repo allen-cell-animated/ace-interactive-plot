@@ -1,56 +1,58 @@
 
-function AICSChart(spec, my){
+function AICSChart(model, my){
 
     my = my || {};
 
     var that = {};
 
-    spec.parent = spec.parent || 'body';
-    spec.margin = spec.margin || {top: 20, right: 150, bottom: 150, left: 60};
+    model.parent = model.parent || 'body';
+    model.margin = model.margin || {top: 20, right: 150, bottom: 150, left: 60};
 
-    my.chartWidth = $( window ).width() - spec.margin.left - spec.margin.right;
-    my.chartHeight = $( window ).height() - spec.margin.top - spec.margin.bottom;
+    my.chartWidth = $( window ).width() - model.margin.left - model.margin.right;
+    my.chartHeight = $( window ).height() - model.margin.top - model.margin.bottom;
 
     my.init = my.init || function () {;};
     my.build = my.build || function () {;};
     my.update = my.update || function () {;};
 
-    function build(data) {
-        my.build(data);
+    function build(main) {
+        my.build(main);
     };
 
-    function update(data, transitionDuration) {
-        my.chartWidth = $( window ).width() - spec.margin.left - spec.margin.right;
-        my.chartHeight = $( window ).height() - spec.margin.top - spec.margin.bottom;
-        my.update(data, transitionDuration);
+    function update(transitionDuration) {
+        my.chartWidth = $( window ).width() - model.margin.left - model.margin.right;
+        my.chartHeight = $( window ).height() - model.margin.top - model.margin.bottom;
+        my.update(transitionDuration);
     };
 
-    function init () {
-        if(undefined === spec.dataFile){
+    function init (viewCallback) {
+        if(undefined === model.dataFile){
             console.log("Do data file provided in spec.");
             return;
         }
-        d3.csv(spec.dataFile, function(data) {
-            var chart = d3.select('#' + spec.parent)
+        d3.csv(model.dataFile, function(data) {
+            var chart = d3.select('#' + model.parent)
                 .append('svg')
-                .attr('width', my.chartWidth + spec.margin.right + spec.margin.left)
-                .attr('height', my.chartHeight + spec.margin.top + spec.margin.bottom)
+                .attr('width', my.chartWidth + model.margin.right + model.margin.left)
+                .attr('height', my.chartHeight + model.margin.top + model.margin.bottom)
                 .attr('class', 'chart');
             var main = chart.append('g')
-                .attr('transform', 'translate(' + spec.margin.left + ',' + spec.margin.top + ')')
+                .attr('transform', 'translate(' + model.margin.left + ',' + model.margin.top + ')')
                 .attr('width', my.chartWidth)
                 .attr('height', my.chartHeight)
                 .attr('class', 'main');
-            data  = data.slice(0, 1000);
-            my.init(data, main);
-            build(data);
+            model.data = data.slice(0, 1000);
+            my.init();
+            build(main);
+            if(viewCallback){viewCallback();}
             window.addEventListener("resize", function () {
-                update(data, 1);
+                update(1);
             });
         });
     };
 
     that.init = init;
+    that.update = update;
 
     return that;
 };
