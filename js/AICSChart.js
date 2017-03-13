@@ -19,10 +19,10 @@ function AICSChart(spec, my){
         my.build(data);
     };
 
-    function update(data) {
+    function update(data, transitionDuration) {
         my.chartWidth = $( window ).width() - spec.margin.left - spec.margin.right;
         my.chartHeight = $( window ).height() - spec.margin.top - spec.margin.bottom;
-        my.update(data);
+        my.update(data, transitionDuration);
     };
 
     function init () {
@@ -45,7 +45,7 @@ function AICSChart(spec, my){
             my.init(data, main);
             build(data);
             window.addEventListener("resize", function () {
-                update(data);
+                update(data, 1);
             });
         });
     };

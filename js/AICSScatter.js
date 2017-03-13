@@ -123,26 +123,26 @@ function AICSScatter(spec, my){
 
     };
 
-    function _updateScales(data) {
+    function _updateScales(data, transitionDuration) {
         xScale.domain([d3.min(data, _xScaleAccesor), d3.max(data, _xScaleAccesor)])
             .range([ 0, my.chartWidth ]);
         yScale.domain([d3.min(data, _yScaleAccessor), d3.max(data, _yScaleAccessor)])
             .range([ my.chartHeight, 0 ]);
         d3.select('#xaxis')
             .transition()
-            .duration(2500)
+            .duration(transitionDuration || 2500)
             .attr('transform', 'translate(0,' + my.chartHeight + ')')
             .call(xAxis);
         d3.select('#yaxis')
             .transition()
-            .duration(2500)
+            .duration(transitionDuration || 2500)
             .attr('transform', 'translate(0,0)')
             .call(yAxis);
     };
 
-    function _updateDots(){
+    function _updateDots(transitionDuration){
         dots.transition()
-            .duration(2500)
+            .duration(transitionDuration || 2500)
             .attr('cx', function (d){
                 return xScale(d[spec.xAxisDomain]);
             })
@@ -151,9 +151,9 @@ function AICSScatter(spec, my){
             });
     }
 
-    my.update = function (data) {
-        _updateScales(data);
-        _updateDots();
+    my.update = function (data, transitionDuration) {
+        _updateScales(data, transitionDuration);
+        _updateDots(transitionDuration);
     };
 
     my.build = function (data) {
