@@ -11,16 +11,23 @@ function AICSScatter(model, my){
     var xScale = d3.scaleLinear();
     var yScale = d3.scaleLinear();
 
+    var dotGs = undefined;
+    var ims = undefined;
     var dots = undefined;
 
-    model.handleClick = model.handleClick || function (d, tipDiv){
+    // model.handleClick = model.handleClick || function (d, tipDiv){
+    //     d.showToolTip = !d.showToolTip;
+    //     _updateDots(1);
+        // tipDiv.on('mouseout', d.showToolTip ? undefined : function () {
+        //     _handleMouseOut(d);
+        // });
+        // if(!d.showToolTip){
+        //     d.mouseOverTooltip.div.style('visibility', 'hidden');
+        // }
+    // };
+    model.handleClick = model.handleClick || function (d, tipDiv) {
         d.showToolTip = !d.showToolTip;
-        tipDiv.on('mouseout', d.showToolTip ? undefined : function () {
-            _handleMouseOut(d);
-        });
-        if(!d.showToolTip){
-            d.mouseOverTooltip.div.style('visibility', 'hidden');
-        }
+        _updateDots(1);
     };
 
     function _yScaleAccessor(elem) {
@@ -32,15 +39,15 @@ function AICSScatter(model, my){
     };
 
     function _handleMouseOver(d) {
-        var that = this;
-        if(!d.mouseOverTooltip){
-            d.mouseOverTooltip = _createToolTip(d, that);
-        }
-        d.mouseOverTooltip.div.style('visibility', 'visible');
+        // var that = this;
+        // if(!d.mouseOverTooltip){
+        //     d.mouseOverTooltip = _createToolTip(d, that);
+        // }
+        // d.mouseOverTooltip.div.style('visibility', 'visible');
     };
 
     function _handleMouseOut(d) {
-        d.mouseOverTooltip.div.style('visibility', 'hidden');
+        // d.mouseOverTooltip.div.style('visibility', 'hidden');
     };
 
     function _createToolTip(circleD) {
@@ -111,10 +118,29 @@ function AICSScatter(model, my){
             })
             .attr('cy', function (d) {
                 return yScale(d[model.yAxisDomain]);
-            })
+            });
+
+        dotGs.transition()
+            .duration(transitionDuration || 2500)
             .attr('visibility', function (d) {
                 return model.filterClasses[d.classes] ? 'visible' : 'hidden';
             });
+
+        ims.transition()
+            .duration(transitionDuration || 2500)
+            .attr('x', function (d){
+                return xScale(d[model.xAxisDomain]);
+            })
+            .attr('y', function (d) {
+                return yScale(d[model.yAxisDomain]);
+            })
+            .attr("xlink:href", function (d) {
+                if(d.showToolTip){
+                    console.log(d.im_ids);
+                }
+                return d.showToolTip ? 'modeling/images/' + d.im_ids + '.ome.tif_flat.png' : '';
+            });
+
     }
 
     my.update = function (transitionDuration) {
@@ -133,10 +159,23 @@ function AICSScatter(model, my){
             .attr('transform', 'translate(0,0)')
             .attr('class', 'axis')
             .call(yAxis);
-        dots = main.append('svg:g').selectAll('scatter-dots')
+
+        dotGs = main.append('svg:g').selectAll('scatter-dots')
             .data(model.data)
-            .enter().append('circle')
-            .attr('r', 3)
+            .enter()
+            .append('g');
+
+        ims = dotGs.append("svg:image")
+            .attr('x', my.chartWidth/2)
+            .attr('y', my.chartHeight/2)
+            .attr('width', 50)
+            .attr('height', 50)
+            .attr("xlink:href", function (d) {
+                return d.showToolTip ? 'modeling/images/' + d.im_ids + '.ome.tif_flat.png' : '';
+            });
+
+        dots = dotGs.append('circle')
+            .attr('r', 6)
             .attr('width', 20)
             .attr('height', 24)
             .attr('opacity', .3)
@@ -147,14 +186,15 @@ function AICSScatter(model, my){
             .attr('cy', my.chartHeight/2)
             .on('mouseover',function(d) {
                 _handleMouseOver(d);
-            });
+            })
+            .on('click', model.handleClick);
         _updateDots();
     };
 
     my.ready = function () {
         model.data.forEach(function (elem) {
             if(elem.tip){
-                handleClick(elem)
+                model.handleClick(elem)
             }
         });
     };
