@@ -74,7 +74,6 @@ function AICSScatter(spec, my){
     var xAxis = d3.axisBottom();
     var yAxis = d3.axisLeft();
     var filterClasses = {};
-    var domainOptions = ['Nuclear_volume', 'Cellular_volume', 'Nuclear_surface_area', 'Cellular_surface_area', 'Structure_radial_affinity', 'Structure_z_affinity'];
     my.init = function(data, main){
         data.forEach(function (d) {
             filterClasses[d.classes] = undefined;
@@ -105,19 +104,19 @@ function AICSScatter(spec, my){
                 my.update(data)
             })
             .selectAll('option')
-            .data(domainOptions).enter()
+            .data(spec.domainOptions).enter()
             .append('option')
             .text(function (d) { return d; });
         xAxisSelect.property('value', spec.xAxisDomain);
 
-        var yAxisSelect = d3.select('#y-axis-options');
+        var yAxisSelect = d3.select('#y-axis-options');//TODO pass this in
         var options = yAxisSelect
             .on('change', function (d) {
-                spec.xAxisDomain = yAxisSelect.property('value')
+                spec.xAxisDomain = yAxisSelect.property('value');
                 my.update(data)
             })
             .selectAll('option')
-            .data(domainOptions).enter()
+            .data(spec.domainOptions).enter()
             .append('option')
             .text(function (d) { return d; });
         xAxisSelect.property('value', spec.yAxisDomain);

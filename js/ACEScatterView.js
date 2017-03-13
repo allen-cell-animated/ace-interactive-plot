@@ -5,7 +5,8 @@ function ACEScatterView(spec){
         parent: spec.chartParent,
         dataFile: spec.dataFile,
         xAxisDomain: spec.xAxisDomain,
-        yAxisDomain: spec.yAxisDomain
+        yAxisDomain: spec.yAxisDomain,
+        domainOptions: spec.domainOptions
     });
     scatter.init();
     return that;
