@@ -72,10 +72,10 @@ function AICSScatter(model, my){
     }
     var xAxis = d3.axisBottom();
     var yAxis = d3.axisLeft();
-    var filterClasses = {};
+    model.filterClasses = {};
     my.init = function(){
         model.data.forEach(function (d) {
-            filterClasses[d.classes] = undefined;
+            model.filterClasses[d.classes] = true;
             d.showToolTip = false;
         });
         xScale.domain([d3.min(model.data, _xScaleAccesor), d3.max(model.data, _xScaleAccesor)])
@@ -111,6 +111,9 @@ function AICSScatter(model, my){
             })
             .attr('cy', function (d) {
                 return yScale(d[model.yAxisDomain]);
+            })
+            .attr('visibility', function (d) {
+                return model.filterClasses[d.classes] ? 'visible' : 'hidden';
             });
     }
 

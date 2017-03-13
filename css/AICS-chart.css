@@ -1,0 +1,7 @@
+.filter-checkbox{
+    padding: 10px;
+}
+
+#class-filter-checkboxes{
+    display: inline-flex;
+}
