@@ -3,6 +3,7 @@ function AICSScatter(model, my){
 
     my = my || {};
 
+    var TRANSITION_DURATION = 1;
     var TIP_WIDTH = 50;
     var TIP_HEIGHT = 50;
 
@@ -110,24 +111,28 @@ function AICSScatter(model, my){
             .range([ model.chartHeight, 0 ]);
         d3.select('#xaxis')
             .transition()
-            .duration(transitionDuration || 2500)
+            .duration(transitionDuration || TRANSITION_DURATION)
             .attr('transform', 'translate(0,' + model.chartHeight + ')')
             .call(xAxis);
         d3.select('#yaxis')
             .transition()
-            .duration(transitionDuration || 2500)
+            .duration(transitionDuration || TRANSITION_DURATION)
             .attr('transform', 'translate(0,0)')
             .call(yAxis);
 
         d3.select('#xaxis-label')
-            .text(model.xAxisDomain);
+            .text(model.xAxisDomain)
+            .attr("transform", "translate(" + (model.chartWidth/2) + " ," + (model.chartHeight + model.margin.top + 20)+")")
+
         d3.select('#yaxis-label')
-            .text(model.yAxisDomain);
+            .text(model.yAxisDomain)
+            .attr("transform", "translate(-60 ," + (model.chartHeight/2 + model.margin.top) + ") rotate(-90)");
+
     };
 
     function _updateDots(transitionDuration){
         dots.transition()
-            .duration(transitionDuration || 2500)
+            .duration(transitionDuration || TRANSITION_DURATION)
             .attr('opacity', function(d){
                 return d.showToolTip ? 1.0 : .3
             })
@@ -142,13 +147,13 @@ function AICSScatter(model, my){
             });
 
         dotGs.transition()
-            .duration(transitionDuration || 2500)
+            .duration(transitionDuration || TRANSITION_DURATION)
             .attr('visibility', function (d) {
                 return model.filterClasses[d.classes] ? 'visible' : 'hidden';
             });
 
         ims.transition()
-            .duration(transitionDuration || 2500)
+            .duration(transitionDuration || TRANSITION_DURATION)
             .attr('x', function (d){
                 return xScale(d[model.xAxisDomain]);
             })
@@ -177,7 +182,7 @@ function AICSScatter(model, my){
 
         main.append("text")
             .attr("id", "xaxis-label")
-            .attr("transform", "translate(" + model.chartWidth/2 + model.margin.left + " ," + (model.chartHeight + model.margin.top + 20)+")")
+            .attr("transform", "translate(" + (model.chartWidth/2) + " ," + (model.chartHeight + model.margin.top + 20)+")")
             .style("text-anchor", "middle")
             .text(model.xAxisDomain);
         main.append("text")
