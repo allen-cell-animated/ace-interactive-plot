@@ -1,4 +1,5 @@
 function ACEScatterView(spec){
+    $.blockUI({ message: '<img src="loading.gif" />' });
     function handleMouseOver(d) {
         d3.select('#cell-previewer-im').attr('src', 'modeling/images/' + d.im_ids + '.ome.tif_flat.png');
         d3.select('#cell-previewer-name').text(function () {
@@ -89,6 +90,6 @@ function ACEScatterView(spec){
                 }
                 scatter.update();
             });
-
+        setTimeout(function(){$.unblockUI();}, 1000);
     });
 };
