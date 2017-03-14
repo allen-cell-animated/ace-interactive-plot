@@ -23,7 +23,7 @@ function AICSChart(model, my){
 
     function update(transitionDuration) {
         model.chartWidth = $( window ).width() - model.margin.left - model.margin.right;
-        model.chartHeight = $( window ).height() - model.margin.top - model.margin.bottom;
+        model.chartHeight = $( window ).height() - model.margin.top - model.margin.bottom - controlsHeight;
         my.update(transitionDuration);
     };
 
