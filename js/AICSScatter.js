@@ -15,19 +15,17 @@ function AICSScatter(model, my){
     var ims = undefined;
     var dots = undefined;
 
-    // model.handleClick = model.handleClick || function (d, tipDiv){
-    //     d.showToolTip = !d.showToolTip;
-    //     _updateDots(1);
-        // tipDiv.on('mouseout', d.showToolTip ? undefined : function () {
-        //     _handleMouseOut(d);
-        // });
-        // if(!d.showToolTip){
-        //     d.mouseOverTooltip.div.style('visibility', 'hidden');
-        // }
-    // };
-    model.handleClick = model.handleClick || function (d, tipDiv) {
+    model.handleClick = model.handleClick || function (d) {
         d.showToolTip = !d.showToolTip;
         _updateDots(1);
+    };
+
+    model.handleMouseOver = model.handleMouseOver || function (d) {
+        ;
+    };
+
+    model.handleMouseOut = model.handleMouseOut || function (d) {
+        ;
     };
 
     function _yScaleAccessor(elem) {
@@ -117,7 +115,7 @@ function AICSScatter(model, my){
                 return d.showToolTip ? 1.0 : .3
             })
             .attr('fill', function(d){
-                return d.showToolTip ? 'red' : 'blue'
+                return (d.showToolTip || d.highlight) ? 'red' : 'blue'
             })
             .attr('cx', function (d){
                 return xScale(d[model.xAxisDomain]);
@@ -190,9 +188,8 @@ function AICSScatter(model, my){
             .attr('stroke-width',0)
             .attr('cx', my.chartWidth/2)
             .attr('cy', my.chartHeight/2)
-            .on('mouseover',function(d) {
-                _handleMouseOver(d);
-            })
+            .on('mouseover', model.handleMouseOver)
+            .on('mouseout', model.handleMouseOut)
             .on('click', model.handleClick);
         _updateDots();
     };

@@ -20,14 +20,21 @@
 <body>
     <div id="viz">
         <div id="controls">
-            <div id="axis-selects">
-                <span>X Axis Domain:</span>
-                <select id="x-axis-options"></select>
-                <span>Y Axis Domain:</span>
-                <select id="y-axis-options"></select>
+            <div id="controls-left">
+                <div id="axis-selects">
+                    <span>X Axis Domain:</span>
+                    <select id="x-axis-options"></select>
+                    <span>Y Axis Domain:</span>
+                    <select id="y-axis-options"></select>
+                </div>
+                <div id="class-filter-checkboxes">
+                </div>
             </div>
-            <div id="class-filter-checkboxes">
-
+            <div id="controls-right">
+                <div id="cell-previewer">
+                    <img id="cell-previewer-im" src="" height="100px" width="100px">
+                    <span id="cell-previewer-name"></span>
+                </div>
             </div>
         </div>
         <div id="chart"></div>

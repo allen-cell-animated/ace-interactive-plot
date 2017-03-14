@@ -5,3 +5,28 @@
 #class-filter-checkboxes{
     display: inline-flex;
 }
+
+#controls{
+  padding: 10px;
+    margin: 10px;
+}
+
+#controls-left{
+
+}
+
+#axis-selects{
+
+}
+
+#controls-right{
+
+}
+
+#cell-previewer{
+    border: 1px;
+}
+
+#cell-previewer-im{
+
+}

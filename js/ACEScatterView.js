@@ -1,4 +1,13 @@
 function ACEScatterView(spec){
+    function handleMouseOver(d) {
+        d3.select('#cell-previewer-im').attr('src', 'modeling/images/' + d.im_ids + '.ome.tif_flat.png');
+        d.highlight = true;
+        scatter.update(1);
+    };
+    function handleMouseOut(d) {
+        d.highlight = false;
+        scatter.update(1);
+    }
     var model = {
         controls: spec.controlsParent,
         parent: spec.chartParent,
@@ -6,7 +15,9 @@ function ACEScatterView(spec){
         xAxisDomain: spec.xAxisDomain,
         yAxisDomain: spec.yAxisDomain,
         domainOptions: spec.domainOptions,
-        handleClick: spec.handleClick
+        handleClick: spec.handleClick,
+        handleMouseOver: handleMouseOver,
+        handleMouseOut: handleMouseOut
     };
     var scatter = AICSScatter(model);
     //building select controls async because model needs to be populated with options/filters
