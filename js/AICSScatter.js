@@ -118,6 +118,11 @@ function AICSScatter(model, my){
             .duration(transitionDuration || 2500)
             .attr('transform', 'translate(0,0)')
             .call(yAxis);
+
+        d3.select('#xaxis-label')
+            .text(model.xAxisDomain);
+        d3.select('#yaxis-label')
+            .text(model.yAxisDomain);
     };
 
     function _updateDots(transitionDuration){
@@ -164,16 +169,19 @@ function AICSScatter(model, my){
             .attr('transform', 'translate(0,' + model.chartHeight + ')')
             .attr('class', 'axis')
             .call(xAxis);
-        main.append("text")
-            .attr("transform", "translate(" + model.chartWidth/2 + model.margin.left + " ," + (model.chartHeight + model.margin.top + 20)+")")
-            .style("text-anchor", "middle")
-            .text(model.xAxisDomain);
         main.append('g')
             .attr('id', 'yaxis')
             .attr('transform', 'translate(0,0)')
             .attr('class', 'axis')
             .call(yAxis);
+
         main.append("text")
+            .attr("id", "xaxis-label")
+            .attr("transform", "translate(" + model.chartWidth/2 + model.margin.left + " ," + (model.chartHeight + model.margin.top + 20)+")")
+            .style("text-anchor", "middle")
+            .text(model.xAxisDomain);
+        main.append("text")
+            .attr("id", "yaxis-label")
             .attr("transform", "translate(-60 ," + (model.chartHeight/2 + model.margin.top) + ") rotate(-90)")
             .style("text-anchor", "middle")
             .text(model.yAxisDomain);
