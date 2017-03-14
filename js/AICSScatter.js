@@ -139,9 +139,6 @@ function AICSScatter(model, my){
                 return yScale(d[model.yAxisDomain]);
             })
             .attr("xlink:href", function (d) {
-                if(d.showToolTip){
-                    console.log(d.im_ids);
-                }
                 return d.showToolTip ? 'modeling/images/' + d.im_ids + '.ome.tif_flat.png' : '';
             });
 

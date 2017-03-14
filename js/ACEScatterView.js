@@ -1,6 +1,9 @@
 function ACEScatterView(spec){
     function handleMouseOver(d) {
         d3.select('#cell-previewer-im').attr('src', 'modeling/images/' + d.im_ids + '.ome.tif_flat.png');
+        d3.select('#cell-previewer-name').text(function () {
+            return model.xAxisDomain + ': ' + d[model.xAxisDomain];
+        });
         d.highlight = true;
         scatter.update(1);
     };
