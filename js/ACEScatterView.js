@@ -50,26 +50,45 @@ function ACEScatterView(spec){
         yAxisSelect.property('value', model.yAxisDomain);
         xAxisSelect.property('value', model.xAxisDomain);
 
-        d3.select("#class-filter-checkboxes")
-        .selectAll("input")
-        .data(Object.keys(model.filterClasses))
-        .enter()
-        .append('div')
-        .attr('class', 'filter-checkbox')
-        .append('label')
-        // .attr('for',function(d,i){ return 'a'+i; })
-        .text(function(d) { return d; })
-        .append("input")
-        .attr('id', function (d, i) {
-            return 'class-filter-checkbox-' + i;
-        })
-        .attr("checked", function (d) {
-            return model.filterClasses[d];
-        })
-        .attr("type", "checkbox")
-        .on("change", function (d, i) {
-            model.filterClasses[d] = d3.select('#class-filter-checkbox-' + i).property('checked');
-            scatter.update();
-        });
+        var filterCheckBoxesParent = d3.select("#class-filter-checkboxes");
+        filterCheckBoxesParent.selectAll("input")
+            .data(Object.keys(model.filterClasses))
+            .enter()
+            .append('div')
+            .attr('class', 'filter-checkbox')
+            .append('label')
+            .text(function(d) { return d; })
+            .append("input")
+            .attr('id', function (d, i) {
+                return 'class-filter-checkbox-' + i;
+            })
+            .attr('class', 'class-filter-checkbox')
+            .attr("checked", function (d) {
+                return model.filterClasses[d];
+            })
+            .attr("type", "checkbox")
+            .on("change", function (d, i) {
+                model.filterClasses[d] = d3.select('#class-filter-checkbox-' + i).property('checked');
+                scatter.update();
+            });
+
+        d3.select('#select-all-filters')
+            .on("click", function () {
+                filterCheckBoxesParent.selectAll("input").property('checked', true);
+                for(filterClass in model.filterClasses){
+                    model.filterClasses[filterClass] = true;
+                }
+                scatter.update();
+            });
+
+        d3.select('#deselect-all-filters')
+            .on("click", function (d, i) {
+                filterCheckBoxesParent.selectAll("input").property('checked', false);
+                for(filterClass in model.filterClasses){
+                    model.filterClasses[filterClass] = false;
+                }
+                scatter.update();
+            });
+
     });
 };
