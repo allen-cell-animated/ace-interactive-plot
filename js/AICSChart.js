@@ -5,11 +5,13 @@ function AICSChart(model, my){
 
     var that = {};
 
+    var controlsHeight = 100;
+
     model.parent = model.parent || 'body';
     model.margin = model.margin || {top: 20, right: 150, bottom: 150, left: 60};
 
-    my.chartWidth = $( window ).width() - model.margin.left - model.margin.right;
-    my.chartHeight = $( window ).height() - model.margin.top - model.margin.bottom;
+    model.chartWidth = $( window ).width() - model.margin.left - model.margin.right;
+    model.chartHeight = $( window ).height() - model.margin.top - model.margin.bottom - controlsHeight;
 
     my.init = my.init || function () {;};
     my.build = my.build || function () {;};
@@ -20,8 +22,8 @@ function AICSChart(model, my){
     };
 
     function update(transitionDuration) {
-        my.chartWidth = $( window ).width() - model.margin.left - model.margin.right;
-        my.chartHeight = $( window ).height() - model.margin.top - model.margin.bottom;
+        model.chartWidth = $( window ).width() - model.margin.left - model.margin.right;
+        model.chartHeight = $( window ).height() - model.margin.top - model.margin.bottom;
         my.update(transitionDuration);
     };
 
@@ -33,15 +35,16 @@ function AICSChart(model, my){
         d3.csv(model.dataFile, function(data) {
             var chart = d3.select('#' + model.parent)
                 .append('svg')
-                .attr('width', my.chartWidth + model.margin.right + model.margin.left)
-                .attr('height', my.chartHeight + model.margin.top + model.margin.bottom)
+                .attr('width', model.chartWidth + model.margin.right + model.margin.left)
+                .attr('height', model.chartHeight + model.margin.top + model.margin.bottom)
                 .attr('class', 'chart');
             var main = chart.append('g')
                 .attr('transform', 'translate(' + model.margin.left + ',' + model.margin.top + ')')
-                .attr('width', my.chartWidth)
-                .attr('height', my.chartHeight)
+                .attr('width', model.chartWidth)
+                .attr('height', model.chartHeight)
                 .attr('class', 'main');
-            model.data = data.slice(0, 1000);
+  //          model.data = data.slice(0, 1000);
+            model.data = data;
             my.init();
             build(main);
             if(viewCallback){viewCallback();}

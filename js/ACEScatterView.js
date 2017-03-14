@@ -4,14 +4,15 @@ function ACEScatterView(spec){
         d3.select('#cell-previewer-name').text(function () {
             return model.xAxisDomain + ': ' + d[model.xAxisDomain];
         });
-        d.highlight = true;
-        scatter.update(1);
+        d3.select('#circle-' + d.im_ids).attr('fill', 'red');
     };
     function handleMouseOut(d) {
-        d.highlight = false;
-        scatter.update(1);
-    }
+        d3.select('#circle-' + d.im_ids).attr('fill', function(d){
+            return (d.showToolTip || d.highlight) ? 'red' : 'blue'
+        })
+    };
     var model = {
+        margin: spec.margin,
         controls: spec.controlsParent,
         parent: spec.chartParent,
         dataFile: spec.dataFile,
