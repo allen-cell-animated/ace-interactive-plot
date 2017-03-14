@@ -5,7 +5,7 @@ function AICSChart(model, my){
 
     var that = {};
 
-    var controlsHeight = 100;
+    var controlsHeight = 200;
 
     model.parent = model.parent || 'body';
     model.margin = model.margin || {top: 20, right: 150, bottom: 150, left: 60};

@@ -9,7 +9,15 @@
 #controls{
     padding: 10px;
     margin: 10px;
+    display: block;
+}
+
+#controls-bottom{
     display: inline-flex;
+}
+
+#axis-selects{
+    padding: 10px;
 }
 
 #controls-left{
@@ -30,8 +38,13 @@
     /*font-weight: 'bold';*/
     padding: 10px;
     margin:10px;
+    float: right;
 }
 
 #cell-previewer-im{
 
+}
+
+#all-filter-buttons{
+    padding: 10px;
 }
