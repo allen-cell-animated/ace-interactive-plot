@@ -65,6 +65,7 @@ function AICSScatter(model, my){
     my.update = function (transitionDuration) {
         _updateScales(transitionDuration);
         _updateDots(transitionDuration);
+        _updateImages(transitionDuration)
     };
 
     my.build = function (main) {
@@ -168,14 +169,6 @@ function AICSScatter(model, my){
                 return model.filterClasses[d.classes] ? 'visible' : 'hidden';
             });
 
-        dataG.selectAll("image").transition()
-            .duration(transitionDuration || TRANSITION_DURATION)
-            .attr('x', function (d){
-                return xScale(d[model.xAxisDomain]);
-            })
-            .attr('y', function (d) {
-                return yScale(d[model.yAxisDomain]);
-            });
     };
 
     function _updateImages(){
@@ -210,6 +203,10 @@ function AICSScatter(model, my){
             });
 
         images.exit().remove();
+
+        images.attr('visibility', function (d) {
+            return model.filterClasses[d.classes] ? 'visible' : 'hidden';
+        });
     };
 
     function _yScaleAccessor(elem) {
