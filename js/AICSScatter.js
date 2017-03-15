@@ -151,7 +151,8 @@ function AICSScatter(model, my){
     };
 
     function _updateDots(transitionDuration){
-        dataG.selectAll('circle').transition()
+        dataG.selectAll('circle')
+            .transition()
             .duration(transitionDuration || TRANSITION_DURATION)
             .attr('opacity', function(d){
                 return d.showToolTip ? 1.0 : .3
@@ -171,7 +172,7 @@ function AICSScatter(model, my){
 
     };
 
-    function _updateImages(){
+    function _updateImages(transitionDuration){
         var images = imagesG.selectAll('image').data(model.imageDs, function (d) {
             return d.im_ids;
         });
@@ -204,9 +205,18 @@ function AICSScatter(model, my){
 
         images.exit().remove();
 
-        images.attr('visibility', function (d) {
-            return model.filterClasses[d.classes] ? 'visible' : 'hidden';
-        });
+        images
+            .transition()
+            .duration(transitionDuration || TRANSITION_DURATION)
+            .attr('x', function (d){
+                return xScale(d[model.xAxisDomain]);
+            })
+            .attr('y', function (d) {
+                return yScale(d[model.yAxisDomain]);
+            })
+            .attr('visibility', function (d) {
+                return model.filterClasses[d.classes] ? 'visible' : 'hidden';
+            });
     };
 
     function _yScaleAccessor(elem) {
