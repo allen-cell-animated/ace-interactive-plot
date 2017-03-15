@@ -1,14 +1,18 @@
 function ACEScatterView(spec){
     $.blockUI({ message: '<img src="loading.gif" />' });
+
+    var previewerImage = d3.select('#cell-previewer-im');
+    var previewerName = d3.select('#cell-previewer-name');
+
     function handleMouseOver(d) {
-        d3.select('#cell-previewer-im').attr('src', d.imageFilePath);
-        d3.select('#cell-previewer-name').text(function () {
+        previewerImage.attr('src', d.imageFilePath);
+        previewerName.text(function () {
             return model.xAxisDomain + ': ' + d[model.xAxisDomain];
         });
-        d3.select('#circle-' + d.im_ids).attr('fill', 'red');
+        d3.select(this).attr('fill', 'red');
     };
     function handleMouseOut(d) {
-        d3.select('#circle-' + d.im_ids).attr('fill', function(d){
+        d3.select(this).attr('fill', function(d){
             return (d.showToolTip || d.highlight) ? 'red' : 'blue'
         })
     };
