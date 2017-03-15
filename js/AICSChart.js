@@ -40,6 +40,7 @@ function AICSChart(model, my){
                     total[ current.filename.split('.czi')[0] ] = current.cellline;
                     return total;
                 }, {});
+
                 data.forEach(function (element) {
                     var im_ids_split = element.im_ids.split('_');
                     var cellline = imageIdFileMap[im_ids_split.slice(0, im_ids_split.length-1).join('_')] + '_' + im_ids_split[im_ids_split.length-1];
@@ -62,7 +63,7 @@ function AICSChart(model, my){
                     .attr('width', model.chartWidth)
                     .attr('height', model.chartHeight)
                     .attr('class', 'main');
-                //          model.data = data.slice(0, 1000);
+
                 model.data = data;
                 my.init();
                 build(main);

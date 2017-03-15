@@ -9,12 +9,18 @@ function ACEScatterView(spec){
         previewerName.text(function () {
             return model.xAxisDomain + ': ' + d[model.xAxisDomain];
         });
-        d3.select(this).attr('fill', 'red');
+        d3.select(this)
+            .attr('opacity', 1.0)
+            .attr('fill', 'red');
     };
     function handleMouseOut(d) {
-        d3.select(this).attr('fill', function(d){
-            return (d.showToolTip || d.highlight) ? 'red' : 'blue'
-        })
+        d3.select(this)
+            .attr('opacity', function(d){
+                return (d.showToolTip || d.highlight) ? 1.0 : .3
+            })
+            .attr('fill', function(d){
+                return (d.showToolTip || d.highlight) ? 'red' : 'blue'
+            })
     };
     var model = {
         margin: spec.margin,
@@ -96,6 +102,7 @@ function ACEScatterView(spec){
                 }
                 scatter.update();
             });
+
         setTimeout(function(){$.unblockUI();}, 1000);
     });
 };
