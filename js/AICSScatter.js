@@ -3,32 +3,39 @@ function AICSScatter(model, my){
 
     my = my || {};
 
-    var TRANSITION_DURATION = 1;
+    var TRANSITION_DURATION = 3000;
 
     var that = AICSChart(model, my);
 
     var xScale = d3.scaleLinear();
     var yScale = d3.scaleLinear();
 
-    var dotGs = undefined;
+    var xAxis = d3.axisBottom();
+    var yAxis = d3.axisLeft();
+
+    model.filterClasses = {};
+    model.imageDs = [];
+
+    var dataG = undefined;
+    var circlesG = undefined;
+    var imagesG = undefined;
     var ims = undefined;
     var dots = undefined;
 
     model.handleClick = model.handleClick || function (d) {
         d.showToolTip = !d.showToolTip;
-        //_updateDots(1);
-        d3.select('#image-' + d.im_ids)
-            .attr('visibility', d.showToolTip ? 'visible' : 'hidden')
-            .attr("xlink:href", function (d) {
-                return d.showToolTip ? d.imageFilePath : '';
-            });
-
-        d3.select('#circle-' + d.im_ids).attr('opacity', function(d){
+        d3.select(this).attr('opacity', function(d){
             return d.showToolTip ? 1.0 : .3
         })
         .attr('fill', function(d){
             return (d.showToolTip || d.highlight) ? 'red' : 'blue'
-        })
+        });
+        if(d.showToolTip){
+            model.imageDs.push(d);
+        }else {
+            model.imageDs.splice(model.imageDs.indexOf(d), 1);
+        }
+        _updateImages();
     };
 
     model.handleMouseOver = model.handleMouseOver || function (d) {
@@ -47,9 +54,6 @@ function AICSScatter(model, my){
         return Number(elem[model.xAxisDomain]);
     };
 
-    var xAxis = d3.axisBottom();
-    var yAxis = d3.axisLeft();
-    model.filterClasses = {};
     my.init = function(){
         model.data.forEach(function (d) {
             model.filterClasses[d.classes] = true;
@@ -90,7 +94,7 @@ function AICSScatter(model, my){
     };
 
     function _updateDots(transitionDuration){
-        dots.transition()
+        dataG.selectAll('circle').transition()
             .duration(transitionDuration || TRANSITION_DURATION)
             .attr('opacity', function(d){
                 return d.showToolTip ? 1.0 : .3
@@ -103,15 +107,12 @@ function AICSScatter(model, my){
             })
             .attr('cy', function (d) {
                 return yScale(d[model.yAxisDomain]);
-            });
-
-        dotGs.transition()
-            .duration(transitionDuration || TRANSITION_DURATION)
+            })
             .attr('visibility', function (d) {
                 return model.filterClasses[d.classes] ? 'visible' : 'hidden';
             });
 
-        ims.transition()
+        dataG.selectAll("image").transition()
             .duration(transitionDuration || TRANSITION_DURATION)
             .attr('x', function (d){
                 return xScale(d[model.xAxisDomain]);
@@ -121,6 +122,38 @@ function AICSScatter(model, my){
             });
 
     }
+
+    function _updateImages(){
+        console.log('binding:');
+        console.log(model.imageDs);
+        var images = imagesG.selectAll('image').data(model.imageDs, function (d) {
+            return d.im_ids;
+        });
+
+        images.enter()
+            .append("image")
+            .attr('id', function (d) {
+                return d.im_ids;
+            })
+            .attr('x', function (d){
+                return xScale(d[model.xAxisDomain]);
+            })
+            .attr('y', function (d) {
+                return yScale(d[model.yAxisDomain]);
+            })
+            .attr('width', 50)
+            .attr('height', 50)
+            .attr("xlink:href", function (d) {
+                return d.showToolTip ? d.imageFilePath : '';
+            });
+
+        images.exit()
+            .attr('id', function (d) {
+                console.log('exit: ' + d.im_ids);
+                return d.im_ids;
+            })
+            .remove();
+    };
 
     my.update = function (transitionDuration) {
         _updateScales(transitionDuration);
@@ -150,28 +183,18 @@ function AICSScatter(model, my){
             .style("text-anchor", "middle")
             .text(model.yAxisDomain);
 
-        dotGs = main.append('svg:g').selectAll('scatter-dots')
+        dataG = main.append('g');
+        circlesG = dataG.append('g');
+        imagesG = dataG.append('g');
+
+        circlesG.selectAll('scatter-circles')
             .data(model.data)
             .enter()
-            .append('g');
-
-        ims = dotGs.append("svg:image")
-            .attr('id', function(d){
-                return 'image-' + d.im_ids;
-            })
-            .attr('x', model.chartWidth/2)
-            .attr('y', model.chartHeight/2)
-            .attr('width', 50)
-            .attr('height', 50)
-            .attr("xlink:href", function (d) {
-                return d.showToolTip ? d.imageFilePath : '';
-            });
-
-        dots = dotGs.append('circle')
+            .append('circle')
             .attr('id', function(d){
                 return 'circle-' + d.im_ids;
             })
-            .attr('r', 6)
+            .attr('r', 5)
             .attr('width', 20)
             .attr('height', 24)
             .attr('opacity', .3)
@@ -183,6 +206,7 @@ function AICSScatter(model, my){
             .on('mouseover', model.handleMouseOver)
             .on('mouseout', model.handleMouseOut)
             .on('click', model.handleClick);
+
         _updateDots();
     };
 
