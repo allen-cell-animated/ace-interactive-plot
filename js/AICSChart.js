@@ -36,12 +36,7 @@ function AICSChart(model, my){
             .defer(d3.csv, model.dataFile)
             .defer(d3.csv, model.imageDataFile)
             .await(function(error, data, imageData) {
-                // var imageMap = {};
-                // imageData.forEach(function (image) {
-                //     console.log(image);
-                //     var imageDataKeys = Object.keys(image);
-                //     imageMap[imageDataKeys[1]] = image[imageDataKeys[0]];
-                // });
+                data = data.slice(0, 1000);
                 var imageIdFileMap = imageData.reduce(function ( total, current ) {
                     total[ current.filename.split('.czi')[0] ] = current.cellline;
                     return total;

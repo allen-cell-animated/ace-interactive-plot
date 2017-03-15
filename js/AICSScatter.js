@@ -4,8 +4,6 @@ function AICSScatter(model, my){
     my = my || {};
 
     var TRANSITION_DURATION = 1;
-    var TIP_WIDTH = 50;
-    var TIP_HEIGHT = 50;
 
     var that = AICSChart(model, my);
 
@@ -49,45 +47,6 @@ function AICSScatter(model, my){
         return Number(elem[model.xAxisDomain]);
     };
 
-    function _handleMouseOver(d) {
-        // var that = this;
-        // if(!d.mouseOverTooltip){
-        //     d.mouseOverTooltip = _createToolTip(d, that);
-        // }
-        // d.mouseOverTooltip.div.style('visibility', 'visible');
-    };
-
-    function _handleMouseOut(d) {
-        // d.mouseOverTooltip.div.style('visibility', 'hidden');
-    };
-
-    function _createToolTip(circleD) {
-        var tipDiv = d3.select('body')
-            .append('div')
-            .attr('class', 'tip')
-            .style('position', 'absolute')
-            .style('left', (model.margin.left + xScale(circleD[model.xAxisDomain]) - (TIP_WIDTH / 2)) + 'px')
-            .style('top', (model.margin.top + yScale(circleD[model.yAxisDomain]) - (TIP_HEIGHT / 2)) + 'px')
-            .on('click', function () {
-                model.handleClick(circleD, tipDiv);
-            })
-            .on('mouseout', function () {
-                _handleMouseOut(circleD)
-            });
-        var tipImage = tipDiv.append('img')
-            .attr('width', TIP_WIDTH)
-            .attr('height', TIP_HEIGHT);
-        tipImage.attr('src', 'modeling/images/' + circleD.im_ids + '.ome.tif_flat.png');
-        tipDiv.append("xhtml:br");
-        tipDiv.append("xhtml:span").style('font-weight', 'bold').text(function (d) {
-            return model.xAxisDomain + ': ' + circleD[model.xAxisDomain];
-        });
-        tipDiv.append("xhtml:br");
-        tipDiv.append("xhtml:span").style('font-weight', 'bold').text(function (d) {
-            return model.yAxisDomain + ': ' + circleD[model.yAxisDomain];
-        });
-        return {div: tipDiv, image: tipImage};
-    }
     var xAxis = d3.axisBottom();
     var yAxis = d3.axisLeft();
     model.filterClasses = {};
