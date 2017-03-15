@@ -1,17 +1,22 @@
 function ACEScatterView(spec){
     $.blockUI({ message: '<img src="loading.gif" />' });
-
+    d3.selection.prototype.moveToFront = function() {
+        return this.each(function(){
+            this.parentNode.appendChild(this);
+        });
+    };
     var previewerImage = d3.select('#cell-previewer-im');
     var previewerName = d3.select('#cell-previewer-name');
 
     function handleMouseOver(d) {
+        d3.select(this)
+            .moveToFront()
+            .attr('opacity', 1.0)
+            .attr('fill', 'red');
         previewerImage.attr('src', d.imageFilePath);
         previewerName.text(function () {
             return model.xAxisDomain + ': ' + d[model.xAxisDomain];
         });
-        d3.select(this)
-            .attr('opacity', 1.0)
-            .attr('fill', 'red');
     };
     function handleMouseOut(d) {
         d3.select(this)
