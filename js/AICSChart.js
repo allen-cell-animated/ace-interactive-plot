@@ -36,16 +36,22 @@ function AICSChart(model, my){
             .defer(d3.csv, model.dataFile)
             .defer(d3.csv, model.imageDataFile)
             .await(function(error, data, imageData) {
-                data = data.slice(0, 1000);
                 var imageIdFileMap = imageData.reduce(function ( total, current ) {
                     total[ current.filename.split('.czi')[0] ] = current.cellline;
                     return total;
                 }, {});
                 data.forEach(function (element) {
                     var im_ids_split = element.im_ids.split('_');
-                    var cellline = imageIdFileMap[im_ids_split.slice(0, 3).join('_')] + '_' + im_ids_split[3];
+                    var cellline = imageIdFileMap[im_ids_split.slice(0, im_ids_split.length-1).join('_')] + '_' + im_ids_split[im_ids_split.length-1];
+                    // if('undefined' == cellline.split('_')[0]){
+                    //     console.log(im_ids_split.slice(0, im_ids_split.length-1).join('_'));
+                    //     return;
+                    // }
                     element.imageFilePath = model.imagesDir + '/' + cellline.split('_')[0] + '/' + cellline + '.png';
                 });
+                // data = data.filter(function (d) {
+                //     return d.imageFilePath;
+                // });
                 var chart = d3.select('#' + model.parent)
                     .append('svg')
                     .attr('width', model.chartWidth + model.margin.right + model.margin.left)
