@@ -50,6 +50,7 @@
     </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
 <script src="js/lib/jquery.blockUI.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/lib/bootstrap.min.js"></script>
@@ -63,6 +64,8 @@
         controlsParent: 'controls',
         chartParent: 'chart',
         dataFile: 'modeling/smalldat.csv',
+        imageDataFile: 'cellnames.csv',
+        imagesDir: 'cell-images',
         xAxisDomain: 'Nuclear_volume',
         yAxisDomain: 'Cellular_volume',
         domainOptions: ['Nuclear_volume', 'Cellular_volume', 'Nuclear_surface_area', 'Cellular_surface_area', 'Structure_radial_affinity', 'Structure_z_affinity'],

@@ -22,7 +22,7 @@ function AICSScatter(model, my){
         d3.select('#image-' + d.im_ids)
             .attr('visibility', d.showToolTip ? 'visible' : 'hidden')
             .attr("xlink:href", function (d) {
-                return d.showToolTip ? 'modeling/images/' + d.im_ids + '.ome.tif_flat.png' : '';
+                return d.showToolTip ? d.imageFilePath : '';
             });
 
         d3.select('#circle-' + d.im_ids).attr('opacity', function(d){
@@ -205,7 +205,7 @@ function AICSScatter(model, my){
             .attr('width', 50)
             .attr('height', 50)
             .attr("xlink:href", function (d) {
-                return d.showToolTip ? 'modeling/images/' + d.im_ids + '.ome.tif_flat.png' : '';
+                return d.showToolTip ? d.imageFilePath : '';
             });
 
         dots = dotGs.append('circle')

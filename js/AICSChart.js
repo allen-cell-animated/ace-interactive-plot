@@ -32,26 +32,44 @@ function AICSChart(model, my){
             console.log("Do data file provided in spec.");
             return;
         }
-        d3.csv(model.dataFile, function(data) {
-            var chart = d3.select('#' + model.parent)
-                .append('svg')
-                .attr('width', model.chartWidth + model.margin.right + model.margin.left)
-                .attr('height', model.chartHeight + model.margin.top + model.margin.bottom)
-                .attr('class', 'chart');
-            var main = chart.append('g')
-                .attr('transform', 'translate(' + model.margin.left + ',' + model.margin.top + ')')
-                .attr('width', model.chartWidth)
-                .attr('height', model.chartHeight)
-                .attr('class', 'main');
-  //          model.data = data.slice(0, 1000);
-            model.data = data;
-            my.init();
-            build(main);
-            if(viewCallback){viewCallback();}
-            window.addEventListener("resize", function () {
-                update(1);
+        queue()
+            .defer(d3.csv, model.dataFile)
+            .defer(d3.csv, model.imageDataFile)
+            .await(function(error, data, imageData) {
+                // var imageMap = {};
+                // imageData.forEach(function (image) {
+                //     console.log(image);
+                //     var imageDataKeys = Object.keys(image);
+                //     imageMap[imageDataKeys[1]] = image[imageDataKeys[0]];
+                // });
+                var imageIdFileMap = imageData.reduce(function ( total, current ) {
+                    total[ current.filename.split('.czi')[0] ] = current.cellline;
+                    return total;
+                }, {});
+                data.forEach(function (element) {
+                    var im_ids_split = element.im_ids.split('_');
+                    var cellline = imageIdFileMap[im_ids_split.slice(0, 3).join('_')] + '_' + im_ids_split[3];
+                    element.imageFilePath = model.imagesDir + '/' + cellline.split('_')[0] + '/' + cellline + '.png';
+                });
+                var chart = d3.select('#' + model.parent)
+                    .append('svg')
+                    .attr('width', model.chartWidth + model.margin.right + model.margin.left)
+                    .attr('height', model.chartHeight + model.margin.top + model.margin.bottom)
+                    .attr('class', 'chart');
+                var main = chart.append('g')
+                    .attr('transform', 'translate(' + model.margin.left + ',' + model.margin.top + ')')
+                    .attr('width', model.chartWidth)
+                    .attr('height', model.chartHeight)
+                    .attr('class', 'main');
+                //          model.data = data.slice(0, 1000);
+                model.data = data;
+                my.init();
+                build(main);
+                if(viewCallback){viewCallback();}
+                window.addEventListener("resize", function () {
+                    update(1);
+                });
             });
-        });
     };
 
     that.init = init;

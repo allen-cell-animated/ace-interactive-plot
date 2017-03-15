@@ -1,7 +1,7 @@
 function ACEScatterView(spec){
     $.blockUI({ message: '<img src="loading.gif" />' });
     function handleMouseOver(d) {
-        d3.select('#cell-previewer-im').attr('src', 'modeling/images/' + d.im_ids + '.ome.tif_flat.png');
+        d3.select('#cell-previewer-im').attr('src', d.imageFilePath);
         d3.select('#cell-previewer-name').text(function () {
             return model.xAxisDomain + ': ' + d[model.xAxisDomain];
         });
@@ -17,6 +17,8 @@ function ACEScatterView(spec){
         controls: spec.controlsParent,
         parent: spec.chartParent,
         dataFile: spec.dataFile,
+        imageDataFile: spec.imageDataFile,
+        imagesDir: spec.imagesDir,
         xAxisDomain: spec.xAxisDomain,
         yAxisDomain: spec.yAxisDomain,
         domainOptions: spec.domainOptions,
