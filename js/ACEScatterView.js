@@ -1,10 +1,12 @@
+d3.selection.prototype.moveToFront = function() {
+    return this.each(function(){
+        this.parentNode.appendChild(this);
+    });
+};
+
 function ACEScatterView(spec){
     $.blockUI({ message: '<img src="loading.gif" />' });
-    d3.selection.prototype.moveToFront = function() {
-        return this.each(function(){
-            this.parentNode.appendChild(this);
-        });
-    };
+
     var previewerImage = d3.select('#cell-previewer-im');
     var previewerName = d3.select('#cell-previewer-name');
 

@@ -1,9 +1,15 @@
+d3.selection.prototype.moveToFront = function() {
+    return this.each(function(){
+        this.parentNode.appendChild(this);
+    });
+};
 
 function AICSScatter(model, my){
 
     my = my || {};
 
     var TRANSITION_DURATION = 3000;
+    var NUM_SELECTED_CIRCLES_ON_START = 8;
 
     var that = AICSChart(model, my);
 
@@ -52,6 +58,13 @@ function AICSScatter(model, my){
             model.filterClasses[d.classes] = true;
             d.showToolTip = false;
         });
+
+        while(model.imageDs.length < NUM_SELECTED_CIRCLES_ON_START){
+            var rand = Math.floor(Math.random() * model.data.length);
+            if(model.data.indexOf(rand) > -1) continue;
+            model.data[rand].showToolTip = true;
+            model.imageDs.push(model.data[rand]);
+        }
 
         xScale.domain([d3.min(model.data, _xScaleAccesor), d3.max(model.data, _xScaleAccesor)])
             .range([ 0, model.chartWidth ]);
@@ -158,7 +171,12 @@ function AICSScatter(model, my){
                 return d.showToolTip ? 1.0 : .3
             })
             .attr('fill', function(d){
-                return (d.showToolTip || d.highlight) ? 'red' : 'blue'
+                if(d.showToolTip){
+                    d3.select(this).moveToFront();
+                    return 'red';
+                } else {
+                    return 'blue';
+                }
             })
             .attr('cx', function (d){
                 return xScale(d[model.xAxisDomain]);
