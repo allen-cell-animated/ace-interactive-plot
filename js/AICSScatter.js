@@ -30,10 +30,27 @@ function AICSScatter(model, my){
 
     model.filterClasses = {};
     model.imageDs = [];
-    model.mouseOverHandlers = model.mouseOverHandlers || [];
-    model.mouseOutHandlers = model.mouseOutHandlers || [];
+    model.mouseOverHandlers = (model.mouseOverHandlers || []).concat(
+        function (d) {
+            d3.select(this)
+                .moveToFront()
+                .attr('opacity', 1.0)
+                .attr('fill', 'red');
+        }
+    );
+    model.mouseOutHandlers = (model.mouseOutHandlers || []).concat(
+        function (d) {
+            d3.select(this)
+                .attr('opacity', function(d){
+                    return (d.showToolTip || d.highlight) ? 1.0 : .3
+                })
+                .attr('fill', function(d){
+                    return (d.showToolTip || d.highlight) ? 'red' : 'blue'
+                })
+        }
+    );
     model.clickHandlers = (model.clickHandlers || []).concat(
-        [function (d) {
+        function (d) {
             d3.event.stopPropagation();
             d.showToolTip = !d.showToolTip;
             d3.select(this)
@@ -49,7 +66,7 @@ function AICSScatter(model, my){
                 model.imageDs.splice(model.imageDs.indexOf(d), 1);
             }
             _updateImages();
-        }]
+        }
     );
 
     my.init = function(){
