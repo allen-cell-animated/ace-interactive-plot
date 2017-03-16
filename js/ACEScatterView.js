@@ -113,6 +113,10 @@ function ACEScatterView(spec){
                 scatter.update();
             });
 
-        setTimeout(function(){$.unblockUI();}, 1000);
+        _updatePreview(model.imageDs[model.imageDs.length - 1]);
+        setTimeout(function(){
+            $('#viz').show();
+            $.unblockUI();
+        }, 1000);
     });
 };
