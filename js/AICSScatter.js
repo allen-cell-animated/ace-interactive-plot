@@ -159,6 +159,11 @@ function AICSScatter(model, my){
             });
 
         my.update(1);
+        // model.mouseOverHandlers.forEach(function (handler) {
+        //     var d = [model.imageDs[model.imageDs.length - 1]];
+        //     var that = d3.select('#circle-' + model.imageDs[model.imageDs.length - 1].im_ids);
+        //     handler.apply(that, d);
+        // })
     };
 
     my.ready = function () {

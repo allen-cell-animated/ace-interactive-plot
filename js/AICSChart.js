@@ -10,13 +10,13 @@ function AICSChart(model, my){
 
     var that = {};
 
-    var controlsHeight = 200;
+    var CONTROLS_HEIGHT = 220;
 
     model.parent = model.parent || 'body';
     model.margin = model.margin || {top: 20, right: 150, bottom: 150, left: 60};
 
     model.chartWidth = $( window ).width() - model.margin.left - model.margin.right;
-    model.chartHeight = $( window ).height() - model.margin.top - model.margin.bottom - controlsHeight;
+    model.chartHeight = $( window ).height() - model.margin.top - model.margin.bottom - CONTROLS_HEIGHT;
 
     my.init = my.init || function () {;};
     my.build = my.build || function () {;};
@@ -28,7 +28,7 @@ function AICSChart(model, my){
 
     function update(transitionDuration) {
         model.chartWidth = $( window ).width() - model.margin.left - model.margin.right;
-        model.chartHeight = $( window ).height() - model.margin.top - model.margin.bottom - controlsHeight;
+        model.chartHeight = $( window ).height() - model.margin.top - model.margin.bottom - CONTROLS_HEIGHT;
         my.update(transitionDuration);
     };
 
