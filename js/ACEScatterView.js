@@ -10,25 +10,6 @@ function ACEScatterView(spec){
     var previewerImage = d3.select('#cell-previewer-im');
     var previewerName = d3.select('#cell-previewer-name');
 
-    function handleMouseOver(d) {
-        d3.select(this)
-            .moveToFront()
-            .attr('opacity', 1.0)
-            .attr('fill', 'red');
-        previewerImage.attr('src', d.imageFilePath);
-        previewerName.text(function () {
-            return model.xAxisDomain + ': ' + d[model.xAxisDomain];
-        });
-    };
-    function handleMouseOut(d) {
-        d3.select(this)
-            .attr('opacity', function(d){
-                return (d.showToolTip || d.highlight) ? 1.0 : .3
-            })
-            .attr('fill', function(d){
-                return (d.showToolTip || d.highlight) ? 'red' : 'blue'
-            })
-    };
     var model = {
         margin: spec.margin,
         controls: spec.controlsParent,
@@ -39,9 +20,30 @@ function ACEScatterView(spec){
         xAxisDomain: spec.xAxisDomain,
         yAxisDomain: spec.yAxisDomain,
         domainOptions: spec.domainOptions,
-        handleClick: spec.handleClick,
-        handleMouseOver: handleMouseOver,
-        handleMouseOut: handleMouseOut
+        clickHandlers: spec.clickHandlers,
+        mouseOverHandlers: (spec.mouseOverHandlers || []).concat(
+            [function(d) {
+                d3.select(this)
+                    .moveToFront()
+                    .attr('opacity', 1.0)
+                    .attr('fill', 'red');
+                previewerImage.attr('src', d.imageFilePath);
+                previewerName.text(function () {
+                    return model.xAxisDomain + ': ' + d[model.xAxisDomain];
+                });
+            }]
+        ),
+        mouseOutHandlers: (spec.mouseOutHandlers || []).concat(
+            [function(d){
+                d3.select(this)
+                    .attr('opacity', function(d){
+                        return (d.showToolTip || d.highlight) ? 1.0 : .3
+                    })
+                    .attr('fill', function(d){
+                        return (d.showToolTip || d.highlight) ? 'red' : 'blue'
+                    })
+            }]
+        )
     };
     var scatter = AICSScatter(model);
     //building select controls async because model needs to be populated with options/filters

@@ -30,28 +30,27 @@ function AICSScatter(model, my){
 
     model.filterClasses = {};
     model.imageDs = [];
-    model.handleClick = model.handleClick || function (d) {
-        d3.event.stopPropagation();
-        d.showToolTip = !d.showToolTip;
-        d3.select(this).attr('opacity', function(d){
-            return d.showToolTip ? 1.0 : .3
-        })
-        .attr('fill', function(d){
-            return (d.showToolTip || d.highlight) ? 'red' : 'blue'
-        });
-        if(d.showToolTip){
-            model.imageDs.push(d);
-        }else {
-            model.imageDs.splice(model.imageDs.indexOf(d), 1);
-        }
-        _updateImages();
-    };
-    model.handleMouseOver = model.handleMouseOver || function (d) {
-        ;
-    };
-    model.handleMouseOut = model.handleMouseOut || function (d) {
-        ;
-    };
+    model.mouseOverHandlers = model.mouseOverHandlers || [];
+    model.mouseOutHandlers = model.mouseOutHandlers || [];
+    model.clickHandlers = (model.clickHandlers || []).concat(
+        [function (d) {
+            d3.event.stopPropagation();
+            d.showToolTip = !d.showToolTip;
+            d3.select(this)
+                .attr('opacity', function(d){
+                    return d.showToolTip ? 1.0 : .3
+                })
+                .attr('fill', function(d){
+                    return (d.showToolTip || d.highlight) ? 'red' : 'blue'
+                });
+            if(d.showToolTip){
+                model.imageDs.push(d);
+            }else {
+                model.imageDs.splice(model.imageDs.indexOf(d), 1);
+            }
+            _updateImages();
+        }]
+    );
 
     my.init = function(){
         model.data.forEach(function (d) {
@@ -123,9 +122,24 @@ function AICSScatter(model, my){
             .attr('stroke-width',0)
             .attr('cx', model.chartWidth/2)
             .attr('cy', model.chartHeight/2)
-            .on('mouseover', model.handleMouseOver)
-            .on('mouseout', model.handleMouseOut)
-            .on('click', model.handleClick);
+            .on('mouseover', function(d){
+                var that = this;
+                model.mouseOverHandlers.forEach(function (handler) {
+                    handler.apply(that, [d]);
+                });
+            })
+            .on('mouseout', function(d){
+                var that = this;
+                model.mouseOutHandlers.forEach(function (handler) {
+                    handler.apply(that, [d]);
+                });
+            })
+            .on('click', function(d){
+                var that = this;
+                model.clickHandlers.forEach(function (handler) {
+                    handler.apply(that, [d]);
+                });
+            });
 
         my.update(1);
     };
