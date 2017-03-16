@@ -17,6 +17,21 @@ function ACEScatterView(spec){
     var previewerxValue = d3.select('#cell-previewer-x-value');
     var previeweryValue = d3.select('#cell-previewer-y-value');
 
+    var _updatePreview = function(d) {
+        previewerImage.attr('src', _imagePath(d.cellName));
+        previewerName.text(function () {
+            return 'Cell Name: ' + d.cellName;
+        });
+        previewerTaggedProtein.text(function () {
+            return 'Tagged Protein: ' + d.classes;
+        });
+        previewerxValue.text(function () {
+            return model.xAxisDomain + ': ' + d[model.xAxisDomain];
+        });
+        previeweryValue.text(function () {
+            return model.yAxisDomain + ': ' + d[model.yAxisDomain];
+        });
+    };
     var model = {
         margin: spec.margin,
         controls: spec.controlsParent,
@@ -28,23 +43,7 @@ function ACEScatterView(spec){
         yAxisDomain: spec.yAxisDomain,
         domainOptions: spec.domainOptions,
         clickHandlers: spec.clickHandlers,
-        mouseOverHandlers: (spec.mouseOverHandlers || []).concat(
-            function(d) {
-                previewerImage.attr('src', _imagePath(d.cellName));
-                previewerName.text(function () {
-                    return 'Cell Name: ' + d.cellName;
-                });
-                previewerTaggedProtein.text(function () {
-                    return 'Tagged Protein: ' + d.classes;
-                });
-                previewerxValue.text(function () {
-                    return model.xAxisDomain + ': ' + d[model.xAxisDomain];
-                });
-                previeweryValue.text(function () {
-                    return model.yAxisDomain + ': ' + d[model.yAxisDomain];
-                });
-            }
-        ),
+        mouseOverHandlers: (spec.mouseOverHandlers || []).concat(_updatePreview),
         imagePath: _imagePath
     };
     var scatter = AICSScatter(model);
