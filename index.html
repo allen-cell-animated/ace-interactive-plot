@@ -21,9 +21,11 @@
     <div id="viz">
         <div id="controls">
             <div id="controls-top">
+                <label id="filters-label">Plot cells that have the following tagged proteins:</label>
                 <div id="class-filter-checkboxes">
                 </div>
             </div>
+            <hr>
             <div id="controls-bottom">
                 <div id="controls-left">
                     <div id="all-filter-buttons">
@@ -31,17 +33,28 @@
                         <button id="deselect-all-filters" class="btn btn-info">Deselect All</button>
                     </div>
                     <div id="axis-selects">
-                        <span>X Axis Domain:</span>
-                        <select id="x-axis-options"></select>
-                        <span>Y Axis Domain:</span>
-                        <select id="y-axis-options"></select>
+                        <div>
+                            <span>X Axis:</span>
+                            <select id="x-axis-options"></select>
+                        </div>
+                        <div>
+                            <span>Y Axis:</span>
+                            <select id="y-axis-options"></select>
+                        </div>
                     </div>
                     <!--<input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step=".1" data-slider-value=".5"/>-->
                 </div>
                 <div id="controls-right">
                     <div id="cell-previewer">
-                        <img id="cell-previewer-im" src="" height="100px" width="100px">
-                        <span id="cell-previewer-name"></span>
+                        <div>
+                            <img id="cell-previewer-im" src="" height="100px" width="100px">
+                        </div>
+                        <div class="previewer-label">
+                            <div id="cell-previewer-name"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></span></div>
+                            <div id="cell-previewer-tagged-protein"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+                            <div id="cell-previewer-x-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+                            <div id="cell-previewer-y-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+                        </div>
                     </div>
                 </div>
             </div>

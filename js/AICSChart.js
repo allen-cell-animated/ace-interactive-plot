@@ -48,12 +48,13 @@ function AICSChart(model, my){
 
                 data.forEach(function (element) {
                     var im_ids_split = element.im_ids.split('_');
-                    var cellline = imageIdFileMap[im_ids_split.slice(0, im_ids_split.length-1).join('_')] + '_' + im_ids_split[im_ids_split.length-1];
+                    // var cellline = imageIdFileMap[im_ids_split.slice(0, im_ids_split.length-1).join('_')] + '_' + im_ids_split[im_ids_split.length-1];
                     // if('undefined' == cellline.split('_')[0]){
                     //     console.log(im_ids_split.slice(0, im_ids_split.length-1).join('_'));
                     //     return;
                     // }
-                    element.imageFilePath = model.imagesDir + '/' + cellline.split('_')[0] + '/' + cellline + '.png';
+                    element.cellName = imageIdFileMap[im_ids_split.slice(0, im_ids_split.length-1).join('_')] + '_' + im_ids_split[im_ids_split.length-1];
+                    // element.imageFilePath = model.imagesDir + '/' + element.cellName.split('_')[0] + '/' + element.cellName + '.png';
                 });
                 // data = data.filter(function (d) {
                 //     return d.imageFilePath;

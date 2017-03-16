@@ -1,6 +1,15 @@
 .filter-checkbox{
     padding: 10px;
 }
+hr {
+    height: 1px;
+    background-color: black;
+    border:none
+}
+
+#filters-label{
+    padding: 10px;
+}
 
 #class-filter-checkboxes{
     display: inline-flex;

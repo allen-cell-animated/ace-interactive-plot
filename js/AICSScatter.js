@@ -92,9 +92,9 @@ function AICSScatter(model, my){
     };
 
     my.update = function (transitionDuration) {
-        _updateScales(transitionDuration);
-        _updateDots(transitionDuration);
-        _updateImages(transitionDuration)
+        _updateScales(1);
+        _updateDots(1);
+        _updateImages(1)
     };
 
     my.build = function (main) {
@@ -240,7 +240,7 @@ function AICSScatter(model, my){
             .attr('width', 50)
             .attr('height', 50)
             .attr("xlink:href", function (d) {
-                return d.showToolTip ? d.imageFilePath : '';
+                return d.showToolTip ? model.imagePath(d.cellName) : '';
             })
             .on('click', function (d, i) {
                 d3.event.stopPropagation();

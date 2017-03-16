@@ -7,8 +7,15 @@ d3.selection.prototype.moveToFront = function() {
 function ACEScatterView(spec){
     $.blockUI({ message: '<img src="loading.gif" />' });
 
+    function _imagePath(cellName) {
+        return model.imagesDir + '/' + cellName.split('_')[0] + '/' + cellName + '.png';
+    }
+
     var previewerImage = d3.select('#cell-previewer-im');
     var previewerName = d3.select('#cell-previewer-name');
+    var previewerTaggedProtein = d3.select('#cell-previewer-tagged-protein');
+    var previewerxValue = d3.select('#cell-previewer-x-value');
+    var previeweryValue = d3.select('#cell-previewer-y-value');
 
     var model = {
         margin: spec.margin,
@@ -23,12 +30,22 @@ function ACEScatterView(spec){
         clickHandlers: spec.clickHandlers,
         mouseOverHandlers: (spec.mouseOverHandlers || []).concat(
             function(d) {
-                previewerImage.attr('src', d.imageFilePath);
+                previewerImage.attr('src', _imagePath(d.cellName));
                 previewerName.text(function () {
+                    return 'Cell Name: ' + d.cellName;
+                });
+                previewerTaggedProtein.text(function () {
+                    return 'Tagged Protein: ' + d.classes;
+                });
+                previewerxValue.text(function () {
                     return model.xAxisDomain + ': ' + d[model.xAxisDomain];
                 });
+                previeweryValue.text(function () {
+                    return model.yAxisDomain + ': ' + d[model.yAxisDomain];
+                });
             }
-        )
+        ),
+        imagePath: _imagePath
     };
     var scatter = AICSScatter(model);
     //building select controls async because model needs to be populated with options/filters
