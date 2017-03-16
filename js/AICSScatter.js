@@ -127,7 +127,7 @@ function AICSScatter(model, my){
             .on('mouseout', model.handleMouseOut)
             .on('click', model.handleClick);
 
-        _updateDots();
+        my.update(1);
     };
 
     my.ready = function () {

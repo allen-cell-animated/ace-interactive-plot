@@ -76,7 +76,6 @@ function AICSChart(model, my){
                 window.addEventListener("resize", function () {
                     update(1);
                 });
-                update(1);
             });
     };
 
