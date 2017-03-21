@@ -10,13 +10,10 @@ function AICSChart(model, my){
 
     var that = {};
 
-    var CONTROLS_HEIGHT = 220;
+    var CHART_MIN_HEIGHT = 300;
 
     model.parent = model.parent || 'body';
     model.margin = model.margin || {top: 20, right: 150, bottom: 150, left: 60};
-
-    model.chartWidth = $( window ).width() - model.margin.left - model.margin.right;
-    model.chartHeight = $( window ).height() - model.margin.top - model.margin.bottom - CONTROLS_HEIGHT;
 
     my.init = my.init || function () {;};
     my.build = my.build || function () {;};
@@ -27,9 +24,20 @@ function AICSChart(model, my){
     };
 
     function update(transitionDuration) {
-        model.chartWidth = $( window ).width() - model.margin.left - model.margin.right;
-        model.chartHeight = $( window ).height() - model.margin.top - model.margin.bottom - CONTROLS_HEIGHT;
+        updateDimensions();
         my.update(transitionDuration);
+    };
+
+    function updateDimensions(){
+        var nonScrollSpace = $(window).height() - $('#controls-container').height() - 80;
+        $('#chart-container').height(Math.max(nonScrollSpace, CHART_MIN_HEIGHT));                //hack
+        model.chartWidth = $('#chart-svg').width() -
+            model.margin.left -
+            model.margin.right;
+        model.chartHeight = $('#chart-svg').height() -
+            // ($('#filters-label').height() + $('#cell-previewer-row').height() + $('#class-filter-checkboxes').height())) -
+            model.margin.top -
+            model.margin.bottom;
     };
 
     function init (viewCallback) {
@@ -42,9 +50,13 @@ function AICSChart(model, my){
             .await(function(error, data) {
                 var chart = d3.select('#' + model.parent)
                     .append('svg')
-                    .attr('width', model.chartWidth + model.margin.right + model.margin.left)
-                    .attr('height', model.chartHeight + model.margin.top + model.margin.bottom)
+                    .attr('id', 'chart-svg')
+                    .attr('width', '100%')//model.chartWidth + model.margin.right + model.margin.left)
+                    .attr('height', '100%')//model.chartHeight + model.margin.top + model.margin.bottom)
                     .attr('class', 'chart');
+
+                updateDimensions();
+
                 var main = chart.append('g')
                     .attr('transform', 'translate(' + model.margin.left + ',' + model.margin.top + ')')
                     .attr('width', model.chartWidth)
