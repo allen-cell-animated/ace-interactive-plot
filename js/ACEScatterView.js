@@ -11,11 +11,11 @@ function ACEScatterView(spec){
         return model.imagesDir + '/' + cellName.split('_')[0] + '/' + cellName + '.png';
     }
 
-    var previewerImage = d3.select('#cell-previewer-im');
-    var previewerName = d3.select('#cell-previewer-name');
-    var previewerTaggedProtein = d3.select('#cell-previewer-tagged-protein');
-    var previewerxValue = d3.select('#cell-previewer-x-value');
-    var previeweryValue = d3.select('#cell-previewer-y-value');
+    var previewerImage = d3.select('#ace-scatter-cell-previewer-im');
+    var previewerName = d3.select('#ace-scatter-cell-previewer-name');
+    var previewerTaggedProtein = d3.select('#ace-scatter-cell-previewer-tagged-protein');
+    var previewerxValue = d3.select('#ace-scatter-cell-previewer-x-value');
+    var previeweryValue = d3.select('#ace-scatter-cell-previewer-y-value');
 
     var _updatePreview = function(d) {
         previewerImage.attr('src', _imagePath(d.cellName));
@@ -34,7 +34,6 @@ function ACEScatterView(spec){
     };
     var model = {
         margin: spec.margin,
-        controls: spec.controlsParent,
         parent: spec.chartParent,
         dataFile: spec.dataFile,
         imageDataFile: spec.imageDataFile,
@@ -77,8 +76,8 @@ function ACEScatterView(spec){
     var scatter = AICSScatter(model);
     //building select controls async because model needs to be populated with options/filters
     scatter.init(function () {
-        var xAxisSelect = d3.select('#x-axis-options');
-        var yAxisSelect = d3.select('#y-axis-options');
+        var xAxisSelect = d3.select('#ace-scatter-x-axis-options');
+        var yAxisSelect = d3.select('#ace-scatter-y-axis-options');
 
         xAxisSelect.on('change', function () {
             model.xAxisDomain = xAxisSelect.property('value');
@@ -101,7 +100,7 @@ function ACEScatterView(spec){
         yAxisSelect.property('value', model.yAxisDomain);
         xAxisSelect.property('value', model.xAxisDomain);
 
-        var filterCheckBoxesParent = d3.select("#class-filter-checkboxes");
+        var filterCheckBoxesParent = d3.select("#ace-scatter-class-filter-checkboxes");
         var chunkSize = 4, chunkCount = 0, totalCount = 0, chunk = [];
         for(filterClass in model.filterClasses){
             if(chunkCount == chunkSize || totalCount == (Object.keys(model.filterClasses).length - 1)){
@@ -114,7 +113,7 @@ function ACEScatterView(spec){
             totalCount++;
         }
 
-        d3.select('#select-all-filters')
+        d3.select('#ace-scatter-select-all-filters')
             .on("click", function () {
                 filterCheckBoxesParent.selectAll("input").property('checked', true);
                 for(filterClass in model.filterClasses){
@@ -123,7 +122,7 @@ function ACEScatterView(spec){
                 scatter.update();
             });
 
-        d3.select('#deselect-all-filters')
+        d3.select('#ace-scatter-deselect-all-filters')
             .on("click", function (d, i) {
                 filterCheckBoxesParent.selectAll("input").property('checked', false);
                 for(filterClass in model.filterClasses){

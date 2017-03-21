@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>AICS Scatter Plot</title>
-    <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://d3js.org/queue.v1.min.js"></script>
@@ -25,50 +24,49 @@
     <script src="js/AICSScatter.js"></script>
 </head>
 <body>
-<div id="viz">
-    <div id="controls-container" class="container">
-        <div id="filters-label" class="row">
+<div id="ace-scatter-viz">
+    <div id="ace-scatter-controls-container" class="container">
+        <div id="ace-scatter-filters-label" class="row">
             <label class="col-md-4">Plot cells that have the following tagged proteins:</label>
         </div>
-        <div id="class-filter-checkboxes" class="row">
+        <div id="ace-scatter-class-filter-checkboxes" class="row">
             <div class="col-md-3">
-                <button id="select-all-filters" class="btn btn-info">Select All</button>
-                <button id="deselect-all-filters" class="btn btn-info">Deselect All</button>
+                <button id="ace-scatter-select-all-filters" class="btn btn-info">Select All</button>
+                <button id="ace-scatter-deselect-all-filters" class="btn btn-info">Deselect All</button>
             </div>
         </div>
         <hr>
-        <div id='cell-previewer-row' class="row">
-            <div id="cell-previewer" class="col-md-2">
-                <img id="cell-previewer-im" height="150">
+        <div id="ace-scatter-cell-previewer-row' class="row">
+            <div id="ace-scatter-cell-previewer" class="col-md-2">
+                <img id="ace-scatter-cell-previewer-im" height="150">
             </div>
             <div class="col-md-3">
-                <div id="cell-previewer-name"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></span></div>
-                <div id="cell-previewer-tagged-protein"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
-                <div id="cell-previewer-x-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
-                <div id="cell-previewer-y-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+                <div id="ace-scatter-cell-previewer-name"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></span></div>
+                <div id="ace-scatter-cell-previewer-tagged-protein"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+                <div id="ace-scatter-cell-previewer-x-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+                <div id="ace-scatter-cell-previewer-y-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
             </div>
             <div class="col-md-3">
                 <span>X Axis:</span>
-                <select id="x-axis-options"></select>
+                <select id="ace-scatter-x-axis-options"></select>
             </div>
             <div class="col-md-3">
                 <span>Y Axis:</span>
-                <select id="y-axis-options"></select>
+                <select id="ace-scatter-y-axis-options"></select>
             </div>
         </div>
     </div>
-    <div id="chart-container" class="container">
-        <div id="chart-row" class="row">
-            <div id="chart-col" class="col-md-12">
-                <div id="chart"></div>
+    <div id="ace-scatter-chart-container" class="container">
+        <div id="ace-scatter-chart-row" class="row">
+            <div id="ace-scatter-chart-col" class="col-md-12">
+                <div id="ace-scatter-chart"></div>
             </div>
         </div>
     </div>
 </div>
 <script>
     ACEScatterView({
-        controlsParent: 'controls',
-        chartParent: 'chart',
+        chartParent: 'ace-scatter-chart',
         dataFile: 'cell-data.json',
         imagesDir: 'http://10.128.74.30:8080/cell-images',
         xAxisDomain: 'Nuclear_volume',

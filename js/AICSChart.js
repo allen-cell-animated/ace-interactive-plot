@@ -29,12 +29,12 @@ function AICSChart(model, my){
     };
 
     function updateDimensions(){
-        var nonScrollSpace = $(window).height() - $('#controls-container').height() - 80;
-        $('#chart-container').height(Math.max(nonScrollSpace, CHART_MIN_HEIGHT));                //hack
-        model.chartWidth = $('#chart-svg').width() -
+        var nonScrollSpace = $(window).height() - $('#ace-scatter-controls-container').height() - 80;
+        $('#ace-scatter-chart-container').height(Math.max(nonScrollSpace, CHART_MIN_HEIGHT));                //hack
+        model.chartWidth = $('#ace-scatter-chart-svg').width() -
             model.margin.left -
             model.margin.right;
-        model.chartHeight = $('#chart-svg').height() -
+        model.chartHeight = $('#ace-scatter-chart-svg').height() -
             model.margin.top -
             model.margin.bottom;
     };
@@ -49,7 +49,7 @@ function AICSChart(model, my){
             .await(function(error, data) {
                 var chart = d3.select('#' + model.parent)
                     .append('svg')
-                    .attr('id', 'chart-svg')
+                    .attr('id', 'ace-scatter-chart-svg')
                     .attr('width', '100%')//model.chartWidth + model.margin.right + model.margin.left)
                     .attr('height', '100%')//model.chartHeight + model.margin.top + model.margin.bottom)
                     .attr('class', 'chart');

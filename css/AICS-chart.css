@@ -1,7 +1,7 @@
 html,body {
     height:100%;
 }
-#filters-label{
+#ace-scatter-filters-label{
     padding: 10px;
 }
 
@@ -17,19 +17,19 @@ html,body {
     padding: 10px;
 }
 
-#all-filter-buttons{
+#ace-scatter-all-filter-buttons{
     padding: 10px;
 }
 
-#cell-previewer-row{
+#ace-scatter-cell-previewer-row{
     /*height:150px;*/
 }
 
-#chart-row{
+#ace-scatter-chart-row{
     height: 100%;
 }
 
-#chart-col{
+#ace-scatter-chart-col{
     height: 100%;
 }
 h4 {
@@ -58,16 +58,16 @@ hr {
     background-color: black;
 }
 
-#chart {
+#ace-scatter-chart {
     height:100%;
     width:100%;
 }
 
-#chart-container{
+#ace-scatter-chart-container{
     /*height: 100%;*/
 }
 
-#viz{
+#ace-scatter-viz{
     height:100%;
     width:100%;
     padding: 10px;
