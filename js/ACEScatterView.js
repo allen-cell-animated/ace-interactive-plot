@@ -48,7 +48,7 @@ function ACEScatterView(spec){
 
     function buildFilterCheckBoxes(filterCheckBoxesParent, filterClasses) {
         var filtersChunk = filterCheckBoxesParent.append('div')
-            .attr('class', 'col-md-3');
+            .attr('class', 'col-md-2 ace-scatter-auto');
 
         var filter = filtersChunk.selectAll("input")
             .data(filterClasses)
