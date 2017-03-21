@@ -6,9 +6,10 @@ html,body {
     padding: 10px;
 }
 
-/*#chart-container{*/
-/*height: 100%;*/
-/*}*/
+#ace-scatter-blocker{
+    height: 100%;
+    width: 100%;
+}
 
 .previewer-label{
     padding: 10px;
