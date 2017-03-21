@@ -46,6 +46,34 @@ function ACEScatterView(spec){
         mouseOverHandlers: (spec.mouseOverHandlers || []).concat(_updatePreview),
         imagePath: _imagePath
     };
+
+    function buildFilterCheckBoxes(filterCheckBoxesParent, filterClasses) {
+        var filtersChunk = filterCheckBoxesParent.append('div')
+            .attr('class', 'col-md-3');
+
+        var filter = filtersChunk.selectAll("input")
+            .data(filterClasses)
+            .enter()
+            .append('div');
+
+        filter
+            .append("input")
+            .attr("checked", function (d) {
+                return model.filterClasses[d];
+            })
+            .attr("type", "checkbox")
+            .on("change", function (d, i) {
+                model.filterClasses[d] = d3.select(this).property('checked');
+                scatter.update();
+            });
+
+        filter
+            .append('label')
+            .text(function (d) {
+                return d;
+            });
+    }
+
     var scatter = AICSScatter(model);
     //building select controls async because model needs to be populated with options/filters
     scatter.init(function () {
@@ -56,44 +84,35 @@ function ACEScatterView(spec){
             model.xAxisDomain = xAxisSelect.property('value');
             scatter.update()
         })
-        .selectAll('option')
-        .data(model.domainOptions).enter()
-        .append('option')
-        .text(function (d) { return d; });
+            .selectAll('option')
+            .data(model.domainOptions).enter()
+            .append('option')
+            .text(function (d) { return d; });
 
         yAxisSelect.on('change', function () {
             model.yAxisDomain = yAxisSelect.property('value');
             scatter.update()
         })
-        .selectAll('option')
-        .data(model.domainOptions).enter()
-        .append('option')
-        .text(function (d) { return d; });
+            .selectAll('option')
+            .data(model.domainOptions).enter()
+            .append('option')
+            .text(function (d) { return d; });
 
         yAxisSelect.property('value', model.yAxisDomain);
         xAxisSelect.property('value', model.xAxisDomain);
 
         var filterCheckBoxesParent = d3.select("#class-filter-checkboxes");
-        filterCheckBoxesParent.selectAll("input")
-            .data(Object.keys(model.filterClasses))
-            .enter()
-            .append('div')
-            .attr('class', 'filter-checkbox')
-            .append('label')
-            .text(function(d) { return d; })
-            .append("input")
-            .attr('id', function (d, i) {
-                return 'class-filter-checkbox-' + i;
-            })
-            .attr('class', 'class-filter-checkbox')
-            .attr("checked", function (d) {
-                return model.filterClasses[d];
-            })
-            .attr("type", "checkbox")
-            .on("change", function (d, i) {
-                model.filterClasses[d] = d3.select('#class-filter-checkbox-' + i).property('checked');
-                scatter.update();
-            });
+        var chunkSize = 4, chunkCount = 0, totalCount = 0, chunk = [];
+        for(filterClass in model.filterClasses){
+            if(chunkCount == chunkSize || totalCount == (Object.keys(model.filterClasses).length - 1)){
+                buildFilterCheckBoxes(filterCheckBoxesParent, chunk);
+                chunk = [];
+                chunkCount = 0;
+            }
+            chunk.push(filterClass);
+            chunkCount++;
+            totalCount++;
+        }
 
         d3.select('#select-all-filters')
             .on("click", function () {
