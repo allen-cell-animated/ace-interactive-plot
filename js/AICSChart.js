@@ -35,7 +35,6 @@ function AICSChart(model, my){
             model.margin.left -
             model.margin.right;
         model.chartHeight = $('#chart-svg').height() -
-            // ($('#filters-label').height() + $('#cell-previewer-row').height() + $('#class-filter-checkboxes').height())) -
             model.margin.top -
             model.margin.bottom;
     };
