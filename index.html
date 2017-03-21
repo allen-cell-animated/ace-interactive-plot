@@ -6,72 +6,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>AICS Scatter Plot</title>
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://d3js.org/queue.v1.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/AICS-chart.css" rel="stylesheet">
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <script src="js/lib/jquery.blockUI.js"></script>
+    <script src="js/ACEScatterView.js"></script>
+    <script src="js/AICSChart.js"></script>
+    <script src="js/AICSScatter.js"></script>
 </head>
 <body>
-    <div id="viz" style="display: none">
-        <div id="controls">
-            <div id="controls-top">
-                <div><label id="filters-label">Plot cells that have the following tagged proteins:</label></div>
-                <div id="class-filter-checkboxes">
-                </div>
-            </div>
-            <hr>
-            <div id="controls-bottom">
-                <div id="controls-left">
-                    <div id="all-filter-buttons">
-                        <button id="select-all-filters" class="btn btn-info">Select All</button>
-                        <button id="deselect-all-filters" class="btn btn-info">Deselect All</button>
-                    </div>
-                    <div id="axis-selects">
-                        <div class="axis-select">
-                            <span>X Axis:</span>
-                            <select id="x-axis-options"></select>
-                        </div>
-                        <div class="axis-select">
-                            <span>Y Axis:</span>
-                            <select id="y-axis-options"></select>
-                        </div>
-                    </div>
-                    <!--<input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step=".1" data-slider-value=".5"/>-->
-                </div>
-                <div id="controls-right">
-                    <div id="cell-previewer">
-                        <div>
-                            <img id="cell-previewer-im" src="" height="100px" width="100px">
-                        </div>
-                        <div class="previewer-label">
-                            <div id="cell-previewer-name"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></span></div>
-                            <div id="cell-previewer-tagged-protein"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
-                            <div id="cell-previewer-x-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
-                            <div id="cell-previewer-y-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
-                        </div>
-                    </div>
-                </div>
+<div id="viz">
+    <div id="controls-container" class="container-flow">
+        <div id="filters-label" class="row">
+            <label class="col-md-4">Plot cells that have the following tagged proteins:</label>
+        </div>
+        <div id="class-filter-checkboxes" class="row">
+            <div class="col-md-3">
+                <button id="select-all-filters" class="btn btn-info">Select All</button>
+                <button id="deselect-all-filters" class="btn btn-info">Deselect All</button>
             </div>
         </div>
-        <div id="chart"></div>
+        <hr>
+        <div id='cell-previewer-row' class="row">
+            <div id="cell-previewer" class="col-md-2">
+                <img id="cell-previewer-im" height="150">
+            </div>
+            <div class="col-md-3">
+                <div id="cell-previewer-name"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></span></div>
+                <div id="cell-previewer-tagged-protein"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+                <div id="cell-previewer-x-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+                <div id="cell-previewer-y-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+            </div>
+            <div class="col-md-3">
+                <span>X Axis:</span>
+                <select id="x-axis-options"></select>
+            </div>
+            <div class="col-md-3">
+                <span>Y Axis:</span>
+                <select id="y-axis-options"></select>
+            </div>
+        </div>
     </div>
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="http://d3js.org/queue.v1.min.js"></script>
-<script src="js/lib/jquery.blockUI.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/lib/bootstrap.min.js"></script>
-<script src="js/lib/d3.min.js"></script>
-<script src="js/ACEScatterView.js"></script>
-<script src="js/AICSChart.js"></script>
-<script src="js/AICSScatter.js"></script>
-
+    <div id="chart-container" class="container-flow">
+        <div id="chart-row" class="row">
+            <div id="chart-col" class="col-md-12">
+                <div id="chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     ACEScatterView({
         controlsParent: 'controls',
@@ -81,19 +74,7 @@
         xAxisDomain: 'Nuclear_volume',
         yAxisDomain: 'Cellular_volume',
         domainOptions: ['Nuclear_volume', 'Cellular_volume', 'Nuclear_surface_area', 'Cellular_surface_area', 'Structure_radial_affinity', 'Structure_z_affinity'],
-        margin: {top: 20, right: 150, bottom: 150, left: 150},
-//        mouseOverHandlers: [function (d) {
-//            console.log('over');
-//            console.log(d);
-//        }],
-//        mouseOutHandlers: [function (d) {
-//            console.log('out');
-//            console.log(d);
-//        }],
-//        clickHandlers: [function (d) {
-//            console.log('click');
-//            console.log(d);
-//        }]
+        margin: {top: 20, right: 50, bottom: 50, left: 80},
     });
 </script>
 </body>

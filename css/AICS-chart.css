@@ -1,66 +1,74 @@
-.filter-checkbox{
-    padding: 10px;
+html,body {
+    height:100%;
 }
-hr {
-    height: 1px;
-    background-color: black;
-    border:none
-}
-
 #filters-label{
     padding: 10px;
-}
-
-#class-filter-checkboxes{
-    display: inline-flex;
-}
-
-#controls{
-    padding: 10px;
-    margin: 10px;
-    display: block;
-}
-
-#controls-bottom{
-    display: inline-flex;
 }
 
 .axis-select{
     padding: 10px;
 }
 
-#axis-selects{
-}
-
-#controls-left{
-
-}
-
-#axis-selects{
-
-}
-
-#controls-right{
-
-}
-
-#cell-previewer{
-    /*border-style: solid;*/
-    /*border: 1px;*/
-    /*font-weight: 'bold';*/
-    padding: 10px;
-    margin:10px;
-    float: right;
-    display: flex;
-}
+/*#chart-container{*/
+/*height: 100%;*/
+/*}*/
 
 .previewer-label{
     padding: 10px;
 }
-#cell-previewer-im{
-
-}
 
 #all-filter-buttons{
+    padding: 10px;
+}
+
+#cell-previewer-row{
+    /*height:150px;*/
+}
+
+#chart-row{
+    height: 100%;
+}
+
+#chart-col{
+    height: 100%;
+}
+h4 {
+    margin-top: 10px;
+}
+.row {
+    margin-bottom: 10px;
+}
+.row .row {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+[class*="col-"] {
+//  padding-top: 15px;
+//  padding-bottom: 15px;
+//  background-color: #eee;
+//  background-color: rgba(86,61,124,.15);
+//  border: 1px solid #ddd;
+//  border: 1px solid rgba(86,61,124,.2);
+}
+
+hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 1px;
+    background-color: black;
+}
+
+#chart {
+    height:100%;
+    width:100%;
+}
+
+#chart-container{
+    /*height: 100%;*/
+}
+
+#viz{
+    height:100%;
+    width:100%;
     padding: 10px;
 }
