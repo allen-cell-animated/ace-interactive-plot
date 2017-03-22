@@ -28,60 +28,11 @@ function AICSScatter(model, my){
     var xAxis = d3.axisBottom();
     var yAxis = d3.axisLeft();
 
-    model.filterClasses = {};
-    model.imageDs = [];
-    model.mouseOverHandlers = (model.mouseOverHandlers || []).concat(
-        function (d) {
-            d3.select(this)
-                .moveToFront()
-                .attr('opacity', 1.0)
-                .attr('fill', 'red');
-        }
-    );
-    model.mouseOutHandlers = (model.mouseOutHandlers || []).concat(
-        function (d) {
-            d3.select(this)
-                .attr('opacity', function(d){
-                    return (d.showToolTip || d.highlight) ? 1.0 : .3
-                })
-                .attr('fill', function(d){
-                    return (d.showToolTip || d.highlight) ? 'red' : 'blue'
-                })
-        }
-    );
-    model.clickHandlers = (model.clickHandlers || []).concat(
-        function (d) {
-            d3.event.stopPropagation();
-            d.showToolTip = !d.showToolTip;
-            d3.select(this)
-                .attr('opacity', function(d){
-                    return d.showToolTip ? 1.0 : .3
-                })
-                .attr('fill', function(d){
-                    return (d.showToolTip || d.highlight) ? 'red' : 'blue'
-                });
-            if(d.showToolTip){
-                model.imageDs.push(d);
-            }else {
-                model.imageDs.splice(model.imageDs.indexOf(d), 1);
-            }
-            _updateImages();
-        }
-    );
-
     my.init = function(){
-        model.data.forEach(function (d) {
-            model.filterClasses[d.classes] = true;
-            d.showToolTip = false;
-        });
-
-        while(model.imageDs.length < NUM_SELECTED_CIRCLES_ON_START){
-            var rand = Math.floor(Math.random() * model.data.length);
-            if(model.data.indexOf(rand) > -1) continue;
-            model.data[rand].showToolTip = true;
-            model.imageDs.push(model.data[rand]);
-        }
-
+        model.filterClasses = {};
+        model.imageDs = [];
+        _initDefaultMouseHandlers();
+        _initDefaultState();
         xScale.domain([d3.min(model.data, _xScaleAccesor), d3.max(model.data, _xScaleAccesor)])
             .range([ 0, model.chartWidth ]);
         yScale.domain([d3.min(model.data, _yScaleAccessor), d3.max(model.data, _yScaleAccessor)])
@@ -93,22 +44,22 @@ function AICSScatter(model, my){
 
     my.update = function (transitionDuration) {
         _updateScales(1);
-        _updateDots(1);
+        _updateCircles(1);
         _updateImages(1)
     };
 
-    my.build = function (main) {
-        dataG = main.append('g');
+    my.build = function (mainG) {
+        dataG = mainG.append('g');
         circlesG = dataG.append('g');
-        imagesG = dataG.append('g');
-        xaxisG = main.append('g');
-        yaxisG = main.append('g');
-        xAxisLabel = main.append("text")
+        imagesG = dataG.append('g');  //images on top of circles
+        xaxisG = mainG.append('g');
+        yaxisG = mainG.append('g');
+        xAxisLabel = mainG.append("text")
             .attr("id", "xaxis-label")
             .attr("transform", "translate(" + (model.chartWidth/2) + " ," + (model.chartHeight + model.margin.top + 20)+")")
             .style("text-anchor", "middle")
             .text(model.xAxisDomain);
-        yAxisLabel = main.append("text")
+        yAxisLabel = mainG.append("text")
             .attr("id", "yaxis-label")
             .attr("transform", "translate(-60 ," + (model.chartHeight/2 + model.margin.top) + ") rotate(-90)")
             .style("text-anchor", "middle")
@@ -169,6 +120,61 @@ function AICSScatter(model, my){
         });
     };
 
+    function _initDefaultMouseHandlers(){
+        model.mouseOverHandlers = (model.mouseOverHandlers || []).concat(
+            function (d) {
+                d3.select(this)
+                    .moveToFront()
+                    .attr('opacity', 1.0)
+                    .attr('fill', 'red');
+            }
+        );
+        model.mouseOutHandlers = (model.mouseOutHandlers || []).concat(
+            function (d) {
+                d3.select(this)
+                    .attr('opacity', function(d){
+                        return (d.showToolTip || d.highlight) ? 1.0 : .3
+                    })
+                    .attr('fill', function(d){
+                        return (d.showToolTip || d.highlight) ? 'red' : 'blue'
+                    })
+            }
+        );
+        model.clickHandlers = (model.clickHandlers || []).concat(
+            function (d) {
+                d3.event.stopPropagation();
+                d.showToolTip = !d.showToolTip;
+                d3.select(this)
+                    .attr('opacity', function(d){
+                        return d.showToolTip ? 1.0 : .3
+                    })
+                    .attr('fill', function(d){
+                        return (d.showToolTip || d.highlight) ? 'red' : 'blue'
+                    });
+                if(d.showToolTip){
+                    model.imageDs.push(d);
+                }else {
+                    model.imageDs.splice(model.imageDs.indexOf(d), 1);
+                }
+                _updateImages();
+            }
+        );
+    };
+
+    function _initDefaultState(){
+        model.data.forEach(function (d) {
+            model.filterClasses[d.classes] = true;
+            d.showToolTip = false;
+        });
+
+        while(model.imageDs.length < NUM_SELECTED_CIRCLES_ON_START){
+            var rand = Math.floor(Math.random() * model.data.length);
+            if(model.data.indexOf(rand) > -1) continue;
+            model.data[rand].showToolTip = true;
+            model.imageDs.push(model.data[rand]);
+        }
+    };
+
     function _updateScales(transitionDuration) {
         xScale.domain([d3.min(model.data, _xScaleAccesor), d3.max(model.data, _xScaleAccesor)])
             .range([ 0, model.chartWidth ]);
@@ -194,7 +200,7 @@ function AICSScatter(model, my){
             .attr("transform", "translate(-60 ," + (model.chartHeight/2 + model.margin.top) + ") rotate(-90)");
     };
 
-    function _updateDots(transitionDuration){
+    function _updateCircles(transitionDuration){
         dataG.selectAll('circle')
             .transition()
             .duration(transitionDuration || TRANSITION_DURATION)

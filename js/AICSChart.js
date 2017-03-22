@@ -19,8 +19,8 @@ function AICSChart(model, my){
     my.build = my.build || function () {;};
     my.update = my.update || function () {;};
 
-    function build(main) {
-        my.build(main);
+    function build(mainG) {
+        my.build(mainG);
     };
 
     function update(transitionDuration) {
@@ -50,21 +50,19 @@ function AICSChart(model, my){
                 var chart = d3.select('#' + model.parent)
                     .append('svg')
                     .attr('id', 'ace-scatter-chart-svg')
-                    .attr('width', '100%')//model.chartWidth + model.margin.right + model.margin.left)
-                    .attr('height', '100%')//model.chartHeight + model.margin.top + model.margin.bottom)
-                    .attr('class', 'chart');
+                    .attr('width', '100%')
+                    .attr('height', '100%');
 
                 updateDimensions();
 
-                var main = chart.append('g')
+                var mainG = chart.append('g')
                     .attr('transform', 'translate(' + model.margin.left + ',' + model.margin.top + ')')
                     .attr('width', model.chartWidth)
-                    .attr('height', model.chartHeight)
-                    .attr('class', 'main');
+                    .attr('height', model.chartHeight);
 
                 model.data = data;
                 my.init();
-                build(main);
+                build(mainG);
                 if(viewCallback){viewCallback();}
                 window.addEventListener("resize", function () {
                     update(1);

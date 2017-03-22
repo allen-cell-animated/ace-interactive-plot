@@ -7,31 +7,6 @@ d3.selection.prototype.moveToFront = function() {
 function ACEScatterView(spec){
     $.blockUI({ message: '<img src="loading.gif" />' });
 
-    function _imagePath(cellName) {
-        return model.imagesDir + '/' + cellName.split('_')[0] + '/' + cellName + '.png';
-    }
-
-    var previewerImage = d3.select('#ace-scatter-cell-previewer-im');
-    var previewerName = d3.select('#ace-scatter-cell-previewer-name');
-    var previewerTaggedProtein = d3.select('#ace-scatter-cell-previewer-tagged-protein');
-    var previewerxValue = d3.select('#ace-scatter-cell-previewer-x-value');
-    var previeweryValue = d3.select('#ace-scatter-cell-previewer-y-value');
-
-    var _updatePreview = function(d) {
-        previewerImage.attr('src', _imagePath(d.cellName));
-        previewerName.text(function () {
-            return 'Cell Name: ' + d.cellName;
-        });
-        previewerTaggedProtein.text(function () {
-            return 'Tagged Protein: ' + d.classes;
-        });
-        previewerxValue.text(function () {
-            return model.xAxisDomain + ': ' + d[model.xAxisDomain];
-        });
-        previeweryValue.text(function () {
-            return model.yAxisDomain + ': ' + d[model.yAxisDomain];
-        });
-    };
     var model = {
         margin: spec.margin,
         parent: spec.chartParent,
@@ -45,6 +20,12 @@ function ACEScatterView(spec){
         mouseOverHandlers: (spec.mouseOverHandlers || []).concat(_updatePreview),
         imagePath: _imagePath
     };
+
+    var previewerImage = d3.select('#ace-scatter-cell-previewer-im');
+    var previewerName = d3.select('#ace-scatter-cell-previewer-name');
+    var previewerTaggedProtein = d3.select('#ace-scatter-cell-previewer-tagged-protein');
+    var previewerxValue = d3.select('#ace-scatter-cell-previewer-x-value');
+    var previeweryValue = d3.select('#ace-scatter-cell-previewer-y-value');
 
     function buildFilterCheckBoxes(filterCheckBoxesParent, filterClasses) {
         var filtersChunk = filterCheckBoxesParent.append('div')
@@ -137,4 +118,25 @@ function ACEScatterView(spec){
             $.unblockUI();
         }, 1000);
     });
+
+    function _imagePath(cellName) {
+        return model.imagesDir + '/' + cellName.split('_')[0] + '/' + cellName + '.png';
+    }
+
+    function _updatePreview(d) {
+        previewerImage.attr('src', _imagePath(d.cellName));
+        previewerName.text(function () {
+            return 'Cell Name: ' + d.cellName;
+        });
+        previewerTaggedProtein.text(function () {
+            return 'Tagged Protein: ' + d.classes;
+        });
+        previewerxValue.text(function () {
+            return model.xAxisDomain + ': ' + d[model.xAxisDomain];
+        });
+        previeweryValue.text(function () {
+            return model.yAxisDomain + ': ' + d[model.yAxisDomain];
+        });
+    };
+
 };
