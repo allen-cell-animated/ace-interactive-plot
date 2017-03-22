@@ -86,8 +86,6 @@ function AICSScatter(model, my){
             .attr('height', 24)
             .attr('opacity', .3)
             .attr('fill', 'blue')
-            .attr('stroke','black')
-            .attr('stroke-width',0)
             .attr('cx', model.chartWidth/2)
             .attr('cy', model.chartHeight/2)
             .on('mouseover', function(d){
@@ -124,7 +122,7 @@ function AICSScatter(model, my){
         model.mouseOverHandlers = (model.mouseOverHandlers || []).concat(
             function (d) {
                 d3.select(this)
-                    .moveToFront()
+                    // .moveToFront()
                     .attr('opacity', 1.0)
                     .attr('fill', 'red');
             }
@@ -142,7 +140,6 @@ function AICSScatter(model, my){
         );
         model.clickHandlers = (model.clickHandlers || []).concat(
             function (d) {
-                d3.event.stopPropagation();
                 d.showToolTip = !d.showToolTip;
                 d3.select(this)
                     .attr('opacity', function(d){
@@ -209,7 +206,7 @@ function AICSScatter(model, my){
             })
             .attr('fill', function(d){
                 if(d.showToolTip){
-                    d3.select(this).moveToFront();
+                    // d3.select(this).moveToFront();
                     return 'red';
                 } else {
                     return 'blue';
@@ -249,7 +246,6 @@ function AICSScatter(model, my){
                 return d.showToolTip ? model.imagePath(d.cellName) : '';
             })
             .on('click', function (d, i) {
-                d3.event.stopPropagation();
                 d.showToolTip = false;
                 d3.select('#circle-' + d.im_ids)
                     .attr('opacity', .3)
