@@ -106,8 +106,6 @@ function AICSScatter(model, my){
                     handler.apply(that, [d]);
                 });
             });
-
-        my.update(1);
     };
 
     my.ready = function () {

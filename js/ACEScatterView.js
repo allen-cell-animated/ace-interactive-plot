@@ -114,6 +114,7 @@ function ACEScatterView(spec){
 
         _updatePreview(model.imageDs[model.imageDs.length - 1]);
         setTimeout(function(){
+            scatter.update();
             $('#ace-scatter-blocker').hide();
             $.unblockUI();
         }, 1000);
