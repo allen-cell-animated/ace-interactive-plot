@@ -89,21 +89,21 @@ function AICSScatter(model, my){
             .attr('cx', model.chartWidth/2)
             .attr('cy', model.chartHeight/2)
             .on('mouseover', function(d){
-                var that = this;
+                var self = this;
                 model.mouseOverHandlers.forEach(function (handler) {
-                    handler.apply(that, [d]);
+                    handler.apply(self, [d]);
                 });
             })
             .on('mouseout', function(d){
-                var that = this;
+                var self = this;
                 model.mouseOutHandlers.forEach(function (handler) {
-                    handler.apply(that, [d]);
+                    handler.apply(self, [d]);
                 });
             })
             .on('click', function(d){
-                var that = this;
+                var self = this;
                 model.clickHandlers.forEach(function (handler) {
-                    handler.apply(that, [d]);
+                    handler.apply(self, [d]);
                 });
             });
     };
