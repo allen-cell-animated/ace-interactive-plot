@@ -58,12 +58,12 @@ function AICSScatter(model, my){
             .attr("id", "xaxis-label")
             .attr("transform", "translate(" + (model.chartWidth/2) + " ," + (model.chartHeight + model.margin.top + 20)+")")
             .style("text-anchor", "middle")
-            .text(model.xAxisDomain);
+            .text(model.xAxisDomain.split('_').join(' '));
         yAxisLabel = mainG.append("text")
             .attr("id", "yaxis-label")
             .attr("transform", "translate(-60 ," + (model.chartHeight/2 + model.margin.top) + ") rotate(-90)")
             .style("text-anchor", "middle")
-            .text(model.yAxisDomain);
+            .text(model.yAxisDomain.split('_').join(' '));
 
         xaxisG.attr("id", "xaxis")
             .attr('transform', 'translate(0,' + model.chartHeight + ')')
@@ -188,10 +188,10 @@ function AICSScatter(model, my){
             .call(yAxis);
 
         xAxisLabel
-            .text(model.xAxisDomain)
+            .text(model.xAxisDomain.split('_').join(' '))
             .attr("transform", "translate(" + (model.chartWidth/2) + " ," + (model.chartHeight + model.margin.top + 20)+")");
         yAxisLabel
-            .text(model.yAxisDomain)
+            .text(model.yAxisDomain.split('_').join(' '))
             .attr("transform", "translate(-60 ," + (model.chartHeight/2 + model.margin.top) + ") rotate(-90)");
     };
 
