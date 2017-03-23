@@ -78,8 +78,8 @@ function ACEScatterView(spec){
             .append('option')
             .text(function (d) { return d; });
 
-        yAxisSelect.property('value', model.yAxisDomain);
-        xAxisSelect.property('value', model.xAxisDomain);
+        document.getElementById("ace-scatter-x-axis-options").selectedIndex = 0;
+        document.getElementById("ace-scatter-y-axis-options").selectedIndex = 1;
 
         var filterCheckBoxesParent = d3.select("#ace-scatter-class-filter-checkboxes");
         var chunkSize = 4, chunkCount = 0, totalCount = 0, chunk = [];
