@@ -120,7 +120,7 @@ function AICSScatter(model, my){
         model.mouseOverHandlers = (model.mouseOverHandlers || []).concat(
             function (d) {
                 d3.select(this)
-                    // .moveToFront()
+                    .moveToFront()
                     .attr('opacity', 1.0)
                     .attr('fill', 'red');
             }
@@ -204,7 +204,7 @@ function AICSScatter(model, my){
             })
             .attr('fill', function(d){
                 if(d.showToolTip){
-                    // d3.select(this).moveToFront();
+                    d3.select(this).moveToFront();
                     return 'red';
                 } else {
                     return 'blue';
