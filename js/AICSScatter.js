@@ -10,6 +10,11 @@ function AICSScatter(model, my){
 
     var TRANSITION_DURATION_DEFAULT = 3000;
     var NUM_SELECTED_CIRCLES_ON_START = 8;
+    var UNSELECTED_CIRCLE_COLOR = 'blue';
+    var SELECTED_CIRCLE_COLOR = 'red';
+    var SELECTED_CIRCLE_OPACITY = 1.0;
+    var UNSELECTED_CIRCLE_OPACITY = .3;
+    var CIRCLE_RADIUS = 5;
 
     var that = AICSChart(model, my);
 
@@ -81,16 +86,16 @@ function AICSScatter(model, my){
             .attr('id', function(d){
                 return 'circle-' + d.im_ids;
             })
-            .attr('r', 5)
+            .attr('r', CIRCLE_RADIUS)
             .attr('opacity', function(d){
-                return d.showToolTip ? 1.0 : .3
+                return d.showToolTip ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY
             })
             .attr('fill', function(d){
                 if(d.showToolTip){
                     d3.select(this).moveToFront();
-                    return 'red';
+                    return SELECTED_CIRCLE_COLOR;
                 } else {
-                    return 'blue';
+                    return UNSELECTED_CIRCLE_COLOR;
                 }
             })
             .attr('cx', model.chartWidth/2)
@@ -128,18 +133,18 @@ function AICSScatter(model, my){
             function (d) {
                 d3.select(this)
                     .moveToFront()
-                    .attr('opacity', 1.0)
-                    .attr('fill', 'red');
+                    .attr('opacity', SELECTED_CIRCLE_OPACITY)
+                    .attr('fill', SELECTED_CIRCLE_COLOR);
             }
         );
         model.mouseOutHandlers = (model.mouseOutHandlers || []).concat(
             function (d) {
                 d3.select(this)
                     .attr('opacity', function(d){
-                        return (d.showToolTip || d.highlight) ? 1.0 : .3
+                        return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY
                     })
                     .attr('fill', function(d){
-                        return (d.showToolTip || d.highlight) ? 'red' : 'blue'
+                        return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_COLOR : UNSELECTED_CIRCLE_COLOR
                     })
             }
         );
@@ -148,10 +153,10 @@ function AICSScatter(model, my){
                 d.showToolTip = !d.showToolTip;
                 d3.select(this)
                     .attr('opacity', function(d){
-                        return d.showToolTip ? 1.0 : .3
+                        return d.showToolTip ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY
                     })
                     .attr('fill', function(d){
-                        return (d.showToolTip || d.highlight) ? 'red' : 'blue'
+                        return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_COLOR : UNSELECTED_CIRCLE_COLOR
                     });
                 if(d.showToolTip){
                     model.imageDs.push(d);
@@ -242,8 +247,8 @@ function AICSScatter(model, my){
             .on('click', function (d, i) {
                 d.showToolTip = false;
                 d3.select('#circle-' + d.im_ids)
-                    .attr('opacity', .3)
-                    .attr('fill', 'blue');
+                    .attr('opacity', UNSELECTED_CIRCLE_OPACITY)
+                    .attr('fill', UNSELECTED_CIRCLE_COLOR);
                 model.imageDs.splice(model.imageDs.indexOf(d), 1);
                 _updateImages();
             });
