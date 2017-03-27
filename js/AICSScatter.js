@@ -51,9 +51,9 @@ function AICSScatter(model, my){
     };
 
     my.update = function (transitionDuration) {
-        _updateScales();
-        _updateCircles();
-        _updateImages()
+        _updateScales(transitionDuration);
+        _updateCircles(transitionDuration);
+        _updateImages(transitionDuration)
     };
 
     my.build = function (mainG) {
