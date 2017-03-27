@@ -8,7 +8,7 @@ function AICSScatter(model, my){
 
     my = my || {};
 
-    var TRANSITION_DURATION = 3000;
+    var TRANSITION_DURATION_DEFAULT = 3000;
     var NUM_SELECTED_CIRCLES_ON_START = 8;
 
     var that = AICSChart(model, my);
@@ -33,7 +33,7 @@ function AICSScatter(model, my){
         model.imageDs = [];
         _initDefaultMouseHandlers();
         _initDefaultState();
-        xScale.domain([d3.min(model.data, _xScaleAccesor), d3.max(model.data, _xScaleAccesor)])
+        xScale.domain([d3.min(model.data, _xScaleAccessor), d3.max(model.data, _xScaleAccessor)])
             .range([ 0, model.chartWidth ]);
         yScale.domain([d3.min(model.data, _yScaleAccessor), d3.max(model.data, _yScaleAccessor)])
             .range([ model.chartHeight, 0 ]);
@@ -74,7 +74,7 @@ function AICSScatter(model, my){
             .attr('class', 'axis')
             .call(yAxis);
 
-        circlesG.selectAll('scatter-circles')
+        circlesG.selectAll('circles')
             .data(model.data)
             .enter()
             .append('circle')
@@ -82,10 +82,17 @@ function AICSScatter(model, my){
                 return 'circle-' + d.im_ids;
             })
             .attr('r', 5)
-            .attr('width', 20)
-            .attr('height', 24)
-            .attr('opacity', .3)
-            .attr('fill', 'blue')
+            .attr('opacity', function(d){
+                return d.showToolTip ? 1.0 : .3
+            })
+            .attr('fill', function(d){
+                if(d.showToolTip){
+                    d3.select(this).moveToFront();
+                    return 'red';
+                } else {
+                    return 'blue';
+                }
+            })
             .attr('cx', model.chartWidth/2)
             .attr('cy', model.chartHeight/2)
             .on('mouseover', function(d){
@@ -171,19 +178,19 @@ function AICSScatter(model, my){
     };
 
     function _updateScales(transitionDuration) {
-        xScale.domain([d3.min(model.data, _xScaleAccesor), d3.max(model.data, _xScaleAccesor)])
+        xScale.domain([d3.min(model.data, _xScaleAccessor), d3.max(model.data, _xScaleAccessor)])
             .range([ 0, model.chartWidth ]);
         yScale.domain([d3.min(model.data, _yScaleAccessor), d3.max(model.data, _yScaleAccessor)])
             .range([ model.chartHeight, 0 ]);
 
         xaxisG
             .transition()
-            .duration(transitionDuration || TRANSITION_DURATION)
+            .duration(transitionDuration || TRANSITION_DURATION_DEFAULT)
             .attr('transform', 'translate(0,' + model.chartHeight + ')')
             .call(xAxis);
         yaxisG
             .transition()
-            .duration(transitionDuration || TRANSITION_DURATION)
+            .duration(transitionDuration || TRANSITION_DURATION_DEFAULT)
             .attr('transform', 'translate(0,0)')
             .call(yAxis);
 
@@ -198,18 +205,7 @@ function AICSScatter(model, my){
     function _updateCircles(transitionDuration){
         dataG.selectAll('circle')
             .transition()
-            .duration(transitionDuration || TRANSITION_DURATION)
-            .attr('opacity', function(d){
-                return d.showToolTip ? 1.0 : .3
-            })
-            .attr('fill', function(d){
-                if(d.showToolTip){
-                    d3.select(this).moveToFront();
-                    return 'red';
-                } else {
-                    return 'blue';
-                }
-            })
+            .duration(transitionDuration || TRANSITION_DURATION_DEFAULT)
             .attr('cx', function (d){
                 return xScale(d[model.xAxisDomain]);
             })
@@ -256,7 +252,7 @@ function AICSScatter(model, my){
 
         images
             .transition()
-            .duration(transitionDuration || TRANSITION_DURATION)
+            .duration(transitionDuration || TRANSITION_DURATION_DEFAULT)
             .attr('x', function (d){
                 return xScale(d[model.xAxisDomain]);
             })
@@ -272,7 +268,7 @@ function AICSScatter(model, my){
         return Number(elem[model.yAxisDomain]);
     };
 
-    function _xScaleAccesor(elem) {
+    function _xScaleAccessor(elem) {
         return Number(elem[model.xAxisDomain]);
     };
 
