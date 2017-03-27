@@ -114,10 +114,12 @@ function ACEScatterView(spec){
             });
 
         scatter.updateScales();
-        scatter.updateCircles();
-        _updatePreview(model.imageDs[model.imageDs.length - 1]);
+        scatter.updateCircles(2000);
         setTimeout(function(){
-            scatter.updateImages();
+            scatter.initDefaultState();
+            scatter.updateCircles(1000);
+            scatter.updateImages(1000);
+            _updatePreview(model.imageDs[model.imageDs.length - 1]);
             $('#ace-scatter-blocker').hide();
             $.unblockUI();
         }, 3000);

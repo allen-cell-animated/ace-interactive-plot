@@ -37,7 +37,10 @@ function AICSScatter(model, my){
         model.filterClasses = {};
         model.imageDs = [];
         _initDefaultMouseHandlers();
-        _initDefaultState();
+        model.data.forEach(function (d) {
+            model.filterClasses[d.classes] = true;
+            d.showToolTip = false;
+        });
         xScale.domain([d3.min(model.data, _xScaleAccessor), d3.max(model.data, _xScaleAccessor)])
             .range([ 0, model.chartWidth ]);
         yScale.domain([d3.min(model.data, _yScaleAccessor), d3.max(model.data, _yScaleAccessor)])
@@ -158,17 +161,12 @@ function AICSScatter(model, my){
                 }else {
                     model.imageDs.splice(model.imageDs.indexOf(d), 1);
                 }
-                _updateImages();
+                _updateImages(1);
             }
         );
     };
 
     function _initDefaultState(){
-        model.data.forEach(function (d) {
-            model.filterClasses[d.classes] = true;
-            d.showToolTip = false;
-        });
-
         while(model.imageDs.length < NUM_SELECTED_CIRCLES_ON_START){
             var rand = Math.floor(Math.random() * model.data.length);
             if(model.data.indexOf(rand) > -1) continue;
@@ -234,7 +232,7 @@ function AICSScatter(model, my){
             return d.im_ids;
         });
 
-        images.enter()
+        var newImages = images.enter()
             .append("image")
             .attr('id', function (d) {
                 return d.im_ids;
@@ -245,6 +243,7 @@ function AICSScatter(model, my){
             .attr('y', function (d) {
                 return yScale(d[model.yAxisDomain]);
             })
+            .attr('opacity', '0')
             .attr('width', 50)
             .attr('height', 50)
             .attr("xlink:href", function (d) {
@@ -256,8 +255,13 @@ function AICSScatter(model, my){
                     .attr('opacity', UNSELECTED_CIRCLE_OPACITY)
                     .attr('fill', UNSELECTED_CIRCLE_COLOR);
                 model.imageDs.splice(model.imageDs.indexOf(d), 1);
-                _updateImages();
+                _updateImages(1);
             });
+
+        newImages
+            .transition()
+            .duration(transitionDuration || TRANSITION_DURATION_DEFAULT)
+            .attr('opacity', '1');
 
         images.exit().remove();
 
@@ -286,6 +290,7 @@ function AICSScatter(model, my){
     that.updateCircles = _updateCircles;
     that.updateImages = _updateImages;
     that.updateScales = _updateScales;
+    that.initDefaultState = _initDefaultState;
 
     return that;
 };
