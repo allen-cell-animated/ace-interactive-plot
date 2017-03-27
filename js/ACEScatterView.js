@@ -29,7 +29,7 @@ function ACEScatterView(spec){
 
     function buildFilterCheckBoxes(filterCheckBoxesParent, filterClasses) {
         var filtersChunk = filterCheckBoxesParent.append('div')
-            .attr('class', 'col-md-1 ace-scatter-auto');
+            .attr('class', 'col-sm-1 ace-scatter-auto');
 
         var filter = filtersChunk.selectAll("input")
             .data(filterClasses)
@@ -49,6 +49,7 @@ function ACEScatterView(spec){
 
         filter
             .append('label')
+            .attr('class', 'filter-checkbox-label')
             .text(function (d) {
                 return d;
             });
@@ -112,12 +113,14 @@ function ACEScatterView(spec){
                 scatter.update();
             });
 
+        scatter.updateScales();
+        scatter.updateCircles();
         _updatePreview(model.imageDs[model.imageDs.length - 1]);
         setTimeout(function(){
-            scatter.update();
+            scatter.updateImages();
             $('#ace-scatter-blocker').hide();
             $.unblockUI();
-        }, 1000);
+        }, 3000);
     });
 
     function _imagePath(cellName) {

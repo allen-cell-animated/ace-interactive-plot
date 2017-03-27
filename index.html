@@ -17,6 +17,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/AICS-chart.css" rel="stylesheet">
     <script src="js/lib/jquery.blockUI.js"></script>
     <script src="js/ACEScatterView.js"></script>
@@ -26,46 +27,48 @@
 <body>
 <div id="ace-scatter-blocker"></div>
 <div id="ace-scatter-viz">
-    <div id="ace-scatter-controls-container" class="container">
+    <div id="ace-scatter-controls-container" class="container-fluid">
         <div class="row">
-            <div class="col-md-2 ace-scatter-controls-padding">
+            <div class="col-sm-2 ace-scatter-controls-padding">
                 <div id="ace-scatter-cell-previewer-name"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></span></div>
                 <div id="ace-scatter-cell-previewer-tagged-protein"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
                 <div id="ace-scatter-cell-previewer-x-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
                 <div id="ace-scatter-cell-previewer-y-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
             </div>
-            <div id="ace-scatter-cell-previewer" class="col-md-3 ace-scatter-controls-padding">
+            <div id="ace-scatter-cell-previewer" class="col-sm-3 ace-scatter-controls-padding">
                 <img id="ace-scatter-cell-previewer-im" height="150">
             </div>
             <div class="col-md-7">
                 <div id="ace-scatter-filters-label" class="row">
-                    <label class="col-md-12">Plot cells that have the following tagged proteins:</label>
+                    <label class="col-sm-12">Plot cells that have the following tagged proteins:</label>
                 </div>
                 <div id="ace-scatter-class-filter-checkboxes" class="row">
-                    <div class="col-md-1 ace-scatter-auto ace-scatter-controls-padding">
-                        <button id="ace-scatter-select-all-filters" class="btn btn-info">Select All</button>
-                    </div>
-                    <div class="col-md-1 ace-scatter-auto ace-scatter-controls-padding">
-                        <button id="ace-scatter-deselect-all-filters" class="btn btn-info">Deselect All</button>
+                    <div class="col-sm-1 ace-scatter-auto ace-scatter-controls-padding">
+                        <div>
+                            <button id="ace-scatter-select-all-filters" class="btn btn-info ace-scatter-button">Select All</button>
+                        </div>
+                        <div>
+                            <button id="ace-scatter-deselect-all-filters" class="btn btn-info ace-scatter-button">Deselect All</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <hr>
         <div id="ace-scatter-cell-previewer-row' class="row">
-            <div class="col-md-3 ace-scatter-auto ace-scatter-controls-padding">
+            <div class="col-xs-3 ace-scatter-auto ace-scatter-controls-padding">
                 <span>X Axis:</span>
                 <select id="ace-scatter-x-axis-options"></select>
             </div>
-            <div class="col-md-3 ace-scatter-auto ace-scatter-controls-padding">
+            <div class="col-xs-3 ace-scatter-auto ace-scatter-controls-padding">
                 <span>Y Axis:</span>
                 <select id="ace-scatter-y-axis-options"></select>
             </div>
         </div>
     </div>
-    <div id="ace-scatter-chart-container" class="container">
+    <div id="ace-scatter-chart-container" class="container-fluid">
         <div id="ace-scatter-chart-row" class="row">
-            <div id="ace-scatter-chart-col" class="col-md-12">
+            <div id="ace-scatter-chart-col" class="col-xs-12">
                 <div id="ace-scatter-chart"></div>
             </div>
         </div>

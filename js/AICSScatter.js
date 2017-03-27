@@ -13,7 +13,7 @@ function AICSScatter(model, my){
     var UNSELECTED_CIRCLE_COLOR = 'blue';
     var SELECTED_CIRCLE_COLOR = 'red';
     var SELECTED_CIRCLE_OPACITY = 1.0;
-    var UNSELECTED_CIRCLE_OPACITY = .3;
+    var UNSELECTED_CIRCLE_OPACITY = .05;
     var CIRCLE_RADIUS = 5;
 
     var that = AICSChart(model, my);
@@ -48,9 +48,9 @@ function AICSScatter(model, my){
     };
 
     my.update = function (transitionDuration) {
-        _updateScales(1);
-        _updateCircles(1);
-        _updateImages(1)
+        _updateScales();
+        _updateCircles();
+        _updateImages()
     };
 
     my.build = function (mainG) {
@@ -91,12 +91,7 @@ function AICSScatter(model, my){
                 return d.showToolTip ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY
             })
             .attr('fill', function(d){
-                if(d.showToolTip){
-                    d3.select(this).moveToFront();
-                    return SELECTED_CIRCLE_COLOR;
-                } else {
-                    return UNSELECTED_CIRCLE_COLOR;
-                }
+                return UNSELECTED_CIRCLE_COLOR;
             })
             .attr('cx', model.chartWidth/2)
             .attr('cy', model.chartHeight/2)
@@ -217,6 +212,17 @@ function AICSScatter(model, my){
             .attr('cy', function (d) {
                 return yScale(d[model.yAxisDomain]);
             })
+            .attr('opacity', function(d){
+                return d.showToolTip ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY
+            })
+            .attr('fill', function(d){
+                if(d.showToolTip){
+                    d3.select(this).moveToFront();
+                    return SELECTED_CIRCLE_COLOR;
+                } else {
+                    return UNSELECTED_CIRCLE_COLOR;
+                }
+            })
             .attr('visibility', function (d) {
                 return model.filterClasses[d.classes] ? 'visible' : 'hidden';
             });
@@ -276,6 +282,10 @@ function AICSScatter(model, my){
     function _xScaleAccessor(elem) {
         return Number(elem[model.xAxisDomain]);
     };
+
+    that.updateCircles = _updateCircles;
+    that.updateImages = _updateImages;
+    that.updateScales = _updateScales;
 
     return that;
 };
