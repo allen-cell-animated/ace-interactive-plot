@@ -7,7 +7,7 @@ d3.selection.prototype.moveToFront = function() {
 function ACEScatterView(spec){
     $.blockUI({
         overlayCSS: { backgroundColor: 'white' },
-        message: '<img src="spinning5.gif" />'
+        message: '<img src="spinning5.gif" height="100%" width="100%"/>'
     });
 
     var model = {
