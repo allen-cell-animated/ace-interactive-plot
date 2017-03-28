@@ -16,7 +16,7 @@ html,body {
 }
 
 .filter-checkbox-label{
-    padding: 2px;
+    padding-left: 4px;
     vertical-align: baseline;
 }
 
@@ -46,17 +46,17 @@ h4 {
 .row {
     margin-bottom: 10px;
 }
-.row .row {
-    margin-top: 10px;
-    margin-bottom: 0;
+
+.form-check-inline{
+  min-width: 150px;
+  margin-left: 0.75rem;
 }
-[class*="col-"] {
-//  padding-top: 15px;
-//  padding-bottom: 15px;
-//  background-color: #eee;
-//  background-color: rgba(86,61,124,.15);
-//  border: 1px solid #ddd;
-//  border: 1px solid rgba(86,61,124,.2);
+.image-holder{
+  min-height: 140px;
+}
+#ace-scatter-cell-previewer-im{
+  max-width: 130px;
+  min-height: 130px;
 }
 
 .ace-scatter-auto{

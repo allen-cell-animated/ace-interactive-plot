@@ -7,34 +7,27 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>AICS Scatter Plot</title>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://d3js.org/queue.v1.min.js"></script>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
+
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/AICS-chart.css" rel="stylesheet">
-    <script src="js/lib/jquery.blockUI.js"></script>
-    <script src="js/ACEScatterView.js"></script>
-    <script src="js/AICSChart.js"></script>
-    <script src="js/AICSScatter.js"></script>
+
 </head>
 <body>
 <div id="ace-scatter-blocker"></div>
 <div id="ace-scatter-viz">
     <div id="ace-scatter-controls-container" class="container-fluid">
         <div class="row">
-            <div class="col-md-7">
-                <div id="ace-scatter-filters-label" class="row">
-                    <label class="col-sm-12">Plot cells that have the following tagged proteins:</label>
-                </div>
-                <div id="ace-scatter-class-filter-checkboxes" class="row">
-                    <div class="col-sm-1 ace-scatter-auto ace-scatter-controls-padding">
+            <div class="col-md-7 col-sm-12">
+                  <div id="ace-scatter-filters-label" class="">
+                    <label class="">Plot cells that have the following tagged proteins:</label>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-3 ace-scatter-auto ace-scatter-controls-padding">
                         <div>
                             <button id="ace-scatter-select-all-filters" class="btn btn-info ace-scatter-button">Select All</button>
                         </div>
@@ -42,20 +35,28 @@
                             <button id="ace-scatter-deselect-all-filters" class="btn btn-info ace-scatter-button">Deselect All</button>
                         </div>
                     </div>
+                    <div id="ace-scatter-class-filter-checkboxes" class="col-sm-9">
+                    </div>
+                  </div>
+            </div>
+            <div id="ace-scatter-cell-previewer" class="col-md-5 col-sm-12 ace-scatter-controls-padding">
+                <div class="row">
+                  <div class="col-sm-6 image-holder">
+                    <img id="ace-scatter-cell-previewer-im" >
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="ace-scatter-controls-padding">
+                        <div id="ace-scatter-cell-previewer-name"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></span></div>
+                        <div id="ace-scatter-cell-previewer-tagged-protein"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+                        <div id="ace-scatter-cell-previewer-x-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+                        <div id="ace-scatter-cell-previewer-y-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+                    </div>
+                  </div>
                 </div>
-            </div>
-            <div id="ace-scatter-cell-previewer" class="col-sm-3 ace-scatter-controls-padding">
-                <img id="ace-scatter-cell-previewer-im" height="150">
-            </div>
-            <div class="col-sm-2 ace-scatter-controls-padding">
-                <div id="ace-scatter-cell-previewer-name"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></span></div>
-                <div id="ace-scatter-cell-previewer-tagged-protein"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
-                <div id="ace-scatter-cell-previewer-x-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
-                <div id="ace-scatter-cell-previewer-y-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
             </div>
         </div>
         <hr>
-        <div id="ace-scatter-cell-previewer-row' class="row">
+        <div id="ace-scatter-cell-previewer-row" class="row">
             <div class="col-xs-3 ace-scatter-auto ace-scatter-controls-padding">
                 <span>X Axis:</span>
                 <select id="ace-scatter-x-axis-options"></select>
@@ -74,6 +75,19 @@
         </div>
     </div>
 </div>
+<!-- vendor files -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://d3js.org/queue.v1.min.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<!-- local scripts  -->
+<script src="js/lib/jquery.blockUI.js"></script>
+<script src="js/ACEScatterView.js"></script>
+<script src="js/AICSChart.js"></script>
+<script src="js/AICSScatter.js"></script>
+
 <script>
     ACEScatterView({
         cellName: 'Cell ID',
