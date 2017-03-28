@@ -5,7 +5,7 @@ d3.selection.prototype.moveToFront = function() {
 };
 
 function ACEScatterView(spec){
-    $.blockUI({ message: '<img src="loading.gif" />' });
+    $.blockUI({ message: '<img src="spinning5.gif" />' });
 
     var model = {
         cellName: spec.cellName,
