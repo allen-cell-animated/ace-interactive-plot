@@ -4,9 +4,9 @@ d3.selection.prototype.moveToFront = function() {
     });
 };
 
-function AICSScatter(model, my){
+function AICSScatter(model){
 
-    my = my || {};
+    var my = {};
 
     var TRANSITION_DURATION_DEFAULT = 3000;
     var NUM_SELECTED_CIRCLES_ON_START = 8;
