@@ -40,9 +40,6 @@ function AICSScatter(model){
         model.data.forEach(function (d) {
             model.filterClasses[d.classes] = true;
             d.showToolTip = false;
-            if(d["Apical proximity (unitless)"] == "NaN"){  //TODO bugfix, need data correction
-                d["Apical proximity (unitless)"] = "0";
-            }
         });
         xScale.domain([d3.min(model.data, _xScaleAccessor), d3.max(model.data, _xScaleAccessor)])
             .range([ 0, model.chartWidth ]);
