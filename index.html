@@ -9,7 +9,7 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
@@ -22,12 +22,12 @@
 <div id="ace-scatter-viz">
     <div id="ace-scatter-controls-container" class="container-fluid">
         <div class="row">
-            <div class="col-md-7">
-                <div id="ace-scatter-filters-label" class="row">
-                    <label class="col-sm-12">Plot cells that have the following tagged proteins:</label>
-                </div>
-                <div id="ace-scatter-class-filter-checkboxes" class="row">
-                    <div class="col-sm-1 ace-scatter-auto ace-scatter-controls-padding">
+            <div class="col-md-7 col-sm-12">
+                  <div id="ace-scatter-filters-label" class="">
+                    <label class="">Plot cells that have the following tagged proteins:</label>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-3 ace-scatter-auto ace-scatter-controls-padding">
                         <div>
                             <button id="ace-scatter-select-all-filters" class="btn btn-info ace-scatter-button">Select All</button>
                         </div>
@@ -35,16 +35,24 @@
                             <button id="ace-scatter-deselect-all-filters" class="btn btn-info ace-scatter-button">Deselect All</button>
                         </div>
                     </div>
+                    <div id="ace-scatter-class-filter-checkboxes" class="col-sm-9">
+                    </div>
+                  </div>
+            </div>
+            <div id="ace-scatter-cell-previewer" class="col-md-5 col-sm-12 ace-scatter-controls-padding">
+                <div class="row">
+                  <div class="col-sm-6 image-holder">
+                    <img id="ace-scatter-cell-previewer-im" >
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="ace-scatter-controls-padding">
+                        <div id="ace-scatter-cell-previewer-name"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></span></div>
+                        <div id="ace-scatter-cell-previewer-tagged-protein"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+                        <div id="ace-scatter-cell-previewer-x-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+                        <div id="ace-scatter-cell-previewer-y-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+                    </div>
+                  </div>
                 </div>
-            </div>
-            <div id="ace-scatter-cell-previewer" class="col-sm-3 ace-scatter-controls-padding">
-                <img id="ace-scatter-cell-previewer-im" height="150">
-            </div>
-            <div class="col-sm-2 ace-scatter-controls-padding">
-                <div id="ace-scatter-cell-previewer-name"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></span></div>
-                <div id="ace-scatter-cell-previewer-tagged-protein"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
-                <div id="ace-scatter-cell-previewer-x-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
-                <div id="ace-scatter-cell-previewer-y-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
             </div>
         </div>
         <hr>

@@ -29,12 +29,13 @@ function ACEScatterView(spec){
 
     function buildFilterCheckBoxes(filterCheckBoxesParent, filterClasses) {
         var filtersChunk = filterCheckBoxesParent.append('div')
-            .attr('class', 'col-sm-1 ace-scatter-auto');
+            .attr('class', 'ace-scatter-auto');
 
         var filter = filtersChunk.selectAll("input")
             .data(filterClasses)
             .enter()
-            .append('div');
+            .append('div')
+            .attr('class', 'form-check form-check-inline');
 
         filter
             .append("input")
@@ -83,7 +84,7 @@ function ACEScatterView(spec){
         document.getElementById("ace-scatter-y-axis-options").selectedIndex = 1;
 
         var filterCheckBoxesParent = d3.select("#ace-scatter-class-filter-checkboxes");
-        var chunkSize = 4, chunkCount = 0, totalCount = 0, chunk = [];
+        var chunkSize = 20, chunkCount = 0, totalCount = 0, chunk = [];
         for(filterClass in model.filterClasses){
             if(chunkCount == chunkSize || totalCount == (Object.keys(model.filterClasses).length - 1)){
                 buildFilterCheckBoxes(filterCheckBoxesParent, chunk);
