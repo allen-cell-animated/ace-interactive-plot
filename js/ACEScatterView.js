@@ -8,6 +8,7 @@ function ACEScatterView(spec){
     $.blockUI({ message: '<img src="loading.gif" />' });
 
     var model = {
+        cellName: spec.cellName,
         margin: spec.margin,
         parent: spec.chartParent,
         dataFile: spec.dataFile,
@@ -79,8 +80,8 @@ function ACEScatterView(spec){
             .append('option')
             .text(function (d) { return d; });
 
-        document.getElementById("ace-scatter-x-axis-options").selectedIndex = 0;
-        document.getElementById("ace-scatter-y-axis-options").selectedIndex = 1;
+        document.getElementById("ace-scatter-x-axis-options").selectedIndex = model.domainOptions.indexOf(model.xAxisDomain);
+        document.getElementById("ace-scatter-y-axis-options").selectedIndex = model.domainOptions.indexOf(model.yAxisDomain);
 
         var filterCheckBoxesParent = d3.select("#ace-scatter-class-filter-checkboxes");
         var chunkSize = 4, chunkCount = 0, totalCount = 0, chunk = [];
@@ -125,14 +126,14 @@ function ACEScatterView(spec){
         }, 3000);
     });
 
-    function _imagePath(cellName) {
-        return model.imagesDir + '/' + cellName.split('_')[0] + '/' + cellName + '.png';
+    function _imagePath(d) {
+        return model.imagesDir + '/' + d[model.cellName].split('_')[0] + '/' + d[model.cellName] + '.png';
     }
 
     function _updatePreview(d) {
-        previewerImage.attr('src', _imagePath(d.cellName));
+        previewerImage.attr('src', _imagePath(d));
         previewerName.text(function () {
-            return 'Cell Name: ' + d.cellName;
+            return 'Cell Name: ' + d[model.cellName];
         });
         previewerTaggedProtein.text(function () {
             return 'Tagged Protein: ' + d.classes;

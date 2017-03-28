@@ -87,7 +87,7 @@ function AICSScatter(model){
             .enter()
             .append('circle')
             .attr('id', function(d){
-                return 'circle-' + d.im_ids;
+                return 'circle-' + d[model.cellName];
             })
             .attr('r', CIRCLE_RADIUS)
             .attr('opacity', function(d){
@@ -229,13 +229,13 @@ function AICSScatter(model){
 
     function _updateImages(transitionDuration){
         var images = imagesG.selectAll('image').data(model.imageDs, function (d) {
-            return d.im_ids;
+            return d[model.cellName];
         });
 
         var newImages = images.enter()
             .append("image")
             .attr('id', function (d) {
-                return d.im_ids;
+                return d[model.cellName];
             })
             .attr('x', function (d){
                 return xScale(d[model.xAxisDomain]);
@@ -247,11 +247,11 @@ function AICSScatter(model){
             .attr('width', 50)
             .attr('height', 50)
             .attr("xlink:href", function (d) {
-                return d.showToolTip ? model.imagePath(d.cellName) : '';
+                return d.showToolTip ? model.imagePath(d) : '';
             })
             .on('click', function (d, i) {
                 d.showToolTip = false;
-                d3.select('#circle-' + d.im_ids)
+                d3.select('#circle-' + d[model.cellName])
                     .attr('opacity', UNSELECTED_CIRCLE_OPACITY)
                     .attr('fill', UNSELECTED_CIRCLE_COLOR);
                 model.imageDs.splice(model.imageDs.indexOf(d), 1);
