@@ -118,16 +118,13 @@ function ACEScatterView(spec){
                 scatter.update();
             });
 
-        scatter.updateScales();
-        scatter.updateCircles(2000);
         setTimeout(function(){
             scatter.initDefaultState();
-            scatter.updateCircles(1000);
-            scatter.updateImages(1000);
+            scatter.update();
             _updatePreview(model.imageDs[model.imageDs.length - 1]);
             $('#ace-scatter-blocker').hide();
             $.unblockUI();
-        }, 3000);
+        }, 1000);
     });
 
     function _imagePath(d) {
