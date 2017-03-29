@@ -66,12 +66,12 @@ function AICSScatter(model){
             .attr("id", "xaxis-label")
             .attr("transform", "translate(" + (model.chartWidth/2) + " ," + (model.chartHeight + model.margin.top + 20)+")")
             .style("text-anchor", "middle")
-            .text(model.xAxisDomain.split('_').join(' '));
+            .html(model.xAxisDomain.split('_').join(' '));
         yAxisLabel = mainG.append("text")
             .attr("id", "yaxis-label")
             .attr("transform", "translate(-60 ," + (model.chartHeight/2 + model.margin.top) + ") rotate(-90)")
             .style("text-anchor", "middle")
-            .text(model.yAxisDomain.split('_').join(' '));
+            .html(model.yAxisDomain.split('_').join(' '));
 
         xaxisG.attr("id", "xaxis")
             .attr('transform', 'translate(0,' + model.chartHeight + ')')
@@ -193,10 +193,10 @@ function AICSScatter(model){
             .call(yAxis);
 
         xAxisLabel
-            .text(model.xAxisDomain.split('_').join(' '))
+            .html(model.xAxisDomain)
             .attr("transform", "translate(" + (model.chartWidth/2) + " ," + (model.chartHeight + model.margin.top + 20)+")");
         yAxisLabel
-            .text(model.yAxisDomain.split('_').join(' '))
+            .html(model.yAxisDomain)
             .attr("transform", "translate(-60 ," + (model.chartHeight/2 + model.margin.top) + ") rotate(-90)");
     };
 

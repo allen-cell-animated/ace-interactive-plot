@@ -1,4 +1,4 @@
-classes,Cell ID,Nuclear volume (fL),Cellular volume (fL),Nuclear surface area (µm²),Cellular surface area (µm²),Radial proximity (unitless),Apical proximity (unitless)
+classes,Cell ID,Nuclear volume (fL),Cellular volume (fL),Nuclear surface area (&micro;m&sup2;),Cellular surface area (&micro;m&sup2;),Radial proximity (unitless),Apical proximity (unitless)
 Tom20,AICS-11_0_2,26.406,67.08528,50.96513472,122.3851716,0.2191666,0.04128917
 Tom20,AICS-11_0_3,19.3428,47.709,43.67155728,110.5819904,0.2410971,-0.02750808
 Tom20,AICS-11_0_4,29.33064,73.47996,56.12291184,147.0284484,0.3051865,0.04459358

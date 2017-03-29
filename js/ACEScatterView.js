@@ -55,7 +55,7 @@ function ACEScatterView(spec){
         filter
             .append('label')
             .attr('class', 'filter-checkbox-label')
-            .text(function (d) {
+            .html(function (d) {
                 return d;
             });
     }
@@ -67,22 +67,22 @@ function ACEScatterView(spec){
         var yAxisSelect = d3.select('#ace-scatter-y-axis-options');
 
         xAxisSelect.on('change', function () {
-            model.xAxisDomain = xAxisSelect.property('value');
+            model.xAxisDomain = model.domainOptions[document.getElementById('ace-scatter-x-axis-options').selectedIndex];
             scatter.update()
         })
             .selectAll('option')
             .data(model.domainOptions).enter()
             .append('option')
-            .text(function (d) { return d; });
+            .html(function (d) { return d; });
 
         yAxisSelect.on('change', function () {
-            model.yAxisDomain = yAxisSelect.property('value');
+            model.yAxisDomain = model.domainOptions[document.getElementById('ace-scatter-y-axis-options').selectedIndex];
             scatter.update()
         })
             .selectAll('option')
             .data(model.domainOptions).enter()
             .append('option')
-            .text(function (d) { return d; });
+            .html(function (d) { return d; });
 
         document.getElementById("ace-scatter-x-axis-options").selectedIndex = model.domainOptions.indexOf(model.xAxisDomain);
         document.getElementById("ace-scatter-y-axis-options").selectedIndex = model.domainOptions.indexOf(model.yAxisDomain);
@@ -133,16 +133,16 @@ function ACEScatterView(spec){
 
     function _updatePreview(d) {
         previewerImage.attr('src', _imagePath(d));
-        previewerName.text(function () {
+        previewerName.html(function () {
             return 'Cell Name: ' + d[model.cellName];
         });
-        previewerTaggedProtein.text(function () {
+        previewerTaggedProtein.html(function () {
             return 'Tagged Protein: ' + d.classes;
         });
-        previewerxValue.text(function () {
+        previewerxValue.html(function () {
             return model.xAxisDomain + ': ' + d[model.xAxisDomain];
         });
-        previeweryValue.text(function () {
+        previeweryValue.html(function () {
             return model.yAxisDomain + ': ' + d[model.yAxisDomain];
         });
     };
