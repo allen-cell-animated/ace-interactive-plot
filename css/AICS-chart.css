@@ -58,16 +58,13 @@ h4 {
   max-width: 130px;
   min-height: 130px;
 }
-
 .ace-scatter-auto{
     width: auto;
 }
 
-hr {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    height: 1px;
-    background-color: black;
+.border-bottom:after {
+    border-bottom: solid .5px #bcbabb;
+    width: 100%;
 }
 
 #ace-scatter-chart {
@@ -76,7 +73,7 @@ hr {
 }
 
 .ace-scatter-controls-padding{
-    padding: 5px;
+    /*padding: 5px;*/
 }
 
 #ace-scatter-viz{
