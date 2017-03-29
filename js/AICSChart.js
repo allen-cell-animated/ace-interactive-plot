@@ -46,7 +46,7 @@ function AICSChart(model, my){
             return;
         }
         queue()
-            .defer(d3.json, model.dataFile)
+            .defer(d3.csv, model.dataFile)
             .await(function(error, data) {
                 var chart = d3.select('#' + model.parent)
                     .append('svg')
