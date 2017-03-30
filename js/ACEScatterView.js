@@ -23,6 +23,7 @@ function ACEScatterView(spec){
         clickHandlers: spec.clickHandlers,
         mouseOverHandlers: (spec.mouseOverHandlers || []).concat(_updatePreview),
         filterClasses: spec.filterClasses,
+        unselectedCircleOpacity: spec.unselectedCircleOpacity,
         imagePath: _imagePath
     };
 

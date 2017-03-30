@@ -10,10 +10,8 @@ function AICSScatter(model){
 
     var TRANSITION_DURATION_DEFAULT = 3000;
     var NUM_SELECTED_CIRCLES_ON_START = 8;
-    var UNSELECTED_CIRCLE_COLOR = 'blue';
     var SELECTED_CIRCLE_COLOR = 'red';
     var SELECTED_CIRCLE_OPACITY = 1.0;
-    var UNSELECTED_CIRCLE_OPACITY = .25;
     var CIRCLE_RADIUS = 5;
 
     var that = AICSChart(model, my);
@@ -88,7 +86,7 @@ function AICSScatter(model){
             })
             .attr('r', CIRCLE_RADIUS)
             .attr('opacity', function(d){
-                return d.showToolTip ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY
+                return d.showToolTip ? SELECTED_CIRCLE_OPACITY : model.unselectedCircleOpacity
             })
             .attr('fill', function(d){
                 return model.filterClasses[d.classes].color;
@@ -136,7 +134,7 @@ function AICSScatter(model){
             function (d) {
                 d3.select(this)
                     .attr('opacity', function(d){
-                        return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY
+                        return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_OPACITY : model.unselectedCircleOpacity
                     })
                     .attr('fill', function(d){
                         return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_COLOR : model.filterClasses[d.classes].color;
@@ -148,7 +146,7 @@ function AICSScatter(model){
                 d.showToolTip = !d.showToolTip;
                 d3.select(this)
                     .attr('opacity', function(d){
-                        return d.showToolTip ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY;
+                        return d.showToolTip ? SELECTED_CIRCLE_OPACITY : model.unselectedCircleOpacity;
                     })
                     .attr('fill', function(d){
                         return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_COLOR : model.filterClasses[d.classes].color;
@@ -208,7 +206,7 @@ function AICSScatter(model){
                 return yScale(d[model.yAxisDomain]);
             })
             .attr('opacity', function(d){
-                return d.showToolTip ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY
+                return d.showToolTip ? SELECTED_CIRCLE_OPACITY : model.unselectedCircleOpacity
             })
             .attr('fill', function(d){
                 if(d.showToolTip){
@@ -249,7 +247,7 @@ function AICSScatter(model){
             .on('click', function (d, i) {
                 d.showToolTip = false;
                 d3.select('#circle-' + d[model.cellName])
-                    .attr('opacity', UNSELECTED_CIRCLE_OPACITY)
+                    .attr('opacity', model.unselectedCircleOpacity)
                     .attr('fill', model.filterClasses[d.classes].color);
                 model.imageDs.splice(model.imageDs.indexOf(d), 1);
                 _updateImages(1);
