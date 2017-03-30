@@ -94,11 +94,53 @@
         chartParent: 'ace-scatter-chart',
         dataFile: 'AICS_Cell-feature-analysis_v1.2.csv',
         imagesDir: 'http://cellviewer.allencell.org/aics/thumbnails/2017_03_08_Struct_First_Pass_Seg',
-        xAxisDomain: 'Cellular volume (fL)',
+        xAxisDomain: 'Radial proximity (unitless)',
         yAxisDomain: 'Cellular surface area (&micro;m&sup2;)',
         domainOptions: ['Apical proximity (unitless)', 'Cellular surface area (&micro;m&sup2;)',
             'Cellular volume (fL)', 'Nuclear surface area (&micro;m&sup2;)', 'Nuclear volume (fL)',
             'Radial proximity (unitless)'],
+        filterClasses: {
+            "Tom20":{
+                selected: true,
+                color:'#a6cee3',
+            },
+            "Alpha tubulin":{
+                selected: true,
+                color:'#b2df8a',
+            },
+            "Sec61 beta":{
+                selected: true,
+                color:'#33a02c',
+            },
+            "Alpha actinin":{
+                selected: true,
+                color:'#fb9a99',
+            },
+            "Desmoplakin":{
+                selected: true,
+                color:'#fdbf6f',
+            },
+            "Lamin B1":{
+                selected: true,
+                color:'#ff7f00',
+            },
+            "Fibrillarin":{
+                selected: true,
+                color:'#cab2d6',
+            },
+            "Beta actin":{
+                selected: true,
+                color:'#6a3d9a',
+            },
+            "ZO1":{
+                selected: true,
+                color:'#ffff99',
+            },
+            "Myosin IIB":{
+                selected: true,
+                color:'#b15928',
+            }
+        },
         margin: {top: 20, right: 50, bottom: 50, left: 80},
     });
 </script>

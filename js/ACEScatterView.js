@@ -22,6 +22,7 @@ function ACEScatterView(spec){
         domainOptions: spec.domainOptions,
         clickHandlers: spec.clickHandlers,
         mouseOverHandlers: (spec.mouseOverHandlers || []).concat(_updatePreview),
+        filterClasses: spec.filterClasses,
         imagePath: _imagePath
     };
 
@@ -44,11 +45,11 @@ function ACEScatterView(spec){
         filter
             .append("input")
             .attr("checked", function (d) {
-                return model.filterClasses[d];
+                return model.filterClasses[d].selected;
             })
             .attr("type", "checkbox")
             .on("change", function (d, i) {
-                model.filterClasses[d] = d3.select(this).property('checked');
+                model.filterClasses[d].selected = d3.select(this).property('checked');
                 scatter.update();
             });
 
@@ -104,7 +105,7 @@ function ACEScatterView(spec){
             .on("click", function () {
                 filterCheckBoxesParent.selectAll("input").property('checked', true);
                 for(filterClass in model.filterClasses){
-                    model.filterClasses[filterClass] = true;
+                    model.filterClasses[filterClass].selected = true;
                 }
                 scatter.update();
             });
@@ -113,7 +114,7 @@ function ACEScatterView(spec){
             .on("click", function (d, i) {
                 filterCheckBoxesParent.selectAll("input").property('checked', false);
                 for(filterClass in model.filterClasses){
-                    model.filterClasses[filterClass] = false;
+                    model.filterClasses[filterClass].selected = false;
                 }
                 scatter.update();
             });

@@ -13,7 +13,7 @@ function AICSScatter(model){
     var UNSELECTED_CIRCLE_COLOR = 'blue';
     var SELECTED_CIRCLE_COLOR = 'red';
     var SELECTED_CIRCLE_OPACITY = 1.0;
-    var UNSELECTED_CIRCLE_OPACITY = .05;
+    var UNSELECTED_CIRCLE_OPACITY = .25;
     var CIRCLE_RADIUS = 5;
 
     var that = AICSChart(model, my);
@@ -34,18 +34,15 @@ function AICSScatter(model){
     var yAxis = d3.axisLeft();
 
     my.init = function(){
-        model.filterClasses = {};
         model.imageDs = [];
         _initDefaultMouseHandlers();
         model.data.forEach(function (d) {
-            model.filterClasses[d.classes] = true;
             d.showToolTip = false;
         });
         xScale.domain([d3.min(model.data, _xScaleAccessor), d3.max(model.data, _xScaleAccessor)])
             .range([ 0, model.chartWidth ]);
         yScale.domain([d3.min(model.data, _yScaleAccessor), d3.max(model.data, _yScaleAccessor)])
             .range([ model.chartHeight, 0 ]);
-
         xAxis.scale(xScale);
         yAxis.scale(yScale);
     };
@@ -94,7 +91,7 @@ function AICSScatter(model){
                 return d.showToolTip ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY
             })
             .attr('fill', function(d){
-                return UNSELECTED_CIRCLE_COLOR;
+                return model.filterClasses[d.classes].color;
             })
             .attr('cx', model.chartWidth/2)
             .attr('cy', model.chartHeight/2)
@@ -142,7 +139,7 @@ function AICSScatter(model){
                         return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY
                     })
                     .attr('fill', function(d){
-                        return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_COLOR : UNSELECTED_CIRCLE_COLOR
+                        return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_COLOR : model.filterClasses[d.classes].color;
                     })
             }
         );
@@ -151,10 +148,10 @@ function AICSScatter(model){
                 d.showToolTip = !d.showToolTip;
                 d3.select(this)
                     .attr('opacity', function(d){
-                        return d.showToolTip ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY
+                        return d.showToolTip ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY;
                     })
                     .attr('fill', function(d){
-                        return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_COLOR : UNSELECTED_CIRCLE_COLOR
+                        return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_COLOR : model.filterClasses[d.classes].color;
                     });
                 if(d.showToolTip){
                     model.imageDs.push(d);
@@ -218,11 +215,11 @@ function AICSScatter(model){
                     d3.select(this).moveToFront();
                     return SELECTED_CIRCLE_COLOR;
                 } else {
-                    return UNSELECTED_CIRCLE_COLOR;
+                    return model.filterClasses[d.classes].color;
                 }
             })
             .attr('visibility', function (d) {
-                return model.filterClasses[d.classes] ? 'visible' : 'hidden';
+                return model.filterClasses[d.classes].selected ? 'visible' : 'hidden';
             });
 
     };
@@ -253,7 +250,7 @@ function AICSScatter(model){
                 d.showToolTip = false;
                 d3.select('#circle-' + d[model.cellName])
                     .attr('opacity', UNSELECTED_CIRCLE_OPACITY)
-                    .attr('fill', UNSELECTED_CIRCLE_COLOR);
+                    .attr('fill', model.filterClasses[d.classes].color);
                 model.imageDs.splice(model.imageDs.indexOf(d), 1);
                 _updateImages(1);
             });
@@ -275,7 +272,7 @@ function AICSScatter(model){
                 return yScale(d[model.yAxisDomain]);
             })
             .attr('visibility', function (d) {
-                return model.filterClasses[d.classes] ? 'visible' : 'hidden';
+                return model.filterClasses[d.classes].selected ? 'visible' : 'hidden';
             });
     };
 
