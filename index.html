@@ -92,9 +92,9 @@
     ACEScatterView({
         cellName: 'Cell ID',
         chartParent: 'ace-scatter-chart',
-        dataFile: 'AICS_Cell-feature-analysis_v1.2.csv',
+        dataFile: 'AICS_Cell-feature-analysis_v1.5.csv',
         imagesDir: 'http://cellviewer.allencell.org/aics/thumbnails/2017_03_08_Struct_First_Pass_Seg',
-        xAxisDomain: 'Radial proximity (unitless)',
+        xAxisDomain: 'Cellular volume (fL)',
         yAxisDomain: 'Cellular surface area (&micro;m&sup2;)',
         domainOptions: ['Apical proximity (unitless)', 'Cellular surface area (&micro;m&sup2;)',
             'Cellular volume (fL)', 'Nuclear surface area (&micro;m&sup2;)', 'Nuclear volume (fL)',
@@ -141,7 +141,7 @@
                 color:'#b15928',
             }
         },
-        unselectedCircleOpacity: .25,
+        unselectedCircleOpacity: .3,
         margin: {top: 20, right: 50, bottom: 50, left: 80},
     });
 </script>

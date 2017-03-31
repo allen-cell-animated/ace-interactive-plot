@@ -46,11 +46,11 @@ function ACEScatterView(spec){
         filter
             .append("input")
             .attr("checked", function (d) {
-                return model.filterClasses[d].selected;
+                return model.filterClasses[d.name].selected;
             })
             .attr("type", "checkbox")
-            .on("change", function (d, i) {
-                model.filterClasses[d].selected = d3.select(this).property('checked');
+            .on("change", function (d) {
+                model.filterClasses[d.name].selected = d3.select(this).property('checked');
                 scatter.update();
             });
 
@@ -58,7 +58,14 @@ function ACEScatterView(spec){
             .append('label')
             .attr('class', 'filter-checkbox-label')
             .html(function (d) {
-                return d;
+                return d.name;
+            });
+
+        filter
+            .append('div')
+            .attr('class', 'circle')
+            .style('background-color', function(d){
+                return d.color;
             });
     }
 
@@ -97,7 +104,7 @@ function ACEScatterView(spec){
                 chunk = [];
                 chunkCount = 0;
             }
-            chunk.push(filterClass);
+            chunk.push({name: filterClass, color: model.filterClasses[filterClass].color});
             chunkCount++;
             totalCount++;
         }
