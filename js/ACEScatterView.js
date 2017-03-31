@@ -11,6 +11,7 @@ function ACEScatterView(spec){
     });
 
     var model = {
+        cirleRadius: spec.cirleRadius,
         cellName: spec.cellName,
         margin: spec.margin,
         parent: spec.chartParent,

@@ -84,7 +84,7 @@ function AICSScatter(model){
             .attr('id', function(d){
                 return 'circle-' + d[model.cellName];
             })
-            .attr('r', CIRCLE_RADIUS)
+            .attr('r', model.cirleRadius)
             .attr('opacity', function(d){
                 return d.showToolTip ? SELECTED_CIRCLE_OPACITY : model.unselectedCircleOpacity
             })
