@@ -22,7 +22,7 @@
 <div id="ace-scatter-viz">
     <div id="ace-scatter-controls-container" class="container-fluid">
         <div class="row">
-            <div class="col-md-7 col-sm-12">
+            <div class="col-md-6 col-sm-11">
                   <div id="ace-scatter-filters-label" class="">
                     <label class="">Plot cells that have the following tagged proteins:</label>
                   </div>
@@ -39,12 +39,12 @@
                     </div>
                   </div>
             </div>
-            <div id="ace-scatter-cell-previewer" class="col-md-5 col-sm-12 ace-scatter-controls-padding">
+            <div id="ace-scatter-cell-previewer" class="col-md-5 col-sm-11 ace-scatter-controls-padding">
                 <div class="row">
                   <div class="col-sm-6 image-holder">
                     <img id="ace-scatter-cell-previewer-im" >
                   </div>
-                  <div class="col-sm-6">
+                  <div class="col-sm-5">
                     <div class="ace-scatter-controls-padding">
                         <div id="ace-scatter-cell-previewer-name"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></span></div>
                         <div id="ace-scatter-cell-previewer-tagged-protein"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
@@ -69,7 +69,7 @@
     </div>
     <div id="ace-scatter-chart-container" class="container-fluid">
         <div id="ace-scatter-chart-row" class="row">
-            <div id="ace-scatter-chart-col" class="col-xs-12">
+            <div id="ace-scatter-chart-col" class="col-xs-11">
                 <div id="ace-scatter-chart"></div>
             </div>
         </div>
@@ -90,7 +90,6 @@
 
 <script>
     ACEScatterView({
-        cirleRadius: 5,
         cellName: 'Cell ID',
         chartParent: 'ace-scatter-chart',
         dataFile: 'AICS_Cell-feature-analysis_v1.5.csv',
@@ -143,6 +142,7 @@
             }
         },
         unselectedCircleOpacity: .3,
+        cirleRadius: 4,
         margin: {top: 20, right: 50, bottom: 50, left: 80},
     });
 </script>
