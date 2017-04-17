@@ -29,10 +29,12 @@ function ACEScatterView(spec){
     };
 
     var previewerImage = d3.select('#ace-scatter-cell-previewer-im');
-    var previewerName = d3.select('#ace-scatter-cell-previewer-name');
-    var previewerTaggedProtein = d3.select('#ace-scatter-cell-previewer-tagged-protein');
-    var previewerxValue = d3.select('#ace-scatter-cell-previewer-x-value');
-    var previeweryValue = d3.select('#ace-scatter-cell-previewer-y-value');
+    var previewerName = d3.select('#ace-scatter-cell-previewer-name .value');
+    var previewerTaggedProtein = d3.select('#ace-scatter-cell-previewer-tagged-protein .value');
+    var previewerxKey = d3.select('#ace-scatter-cell-previewer-x .key');
+    var previeweryKey = d3.select('#ace-scatter-cell-previewer-y .key');
+    var previewerxValue = d3.select('#ace-scatter-cell-previewer-x .value');
+    var previeweryValue = d3.select('#ace-scatter-cell-previewer-y .value');
 
     function buildFilterCheckBoxes(filterCheckBoxesParent, filterClasses) {
         var filtersChunk = filterCheckBoxesParent.append('div')
@@ -47,11 +49,7 @@ function ACEScatterView(spec){
 
         var label = filter
             .append('label')
-            .attr('class', 'form-check-label')
-            .style('color', function(d){
-                    return d.color;
-                })
-
+            .attr('class', 'form-check-label');
 
         label
             .insert("input")
@@ -65,18 +63,18 @@ function ACEScatterView(spec){
                 scatter.update();
             });
 
-        label
-          .append('span')
-          .text(function (d) {
-              return d.name;
+        var labelName = label
+            .append('div')
+            .attr('class', 'circle')
+            .style('background-color', function(d){
+              return d.color;
           });
 
-        // label
-        //     .append('div')
-        //     .attr('class', 'circle')
-        //     .style('background-color', function(d){
-        //         return d.color;
-        //     });
+        label
+            .append('span')
+            .text(function (d) {
+              return d.name;
+            });
     }
 
     var scatter = AICSScatter(model);
@@ -153,16 +151,22 @@ function ACEScatterView(spec){
     function _updatePreview(d) {
         previewerImage.attr('src', _imagePath(d));
         previewerName.html(function () {
-            return 'Cell Name: ' + d[model.cellName];
+            return d[model.cellName];
         });
         previewerTaggedProtein.html(function () {
-            return 'Tagged Protein: ' + d.classes;
+            return d.classes;
+        });
+        previewerxKey.html(function () {
+            return model.xAxisDomain + ':';
         });
         previewerxValue.html(function () {
-            return model.xAxisDomain + ': ' + d[model.xAxisDomain];
+            return d[model.xAxisDomain];
+        });
+        previeweryKey.html(function () {
+            return model.yAxisDomain + ': ';
         });
         previeweryValue.html(function () {
-            return model.yAxisDomain + ': ' + d[model.yAxisDomain];
+            return d[model.yAxisDomain];
         });
     };
 

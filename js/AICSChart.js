@@ -14,7 +14,7 @@ function AICSChart(model, my){
     var FORCE_NO_SCROLL_PADDING = 40;             //hack
 
     model.parent = model.parent || 'body';
-    model.margin = model.margin || {top: 20, right: 150, bottom: 150, left: 60};
+    model.margin = model.margin || {top: 40, right: 150, bottom: 150, left: 60};
 
     my.init = my.init || function () {;};
     my.build = my.build || function () {;};
@@ -30,7 +30,7 @@ function AICSChart(model, my){
     };
 
     function updateDimensions(){
-        var nonScrollSpace = $(window).height() - $('#ace-scatter-controls-container').height() - FORCE_NO_SCROLL_PADDING;
+        var nonScrollSpace = $(window).height() - $('#ace-scatter-controls-container').height() - FORCE_NO_SCROLL_PADDING - 60;
         $('#ace-scatter-chart-container').height(Math.max(nonScrollSpace, CHART_MIN_HEIGHT));
         model.chartWidth = $('#ace-scatter-chart-svg').width() -
             model.margin.left -

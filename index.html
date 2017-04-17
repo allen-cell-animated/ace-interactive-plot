@@ -11,61 +11,51 @@
     <link href="css/AICS-chart.css" rel="stylesheet">
 </head>
 <body>
-<!-- <div id="ace-scatter-blocker"></div> -->
-<div id="ace-scatter-viz">
     <div id="ace-scatter-controls-container" class="container-fluid">
-        <div class="row">
+        <div class="row ">
             <div class="col">
-                  <div id="ace-scatter-filters-label" class="">
-                    <label class="">Plot cells that have the following tagged proteins:</label>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-3 ace-scatter-auto">
-                        <div>
-                            <button id="ace-scatter-select-all-filters" class="btn btn-info ace-scatter-button">Select All</button>
-                        </div>
-                        <div>
-                            <button id="ace-scatter-deselect-all-filters" class="btn btn-info ace-scatter-button">Deselect All</button>
-                        </div>
-                    </div>
-                    <div id="ace-scatter-class-filter-checkboxes" class="col-sm-8 form-group">
-                    </div>
-                  </div>
+              <div id="ace-scatter-filters-label" class="">
+                <label class="">Plot cells that have the following tagged proteins:</label>
+              </div>
+              <div id="ace-scatter-class-filter-checkboxes" class="secondaryform-group">
+              </div>
+                <div class="btn-group">
+                  <button id="ace-scatter-select-all-filters" class="btn btn-secondary">Select All</button>
+                  <button id="ace-scatter-deselect-all-filters" class="btn btn-secondary">Deselect All</button>
+                </div>
             </div>
             <div id="ace-scatter-cell-previewer" class="col">
                 <div class="row">
-                  <div class="col image-holder">
-                    <img id="ace-scatter-cell-previewer-im" >
-                  </div>
-                  <div class="col">
-                    <div class="ace-scatter-controls-padding">
-                        <div id="ace-scatter-cell-previewer-name"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></span></div>
-                        <div id="ace-scatter-cell-previewer-tagged-protein"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
-                        <div id="ace-scatter-cell-previewer-x-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
-                        <div id="ace-scatter-cell-previewer-y-value"><span class="previewer-label key"></span>:<span class="previewer-label value"></span></div>
+                  <div class="col-md-3 col-sm-12 ">
+                    <div class="image-holder list-group">
+                      <img id="ace-scatter-cell-previewer-im">
                     </div>
+                  </div>
+                  <div class="col-md-8 col-sm-12 list-group">
+                      <div id="ace-scatter-cell-previewer-name" class="list-group-item justify-content-between">Cell Name: <span class="value pull-right"></span></div>
+                      <div id="ace-scatter-cell-previewer-tagged-protein" class="list-group-item justify-content-between">Tagged Protein: <span class="value pull-right"></div>
+                      <div id="ace-scatter-cell-previewer-x" class="list-group-item justify-content-between"><span class="key"></span> <span class="value pull-right"></div>
+                      <div id="ace-scatter-cell-previewer-y" class="list-group-item justify-content-between"><span class="key"></span> <span class="value pull-right"></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+          <div class="border-bottom">
+          </div>
         <div class="container">
           <div id="ace-scatter-cell-previewer-row" class="row">
-              <div class="col ace-scatter-auto ">
+              <div class="col">
                   <span>X Axis:</span>
                   <select id="ace-scatter-x-axis-options"></select>
               </div>
-              <div class="col ace-scatter-auto">
+              <div class="col">
                   <span>Y Axis:</span>
                   <select id="ace-scatter-y-axis-options"></select>
               </div>
           </div>
         </div>
       <div id="ace-scatter-chart-container" class="container-fluid">
-        <div class="image-container hidden">
-          <img src="" alt="" />
-        </div>
         <div id="ace-scatter-chart-row" class="row">
             <div id="ace-scatter-chart-col" class="col">
                 <div id="ace-scatter-chart"></div>
@@ -74,10 +64,9 @@
       </div>
     <!-- vendor files -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://d3js.org/queue.v1.min.js"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="js/lib/iframeResize.js"></script>
 
     <!-- local scripts  -->
     <script src="js/lib/jquery.blockUI.js"></script>
