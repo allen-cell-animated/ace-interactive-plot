@@ -10,10 +10,8 @@ function AICSScatter(model){
 
     var TRANSITION_DURATION_DEFAULT = 3000;
     var NUM_SELECTED_CIRCLES_ON_START = 8;
-    var UNSELECTED_CIRCLE_COLOR = 'blue';
-    var SELECTED_CIRCLE_COLOR = 'red';
+    var SELECTED_CIRCLE_COLOR = 'black';
     var SELECTED_CIRCLE_OPACITY = 1.0;
-    var UNSELECTED_CIRCLE_OPACITY = .05;
     var CIRCLE_RADIUS = 5;
 
     var that = AICSChart(model, my);
@@ -34,26 +32,23 @@ function AICSScatter(model){
     var yAxis = d3.axisLeft();
 
     my.init = function(){
-        model.filterClasses = {};
         model.imageDs = [];
         _initDefaultMouseHandlers();
         model.data.forEach(function (d) {
-            model.filterClasses[d.classes] = true;
             d.showToolTip = false;
         });
         xScale.domain([d3.min(model.data, _xScaleAccessor), d3.max(model.data, _xScaleAccessor)])
             .range([ 0, model.chartWidth ]);
         yScale.domain([d3.min(model.data, _yScaleAccessor), d3.max(model.data, _yScaleAccessor)])
             .range([ model.chartHeight, 0 ]);
-
         xAxis.scale(xScale);
         yAxis.scale(yScale);
     };
 
     my.update = function (transitionDuration) {
-        _updateScales(transitionDuration);
-        _updateCircles(transitionDuration);
-        _updateImages(transitionDuration)
+        _updateScales(1);
+        _updateCircles(1);
+        _updateImages(1)
     };
 
     my.build = function (mainG) {
@@ -66,12 +61,12 @@ function AICSScatter(model){
             .attr("id", "xaxis-label")
             .attr("transform", "translate(" + (model.chartWidth/2) + " ," + (model.chartHeight + model.margin.top + 20)+")")
             .style("text-anchor", "middle")
-            .text(model.xAxisDomain.split('_').join(' '));
+            .html(model.xAxisDomain.split('_').join(' '));
         yAxisLabel = mainG.append("text")
             .attr("id", "yaxis-label")
             .attr("transform", "translate(-60 ," + (model.chartHeight/2 + model.margin.top) + ") rotate(-90)")
             .style("text-anchor", "middle")
-            .text(model.yAxisDomain.split('_').join(' '));
+            .html(model.yAxisDomain.split('_').join(' '));
 
         xaxisG.attr("id", "xaxis")
             .attr('transform', 'translate(0,' + model.chartHeight + ')')
@@ -89,12 +84,12 @@ function AICSScatter(model){
             .attr('id', function(d){
                 return 'circle-' + d[model.cellName];
             })
-            .attr('r', CIRCLE_RADIUS)
+            .attr('r', model.cirleRadius)
             .attr('opacity', function(d){
-                return d.showToolTip ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY
+                return d.showToolTip ? SELECTED_CIRCLE_OPACITY : model.unselectedCircleOpacity
             })
             .attr('fill', function(d){
-                return UNSELECTED_CIRCLE_COLOR;
+                return model.filterClasses[d.classes].color;
             })
             .attr('cx', model.chartWidth/2)
             .attr('cy', model.chartHeight/2)
@@ -132,17 +127,17 @@ function AICSScatter(model){
                 d3.select(this)
                     .moveToFront()
                     .attr('opacity', SELECTED_CIRCLE_OPACITY)
-                    .attr('fill', SELECTED_CIRCLE_COLOR);
+                    .attr('stroke', SELECTED_CIRCLE_COLOR);
             }
         );
         model.mouseOutHandlers = (model.mouseOutHandlers || []).concat(
             function (d) {
                 d3.select(this)
                     .attr('opacity', function(d){
-                        return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY
+                        return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_OPACITY : model.unselectedCircleOpacity
                     })
-                    .attr('fill', function(d){
-                        return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_COLOR : UNSELECTED_CIRCLE_COLOR
+                    .attr('stroke', function(d){
+                        return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_COLOR : model.filterClasses[d.classes].color;
                     })
             }
         );
@@ -151,10 +146,10 @@ function AICSScatter(model){
                 d.showToolTip = !d.showToolTip;
                 d3.select(this)
                     .attr('opacity', function(d){
-                        return d.showToolTip ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY
+                        return d.showToolTip ? SELECTED_CIRCLE_OPACITY : model.unselectedCircleOpacity;
                     })
-                    .attr('fill', function(d){
-                        return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_COLOR : UNSELECTED_CIRCLE_COLOR
+                    .attr('stroke', function(d){
+                        return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_COLOR : model.filterClasses[d.classes].color;
                     });
                 if(d.showToolTip){
                     model.imageDs.push(d);
@@ -193,10 +188,10 @@ function AICSScatter(model){
             .call(yAxis);
 
         xAxisLabel
-            .text(model.xAxisDomain.split('_').join(' '))
+            .html(model.xAxisDomain)
             .attr("transform", "translate(" + (model.chartWidth/2) + " ," + (model.chartHeight + model.margin.top + 20)+")");
         yAxisLabel
-            .text(model.yAxisDomain.split('_').join(' '))
+            .html(model.yAxisDomain)
             .attr("transform", "translate(-60 ," + (model.chartHeight/2 + model.margin.top) + ") rotate(-90)");
     };
 
@@ -211,18 +206,18 @@ function AICSScatter(model){
                 return yScale(d[model.yAxisDomain]);
             })
             .attr('opacity', function(d){
-                return d.showToolTip ? SELECTED_CIRCLE_OPACITY : UNSELECTED_CIRCLE_OPACITY
+                return d.showToolTip ? SELECTED_CIRCLE_OPACITY : model.unselectedCircleOpacity
             })
-            .attr('fill', function(d){
+            .attr('stroke', function(d){
                 if(d.showToolTip){
                     d3.select(this).moveToFront();
                     return SELECTED_CIRCLE_COLOR;
                 } else {
-                    return UNSELECTED_CIRCLE_COLOR;
+                    return model.filterClasses[d.classes].color;
                 }
             })
             .attr('visibility', function (d) {
-                return model.filterClasses[d.classes] ? 'visible' : 'hidden';
+                return model.filterClasses[d.classes].selected ? 'visible' : 'hidden';
             });
 
     };
@@ -252,8 +247,8 @@ function AICSScatter(model){
             .on('click', function (d, i) {
                 d.showToolTip = false;
                 d3.select('#circle-' + d[model.cellName])
-                    .attr('opacity', UNSELECTED_CIRCLE_OPACITY)
-                    .attr('fill', UNSELECTED_CIRCLE_COLOR);
+                    .attr('opacity', model.unselectedCircleOpacity)
+                    .attr('stroke', model.filterClasses[d.classes].color);
                 model.imageDs.splice(model.imageDs.indexOf(d), 1);
                 _updateImages(1);
             });
@@ -261,7 +256,9 @@ function AICSScatter(model){
         newImages
             .transition()
             .duration(transitionDuration || TRANSITION_DURATION_DEFAULT)
-            .attr('opacity', '1');
+            .attr('opacity', '1')
+            .attr('stroke', 'white');
+
 
         images.exit().remove();
 
@@ -275,7 +272,7 @@ function AICSScatter(model){
                 return yScale(d[model.yAxisDomain]);
             })
             .attr('visibility', function (d) {
-                return model.filterClasses[d.classes] ? 'visible' : 'hidden';
+                return model.filterClasses[d.classes].selected ? 'visible' : 'hidden';
             });
     };
 
@@ -294,3 +291,61 @@ function AICSScatter(model){
 
     return that;
 };
+
+
+ACEScatterView({
+    cellName: 'Cell ID',
+    chartParent: 'ace-scatter-chart',
+    dataFile: 'AICS_Cell-feature-analysis_v1.5.csv',
+    imagesDir: 'http://cellviewer.allencell.org/aics/thumbnails/2017_03_08_Struct_First_Pass_Seg',
+    xAxisDomain: 'Cellular volume (fL)',
+    yAxisDomain: 'Cellular surface area (&micro;m&sup2;)',
+    domainOptions: ['Apical proximity (unitless)', 'Cellular surface area (&micro;m&sup2;)',
+        'Cellular volume (fL)', 'Nuclear surface area (&micro;m&sup2;)', 'Nuclear volume (fL)',
+        'Radial proximity (unitless)'],
+    filterClasses: {
+        "Tom20":{
+            selected: true,
+            color:'#6a3d9a',
+        },
+        "Alpha tubulin":{
+            selected: true,
+            color:'#cab2d6',
+        },
+        "Sec61 beta":{
+            selected: true,
+            color:'#838689',
+        },
+        "Alpha actinin":{
+            selected: true,
+            color:'#1f78b4',
+        },
+        "Desmoplakin":{
+            selected: true,
+            color:'#33a02c',
+        },
+        "Lamin B1":{
+            selected: true,
+            color:'#fb9a99',
+        },
+        "Fibrillarin":{
+            selected: true,
+            color:'#e31a1c',
+        },
+        "Beta actin":{
+            selected: true,
+            color:'#a6cee3',
+        },
+        "ZO1":{
+            selected: true,
+            color:'#ff7f00',
+        },
+        "Myosin IIB":{
+            selected: true,
+            color:'#fdbf6f',
+        }
+    },
+    unselectedCircleOpacity: .3,
+    cirleRadius: 4,
+    margin: {top: 20, right: 50, bottom: 50, left: 80},
+});

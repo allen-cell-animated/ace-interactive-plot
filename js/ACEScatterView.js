@@ -11,6 +11,7 @@ function ACEScatterView(spec){
     });
 
     var model = {
+        cirleRadius: spec.cirleRadius,
         cellName: spec.cellName,
         margin: spec.margin,
         parent: spec.chartParent,
@@ -22,6 +23,8 @@ function ACEScatterView(spec){
         domainOptions: spec.domainOptions,
         clickHandlers: spec.clickHandlers,
         mouseOverHandlers: (spec.mouseOverHandlers || []).concat(_updatePreview),
+        filterClasses: spec.filterClasses,
+        unselectedCircleOpacity: spec.unselectedCircleOpacity,
         imagePath: _imagePath
     };
 
@@ -35,29 +38,45 @@ function ACEScatterView(spec){
         var filtersChunk = filterCheckBoxesParent.append('div')
             .attr('class', 'ace-scatter-auto');
 
+
         var filter = filtersChunk.selectAll("input")
             .data(filterClasses)
             .enter()
             .append('div')
             .attr('class', 'form-check form-check-inline');
 
-        filter
-            .append("input")
+        var label = filter
+            .append('label')
+            .attr('class', 'form-check-label')
+            .style('color', function(d){
+                    return d.color;
+                })
+
+
+        label
+            .insert("input")
+            .attr('class', 'form-check-input')
             .attr("checked", function (d) {
-                return model.filterClasses[d];
+                return model.filterClasses[d.name].selected;
             })
             .attr("type", "checkbox")
-            .on("change", function (d, i) {
-                model.filterClasses[d] = d3.select(this).property('checked');
+            .on("change", function (d) {
+                model.filterClasses[d.name].selected = d3.select(this).property('checked');
                 scatter.update();
             });
 
-        filter
-            .append('label')
-            .attr('class', 'filter-checkbox-label')
-            .text(function (d) {
-                return d;
-            });
+        label
+          .append('span')
+          .text(function (d) {
+              return d.name;
+          });
+
+        // label
+        //     .append('div')
+        //     .attr('class', 'circle')
+        //     .style('background-color', function(d){
+        //         return d.color;
+        //     });
     }
 
     var scatter = AICSScatter(model);
@@ -67,22 +86,22 @@ function ACEScatterView(spec){
         var yAxisSelect = d3.select('#ace-scatter-y-axis-options');
 
         xAxisSelect.on('change', function () {
-            model.xAxisDomain = xAxisSelect.property('value');
+            model.xAxisDomain = model.domainOptions[document.getElementById('ace-scatter-x-axis-options').selectedIndex];
             scatter.update()
         })
             .selectAll('option')
             .data(model.domainOptions).enter()
             .append('option')
-            .text(function (d) { return d; });
+            .html(function (d) { return d; });
 
         yAxisSelect.on('change', function () {
-            model.yAxisDomain = yAxisSelect.property('value');
+            model.yAxisDomain = model.domainOptions[document.getElementById('ace-scatter-y-axis-options').selectedIndex];
             scatter.update()
         })
             .selectAll('option')
             .data(model.domainOptions).enter()
             .append('option')
-            .text(function (d) { return d; });
+            .html(function (d) { return d; });
 
         document.getElementById("ace-scatter-x-axis-options").selectedIndex = model.domainOptions.indexOf(model.xAxisDomain);
         document.getElementById("ace-scatter-y-axis-options").selectedIndex = model.domainOptions.indexOf(model.yAxisDomain);
@@ -95,7 +114,7 @@ function ACEScatterView(spec){
                 chunk = [];
                 chunkCount = 0;
             }
-            chunk.push(filterClass);
+            chunk.push({name: filterClass, color: model.filterClasses[filterClass].color});
             chunkCount++;
             totalCount++;
         }
@@ -104,7 +123,7 @@ function ACEScatterView(spec){
             .on("click", function () {
                 filterCheckBoxesParent.selectAll("input").property('checked', true);
                 for(filterClass in model.filterClasses){
-                    model.filterClasses[filterClass] = true;
+                    model.filterClasses[filterClass].selected = true;
                 }
                 scatter.update();
             });
@@ -113,21 +132,18 @@ function ACEScatterView(spec){
             .on("click", function (d, i) {
                 filterCheckBoxesParent.selectAll("input").property('checked', false);
                 for(filterClass in model.filterClasses){
-                    model.filterClasses[filterClass] = false;
+                    model.filterClasses[filterClass].selected = false;
                 }
                 scatter.update();
             });
 
-        scatter.updateScales();
-        scatter.updateCircles(2000);
         setTimeout(function(){
             scatter.initDefaultState();
-            scatter.updateCircles(1000);
-            scatter.updateImages(1000);
+            scatter.update();
             _updatePreview(model.imageDs[model.imageDs.length - 1]);
             $('#ace-scatter-blocker').hide();
             $.unblockUI();
-        }, 3000);
+        }, 1000);
     });
 
     function _imagePath(d) {
@@ -136,16 +152,16 @@ function ACEScatterView(spec){
 
     function _updatePreview(d) {
         previewerImage.attr('src', _imagePath(d));
-        previewerName.text(function () {
+        previewerName.html(function () {
             return 'Cell Name: ' + d[model.cellName];
         });
-        previewerTaggedProtein.text(function () {
+        previewerTaggedProtein.html(function () {
             return 'Tagged Protein: ' + d.classes;
         });
-        previewerxValue.text(function () {
+        previewerxValue.html(function () {
             return model.xAxisDomain + ': ' + d[model.xAxisDomain];
         });
-        previeweryValue.text(function () {
+        previeweryValue.html(function () {
             return model.yAxisDomain + ': ' + d[model.yAxisDomain];
         });
     };

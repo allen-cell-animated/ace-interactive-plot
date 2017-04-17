@@ -16,8 +16,8 @@ html,body {
 }
 
 .filter-checkbox-label{
-    padding-left: 4px;
-    vertical-align: baseline;
+    /*padding-left: 4px;
+    vertical-align: baseline;*/
 }
 
 #ace-scatter-all-filter-buttons{
@@ -77,7 +77,13 @@ h4 {
 }
 
 #ace-scatter-viz{
-    height:100%;
     width:100%;
     padding: 10px;
+}
+
+.circle {
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    margin: 5px;
 }
