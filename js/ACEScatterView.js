@@ -1,9 +1,3 @@
-d3.selection.prototype.moveToFront = function() {
-    return this.each(function(){
-        this.parentNode.appendChild(this);
-    });
-};
-
 function ACEScatterView(spec){
     $.blockUI({
         overlayCSS: { backgroundColor: 'white' },
@@ -137,8 +131,8 @@ function ACEScatterView(spec){
 
         setTimeout(function(){
             scatter.initDefaultState();
-            scatter.update();
             _updatePreview(model.imageDs[model.imageDs.length - 1]);
+            scatter.update();
             $('#ace-scatter-blocker').hide();
             $.unblockUI();
         }, 1000);

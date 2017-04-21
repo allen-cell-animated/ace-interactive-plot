@@ -1,7 +1,3 @@
-html,body {
-  padding-top:10px;
-}
-
 .axis-select{
     padding: 10px;
 }
@@ -32,8 +28,6 @@ html,body {
   text-align: center;
   vertical-align: middle;
   padding-top: 20px;
-  /*margin-left: 15px;
-  margin-right: 15px;*/
 }
 
 #ace-scatter-cell-previewer-im{

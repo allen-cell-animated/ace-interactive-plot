@@ -296,7 +296,7 @@ function AICSScatter(model){
 ACEScatterView({
     cellName: 'Cell ID',
     chartParent: 'ace-scatter-chart',
-    dataFile: 'AICS_Cell-feature-analysis_v1.5.csv',
+    dataFile: 'js/AICS_Cell-feature-analysis_v1.5.csv',
     imagesDir: 'http://cellviewer.allencell.org/aics/thumbnails/2017_03_08_Struct_First_Pass_Seg',
     xAxisDomain: 'Cellular volume (fL)',
     yAxisDomain: 'Cellular surface area (&micro;m&sup2;)',
