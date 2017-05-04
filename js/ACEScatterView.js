@@ -1,9 +1,3 @@
-d3.selection.prototype.moveToFront = function() {
-    return this.each(function(){
-        this.parentNode.appendChild(this);
-    });
-};
-
 function ACEScatterView(spec){
     $.blockUI({
         overlayCSS: { backgroundColor: 'white' },
@@ -29,14 +23,17 @@ function ACEScatterView(spec){
     };
 
     var previewerImage = d3.select('#ace-scatter-cell-previewer-im');
-    var previewerName = d3.select('#ace-scatter-cell-previewer-name');
-    var previewerTaggedProtein = d3.select('#ace-scatter-cell-previewer-tagged-protein');
-    var previewerxValue = d3.select('#ace-scatter-cell-previewer-x-value');
-    var previeweryValue = d3.select('#ace-scatter-cell-previewer-y-value');
+    var previewerName = d3.select('#ace-scatter-cell-previewer-name .value');
+    var previewerTaggedProtein = d3.select('#ace-scatter-cell-previewer-tagged-protein .value');
+    var previewerxKey = d3.select('#ace-scatter-cell-previewer-x .key');
+    var previeweryKey = d3.select('#ace-scatter-cell-previewer-y .key');
+    var previewerxValue = d3.select('#ace-scatter-cell-previewer-x .value');
+    var previeweryValue = d3.select('#ace-scatter-cell-previewer-y .value');
 
     function buildFilterCheckBoxes(filterCheckBoxesParent, filterClasses) {
         var filtersChunk = filterCheckBoxesParent.append('div')
             .attr('class', 'ace-scatter-auto');
+
 
         var filter = filtersChunk.selectAll("input")
             .data(filterClasses)
@@ -44,8 +41,13 @@ function ACEScatterView(spec){
             .append('div')
             .attr('class', 'form-check form-check-inline');
 
-        filter
-            .append("input")
+        var label = filter
+            .append('label')
+            .attr('class', 'form-check-label');
+
+        label
+            .insert("input")
+            .attr('class', 'form-check-input')
             .attr("checked", function (d) {
                 return model.filterClasses[d.name].selected;
             })
@@ -55,18 +57,17 @@ function ACEScatterView(spec){
                 scatter.update();
             });
 
-        filter
-            .append('label')
-            .attr('class', 'filter-checkbox-label')
-            .html(function (d) {
-                return d.name;
-            });
-
-        filter
+        var labelName = label
             .append('div')
             .attr('class', 'circle')
             .style('background-color', function(d){
-                return d.color;
+              return d.color;
+          });
+
+        label
+            .append('span')
+            .text(function (d) {
+              return d.name;
             });
     }
 
@@ -130,8 +131,8 @@ function ACEScatterView(spec){
 
         setTimeout(function(){
             scatter.initDefaultState();
-            scatter.update();
             _updatePreview(model.imageDs[model.imageDs.length - 1]);
+            scatter.update();
             $('#ace-scatter-blocker').hide();
             $.unblockUI();
         }, 1000);
@@ -144,16 +145,22 @@ function ACEScatterView(spec){
     function _updatePreview(d) {
         previewerImage.attr('src', _imagePath(d));
         previewerName.html(function () {
-            return 'Cell Name: ' + d[model.cellName];
+            return d[model.cellName];
         });
         previewerTaggedProtein.html(function () {
-            return 'Tagged Protein: ' + d.classes;
+            return d.classes;
+        });
+        previewerxKey.html(function () {
+            return model.xAxisDomain + ':';
         });
         previewerxValue.html(function () {
-            return model.xAxisDomain + ': ' + d[model.xAxisDomain];
+            return d[model.xAxisDomain];
+        });
+        previeweryKey.html(function () {
+            return model.yAxisDomain + ': ';
         });
         previeweryValue.html(function () {
-            return model.yAxisDomain + ': ' + d[model.yAxisDomain];
+            return d[model.yAxisDomain];
         });
     };
 

@@ -10,7 +10,7 @@ function AICSScatter(model){
 
     var TRANSITION_DURATION_DEFAULT = 3000;
     var NUM_SELECTED_CIRCLES_ON_START = 8;
-    var SELECTED_CIRCLE_COLOR = 'red';
+    var SELECTED_CIRCLE_COLOR = 'black';
     var SELECTED_CIRCLE_OPACITY = 1.0;
     var CIRCLE_RADIUS = 5;
 
@@ -127,7 +127,7 @@ function AICSScatter(model){
                 d3.select(this)
                     .moveToFront()
                     .attr('opacity', SELECTED_CIRCLE_OPACITY)
-                    .attr('fill', SELECTED_CIRCLE_COLOR);
+                    .attr('stroke', SELECTED_CIRCLE_COLOR);
             }
         );
         model.mouseOutHandlers = (model.mouseOutHandlers || []).concat(
@@ -136,7 +136,7 @@ function AICSScatter(model){
                     .attr('opacity', function(d){
                         return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_OPACITY : model.unselectedCircleOpacity
                     })
-                    .attr('fill', function(d){
+                    .attr('stroke', function(d){
                         return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_COLOR : model.filterClasses[d.classes].color;
                     })
             }
@@ -148,7 +148,7 @@ function AICSScatter(model){
                     .attr('opacity', function(d){
                         return d.showToolTip ? SELECTED_CIRCLE_OPACITY : model.unselectedCircleOpacity;
                     })
-                    .attr('fill', function(d){
+                    .attr('stroke', function(d){
                         return (d.showToolTip || d.highlight) ? SELECTED_CIRCLE_COLOR : model.filterClasses[d.classes].color;
                     });
                 if(d.showToolTip){
@@ -208,7 +208,7 @@ function AICSScatter(model){
             .attr('opacity', function(d){
                 return d.showToolTip ? SELECTED_CIRCLE_OPACITY : model.unselectedCircleOpacity
             })
-            .attr('fill', function(d){
+            .attr('stroke', function(d){
                 if(d.showToolTip){
                     d3.select(this).moveToFront();
                     return SELECTED_CIRCLE_COLOR;
@@ -248,7 +248,7 @@ function AICSScatter(model){
                 d.showToolTip = false;
                 d3.select('#circle-' + d[model.cellName])
                     .attr('opacity', model.unselectedCircleOpacity)
-                    .attr('fill', model.filterClasses[d.classes].color);
+                    .attr('stroke', model.filterClasses[d.classes].color);
                 model.imageDs.splice(model.imageDs.indexOf(d), 1);
                 _updateImages(1);
             });
@@ -256,7 +256,9 @@ function AICSScatter(model){
         newImages
             .transition()
             .duration(transitionDuration || TRANSITION_DURATION_DEFAULT)
-            .attr('opacity', '1');
+            .attr('opacity', '1')
+            .attr('stroke', 'white');
+
 
         images.exit().remove();
 
@@ -289,3 +291,61 @@ function AICSScatter(model){
 
     return that;
 };
+
+
+ACEScatterView({
+    cellName: 'Cell ID',
+    chartParent: 'ace-scatter-chart',
+    dataFile: 'js/AICS_Cell-feature-analysis_v1.5.csv',
+    imagesDir: 'http://cellviewer.allencell.org/aics/thumbnails/2017_03_08_Struct_First_Pass_Seg',
+    xAxisDomain: 'Cellular volume (fL)',
+    yAxisDomain: 'Cellular surface area (&micro;m&sup2;)',
+    domainOptions: ['Apical proximity (unitless)', 'Cellular surface area (&micro;m&sup2;)',
+        'Cellular volume (fL)', 'Nuclear surface area (&micro;m&sup2;)', 'Nuclear volume (fL)',
+        'Radial proximity (unitless)'],
+    filterClasses: {
+        "Tom20":{
+            selected: true,
+            color:'#6a3d9a',
+        },
+        "Alpha tubulin":{
+            selected: true,
+            color:'#cab2d6',
+        },
+        "Sec61 beta":{
+            selected: true,
+            color:'#838689',
+        },
+        "Alpha actinin":{
+            selected: true,
+            color:'#1f78b4',
+        },
+        "Desmoplakin":{
+            selected: true,
+            color:'#33a02c',
+        },
+        "Lamin B1":{
+            selected: true,
+            color:'#fb9a99',
+        },
+        "Fibrillarin":{
+            selected: true,
+            color:'#e31a1c',
+        },
+        "Beta actin":{
+            selected: true,
+            color:'#a6cee3',
+        },
+        "ZO1":{
+            selected: true,
+            color:'#ff7f00',
+        },
+        "Myosin IIB":{
+            selected: true,
+            color:'#fdbf6f',
+        }
+    },
+    unselectedCircleOpacity: .3,
+    cirleRadius: 4,
+    margin: {top: 20, right: 50, bottom: 50, left: 80},
+});

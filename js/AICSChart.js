@@ -1,9 +1,3 @@
-d3.selection.prototype.moveToFront = function() {
-    return this.each(function(){
-        this.parentNode.appendChild(this);
-    });
-};
-
 function AICSChart(model, my){
 
     my = my || {};
@@ -11,7 +5,7 @@ function AICSChart(model, my){
     var that = {};
 
     var CHART_MIN_HEIGHT = 300;
-    var FORCE_NO_SCROLL_PADDING = 40;             //hack
+    var FORCE_NO_SCROLL_PADDING = 120;             //hack
 
     model.parent = model.parent || 'body';
     model.margin = model.margin || {top: 20, right: 150, bottom: 150, left: 60};
