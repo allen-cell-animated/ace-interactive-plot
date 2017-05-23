@@ -99,17 +99,11 @@ function ACEScatterView(spec){
         document.getElementById("ace-scatter-y-axis-options").selectedIndex = model.domainOptions.indexOf(model.yAxisDomain);
 
         var filterCheckBoxesParent = d3.select("#ace-scatter-class-filter-checkboxes");
-        var chunkSize = 20, chunkCount = 0, totalCount = 0, chunk = [];
+        var filterClassConfigs = [];
         for(filterClass in model.filterClasses){
-            if(chunkCount == chunkSize || totalCount == (Object.keys(model.filterClasses).length - 1)){
-                buildFilterCheckBoxes(filterCheckBoxesParent, chunk);
-                chunk = [];
-                chunkCount = 0;
-            }
-            chunk.push({name: filterClass, color: model.filterClasses[filterClass].color});
-            chunkCount++;
-            totalCount++;
+            filterClassConfigs.push({name: filterClass, color: model.filterClasses[filterClass].color});
         }
+        buildFilterCheckBoxes(filterCheckBoxesParent, filterClassConfigs);
 
         d3.select('#ace-scatter-select-all-filters')
             .on("click", function () {
