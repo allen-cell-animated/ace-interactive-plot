@@ -163,7 +163,7 @@ function ACEScatterView(spec){
 ACEScatterView({
     cellName: 'Cell ID',
     chartParent: 'ace-scatter-chart',
-    dataFile: 'js/AICS_Cell-feature-analysis_v1.5.csv',
+    dataFile: 'js/AICS_Cell-feature-analysis_v1.7.csv',
     imagesDir: 'http://cellviewer.allencell.org/aics/thumbnails/2017_03_08_Struct_First_Pass_Seg',
     xAxisDomain: 'Cellular volume (fL)',
     yAxisDomain: 'Cellular surface area (&micro;m&sup2;)',
@@ -171,45 +171,45 @@ ACEScatterView({
         'Cellular volume (fL)', 'Nuclear surface area (&micro;m&sup2;)', 'Nuclear volume (fL)',
         'Radial proximity (unitless)'],
     filterClasses: {
-        "Tom20":{
+        "Alpha-actinin":{
             selected: true,
-            color:'#6a3d9a',
+            color:'#6a3d9a ',
         },
-        "Alpha tubulin":{
+        "Alpha-tubulin":{
             selected: true,
-            color:'#cab2d6',
+            color:'#a6cee3 ',
         },
-        "Sec61 beta":{
+        "Beta-actin":{
             selected: true,
-            color:'#838689',
-        },
-        "Alpha actinin":{
-            selected: true,
-            color:'#1f78b4',
+            color:'#cab2d6 ',
         },
         "Desmoplakin":{
             selected: true,
-            color:'#33a02c',
-        },
-        "Lamin B1":{
-            selected: true,
-            color:'#fb9a99',
+            color:'#33a02c ',
         },
         "Fibrillarin":{
             selected: true,
-            color:'#e31a1c',
+            color:'#e31a1c ',
         },
-        "Beta actin":{
+        "Lamin B1":{
             selected: true,
-            color:'#a6cee3',
+            color:'#fb9a99 ',
         },
-        "ZO1":{
+        "Non-muscle myosin IIB":{
             selected: true,
-            color:'#ff7f00',
+            color:'#2be1db ',
         },
-        "Myosin IIB":{
+        "Sec61-beta":{
             selected: true,
-            color:'#fdbf6f',
+            color:'#fdbf6f ',
+        },
+        "Tight junction ZO1":{
+            selected: true,
+            color:'#ff7f00 ',
+        },
+        "Tom20":{
+            selected: true,
+            color:'#e0e0e1 ',
         }
     },
     unselectedCircleOpacity: .3,
